@@ -31,7 +31,6 @@ public class ExchangePostController {
         return ResponseEntity.ok(res);
     }
 
-
     //교환글해당글조회
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity<ReadExchangePostRes> read(@RequestParam Long id) {
