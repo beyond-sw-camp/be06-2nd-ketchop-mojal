@@ -11,10 +11,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@DynamicInsert
+@Builder
 public class ExchangePost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,4 +53,6 @@ public class ExchangePost {
     private List<ChatRoom> chatRooms = new ArrayList<>();
     @OneToMany(mappedBy = "exchangePost")
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
+
+
 }
