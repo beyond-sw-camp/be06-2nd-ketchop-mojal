@@ -14,8 +14,6 @@ import lombok.Getter;
 public class SharePostCreateReq {
     private String title;
     private String contents;
-    private Boolean status;
-    private Boolean postType;
     private String deadline;
     private Integer capacity;
     private Long categoryIdx;

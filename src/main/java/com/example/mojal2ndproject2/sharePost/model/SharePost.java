@@ -13,12 +13,16 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SharePost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
