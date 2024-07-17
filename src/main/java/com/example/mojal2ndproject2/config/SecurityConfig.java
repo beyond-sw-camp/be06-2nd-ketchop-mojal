@@ -37,9 +37,15 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((auth)->
                 auth
+                        .requestMatchers("/post/share/users","/post/exchange/users").authenticated()
                         .requestMatchers(
-                                "/login","/member/signup","/email/**","/post/read","/post/list", "/search/**","/kakao/**","/shareposts/**").permitAll()
-                        .anyRequest().authenticated()
+                                "/login",
+                                "/member/signup",
+                                "/email/**",
+                                "/post/**",
+                                "/search/**",
+                                "/kakao/**").permitAll()
+                        .anyRequest().permitAll()
         );
 
         JwtFilter jwtFilter = new JwtFilter(jwtUtil);

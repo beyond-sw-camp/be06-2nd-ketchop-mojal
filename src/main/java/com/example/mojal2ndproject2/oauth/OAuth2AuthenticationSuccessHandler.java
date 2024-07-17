@@ -29,24 +29,27 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Map<String, Object> properties = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
         String nickName =  (String) properties.get("nickname");
+        Long kakaoIdx = (Long) oAuth2User.getAttributes().get("id");
 
         // nickName으로 DB 확인
-        Optional<Member> result = memberRepository.findByNickname(nickName);
+        Optional<Member> result = memberRepository.findByNicknameAndKakaoIdx(nickName, kakaoIdx);
+        Member saved=null;
         if(!result.isPresent()){
-            String uuid = UUID.randomUUID().toString();
 
             Member member = Member.builder()
-                    .nickname(nickName+"kToken "+uuid)
+                    .nickname(nickName)
+                    .kakaoIdx(kakaoIdx)
                     .role("ROLE_USER")
                     .memberAuth(true)
                     .build(); //Todo signupdate 값 넣기
 
-            memberRepository.save(member);
+            saved = memberRepository.save(member);
+        }else{
+            saved = result.get();
         }
+        Long idx = saved.getIdx();
 
-        Long id = (Long) oAuth2User.getAttributes().get("id");
-
-        String token = jwtUtil.createToken(nickName, id, "ROLE_USER"); //Todo email 넣는 자리에 nickname 넣음..?
+        String token = jwtUtil.createToken(nickName, idx, "ROLE_USER"); //Todo email 넣는 자리에 nickname 넣음..?
 
         Cookie aToken = new Cookie("aToken", token);
         aToken.setHttpOnly(true);
