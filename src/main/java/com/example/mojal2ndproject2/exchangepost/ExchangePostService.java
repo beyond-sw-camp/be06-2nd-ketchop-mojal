@@ -12,10 +12,8 @@ import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchange
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -84,23 +82,21 @@ public class ExchangePostService {
         }
         return exchangePostReadResList;
     }
+    //교환게시글 생성
     public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails){
+        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
         Category newGiveCategory = Category.builder()
                 .idx(req.getGiveCategoryIdx())
                 .build();
-
         Category newTakeCategory = Category.builder()
                 .idx(req.getTakeCategoryIdx())
                 .build();
-
 
         Long memberIdx = customUserDetails.getMember().getIdx();
         Member newMember = Member.builder()
                 .idx(memberIdx)
                 .build();
-        String nickname = customUserDetails.getMember().getNickname();
-
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         ExchangePost exchangePost = ExchangePost.builder()
                 .title(req.getTitle())
@@ -124,4 +120,55 @@ public class ExchangePostService {
                 .content(req.getContents())
                 .build();
     }
+
+    //교환게시글 전체조회
+    public List<ReadExchangePostRes> list(){
+        List<ExchangePost> result = exchangePostRepository.findAll();
+
+        List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
+
+        for (ExchangePost post: result) {
+            ReadExchangePostRes getReadRes = ReadExchangePostRes.builder()
+                    .idx(post.getIdx())
+                    .title(post.getTitle())
+                    .contents(post.getContents())
+                    .postType(post.getPostType())
+                    .giveCategory(post.getGiveCategory().getName())
+                    .takeCategory(post.getTakeCategory().getName())
+                    .giveBtmCategory(post.getGiveBtmCategory())
+                    .takeBtmCategory(post.getTakeBtmCategory())
+                    .timeStamp(post.getTimeStamp())
+                    .modifyTime(post.getModifyTime())
+                    .memberIdx(post.getMember().getIdx())
+                    .status(post.getStatus())
+                    .build();
+            getExchangePostReadList.add(getReadRes);
+        }
+
+        return getExchangePostReadList;
+    }
+
+    //교환해당게시글 조회
+    public ReadExchangePostRes read(Long id){
+        Optional<ExchangePost> result = exchangePostRepository.findById(id);
+
+        ExchangePost getExchangePost = result.get();
+        ReadExchangePostRes getExchangePostRes = ReadExchangePostRes.builder()
+                .idx(getExchangePost.getIdx())
+                .title(getExchangePost.getTitle())
+                .contents(getExchangePost.getContents())
+                .postType(getExchangePost.getPostType())
+                .giveCategory(getExchangePost.getGiveCategory().getName())
+                .takeCategory(getExchangePost.getTakeCategory().getName())
+                .giveBtmCategory(getExchangePost.getGiveBtmCategory())
+                .takeBtmCategory(getExchangePost.getTakeBtmCategory())
+                .timeStamp(getExchangePost.getTimeStamp())
+                .modifyTime(getExchangePost.getModifyTime())
+                .memberIdx(getExchangePost.getMember().getIdx())
+                .status(getExchangePost.getStatus())
+                .build();
+
+        return getExchangePostRes;
+    }
+
 }
