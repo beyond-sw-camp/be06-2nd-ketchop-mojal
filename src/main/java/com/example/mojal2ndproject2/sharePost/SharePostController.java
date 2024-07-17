@@ -30,6 +30,14 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
+    public ResponseEntity<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                             Long idx) {
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        String result = sharePostService.enrollment(requestIdx, idx);
+        return ResponseEntity.ok(result);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  Long idx){
