@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@DynamicInsert
 @Builder
 public class ExchangePost {
     @Id
@@ -53,6 +51,4 @@ public class ExchangePost {
     private List<ChatRoom> chatRooms = new ArrayList<>();
     @OneToMany(mappedBy = "exchangePost")
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
-
-
 }

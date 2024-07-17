@@ -1,24 +1,17 @@
 package com.example.mojal2ndproject2.sharePost.model.dto.response;
 
-import com.example.mojal2ndproject2.category.Category;
-import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+import java.util.List;
+
 @Getter
-public class SharePostReadRes {
-    private Long authorIdx;
-    private String author;
+@Setter
+@Builder
+public class SharePostListRes {
     private String title;
-    private String contents;
     private String timeStamp;
     private Boolean status;
     private Boolean postType;
@@ -27,5 +20,6 @@ public class SharePostReadRes {
     private Integer currentEnrollment;
     private String category;
     private String btmCategory;
-    private List<String> matchingMembers;
+    private Member writer;
 }
+
