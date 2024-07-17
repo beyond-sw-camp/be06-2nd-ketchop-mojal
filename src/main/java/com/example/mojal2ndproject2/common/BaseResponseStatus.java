@@ -29,10 +29,11 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_EMAIL(false, 3001, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 3002, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,3003,"중복된 이메일입니다."),
+    POST_USERS_UNAUTH_EMAIL(false,3003,"이메일 인증 실패."),
 
-    POST_USERS_EMPTY_NAME(false,3004,"이름을 입력해주세요."),
-    POST_USERS_EMPTY_PASSWORD(false,3005,"비밀번호를 입력해주세요."),
-    POST_USERS_INVALID_USER_INFO(false,3006,"이메일 또는 패스워드를 확인해주세요."),
+    POST_USERS_EMPTY_NAME(false,3005,"이름을 입력해주세요."),
+    POST_USERS_EMPTY_PASSWORD(false,3006,"비밀번호를 입력해주세요."),
+    POST_USERS_INVALID_USER_INFO(false,3007,"이메일 또는 패스워드를 확인해주세요."),
 
 
     /**
