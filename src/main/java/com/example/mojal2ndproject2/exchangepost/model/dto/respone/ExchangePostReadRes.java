@@ -21,6 +21,6 @@ public class ExchangePostReadRes {
     private String takeBtmCategory;
     private Long memberIdx;
     private String memberNickname;
-    private Category giveCategory;
-    private Category takeCategory;
+    private String giveCategoryName;
+    private String takeCategoryName;
 }

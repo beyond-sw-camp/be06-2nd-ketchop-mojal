@@ -1,22 +1,41 @@
 package com.example.mojal2ndproject2.exchangepost;
 
+import com.example.mojal2ndproject2.exchangepost.model.dto.respone.ExchangePostReadRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/post/exchange")
+@RequestMapping(value = "/post/exchange")
+@RequiredArgsConstructor
 public class ExchangePostController {
-    private ExchangePostService exchangePostService;
+    private final ExchangePostService exchangePostService;
 
-    public ExchangePostController(ExchangePostService exchangePostService) {
-        this.exchangePostService = exchangePostService;
+    // 내가 작성한 교환글 전체 조회
+    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list")
+    public ResponseEntity<List<ExchangePostReadRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        List<ExchangePostReadRes> response = exchangePostService.authorExchangeList(requestIdx);
+        return ResponseEntity.ok(response);
+    }
+
+
+    // 내가 참여한 교환글 전체 조회
+    @RequestMapping(method = RequestMethod.GET, value = "/users/list")
+    public ResponseEntity<List<ExchangePostReadRes>> exchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        List<ExchangePostReadRes> response = exchangePostService.exchangeList(requestIdx);
+        return ResponseEntity.ok(response);
     }
 
     //교환글생성
@@ -25,20 +44,5 @@ public class ExchangePostController {
         CreateExchangePostRes res = exchangePostService.create(req, customUserDetails);
         return ResponseEntity.ok(res);
     }
-
-//    //교환글전체조회
-//    @RequestMapping(method = RequestMethod.GET, name = "/list")
-//    public ResponseEntity<List<ReadExchangePostRes>> list() {
-//        List<ReadExchangePostRes> res = exchangePostService.list();
-//        return ResponseEntity.ok(res);
-//    }
-//
-//
-//    //교환글해당글조회
-//    @RequestMapping(method = RequestMethod.GET, name = "/read")
-//    public ResponseEntity<ReadExchangePostRes> read(@RequestParam Long id) {
-//        ReadExchangePostRes res = exchangePostService.read(id);
-//        return ResponseEntity.ok(res);
-//    }
 
 }
