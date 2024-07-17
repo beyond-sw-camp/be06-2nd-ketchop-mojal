@@ -236,5 +236,62 @@ public class SharePostService {
         return results;
     }
 
-
+    public String enrollment(Long requestIdx, Long idx) {
+      Optional<SharePost> result = sharePostRepository.findById(idx);
+      Member member = Member.builder().idx(requestIdx).build();
+      String response="";
+      if (result.isPresent()) {
+          SharePost sharePost = result.get();
+          if (sharePost.getStatus() == false) {
+              if (sharePost.getCapacity() == sharePost.getCurrentEnrollment() + 1) {
+                  PostMatchingMember pmm = PostMatchingMember.builder()
+                          .sharePost(sharePost)
+                          .member(member)
+                          .build();
+                  SharePost sharePost1 = SharePost.builder()
+                          .idx(sharePost.getIdx())
+                          .member(member)
+                          .title(sharePost.getTitle())
+                          .contents(sharePost.getContents())
+                          .timeStamp(sharePost.getTimeStamp())
+                          .modifyTime(sharePost.getModifyTime())
+                          .status(false)
+                          .postType(true)
+                          .deadline(sharePost.getDeadline())
+                          .capacity(sharePost.getCapacity())
+                          .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
+                          .category(sharePost.getCategory())
+                          .btmCategory(sharePost.getBtmCategory())
+                          .build();
+                  sharePostRepository.save(sharePost1);
+              }
+              else {
+                  PostMatchingMember pmm = PostMatchingMember.builder()
+                          .sharePost(sharePost)
+                          .member(member)
+                          .build();
+                  SharePost sharePost1 = SharePost.builder()
+                          .idx(sharePost.getIdx())
+                          .member(member)
+                          .title(sharePost.getTitle())
+                          .contents(sharePost.getContents())
+                          .timeStamp(sharePost.getTimeStamp())
+                          .modifyTime(sharePost.getModifyTime())
+                          .status(false)
+                          .postType(true)
+                          .deadline(sharePost.getDeadline())
+                          .capacity(sharePost.getCapacity())
+                          .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
+                          .category(sharePost.getCategory())
+                          .btmCategory(sharePost.getBtmCategory())
+                          .build();
+                  sharePostRepository.save(sharePost1);
+              }
+              response = "나눔글 참여에 성공하였습니다";
+          }
+      }else{
+          response="이미 마감됐습니다";
+      }
+      return response;
+    }
 }
