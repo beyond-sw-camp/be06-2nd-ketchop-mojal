@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.sharePost;
 
 import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.Member;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class SharePostService {
     private final SharePostRepository sharePostRepository;
     private final MemberRepository memberRepository;
+    private final PostMatchingMemberRepository postMatchingMemberRepository;
 
     //내가 작성한 나눔글 전체조회
     public List<SharePostListRes> list(Long loginUserIdx) {
@@ -48,7 +50,37 @@ public class SharePostService {
         return sharePostListRess;
     }
 
-    //내가 참여한 나눔글
+    //내가 참여한 나눔글 전체조회
+    //포스트매칭멤버 테이블에서 멤버-나눔글 짝을 찾아서 있으면 조회
+    public List<SharePostListRes> listOpen(Long loginUserIdx) {
+        Member member = Member.builder()
+                .idx(loginUserIdx)
+                .build();
+        List<PostMatchingMember> pmms = postMatchingMemberRepository.findAllByMember(member);
+
+        List<SharePostListRes> sharePostListRess = new ArrayList<>();
+
+        for (PostMatchingMember pmm : pmms) {
+            if(pmm.getExchangePost() != null) {
+                continue;
+            }
+
+            sharePostListRess.add(SharePostListRes.builder()
+                    .writer(pmm.getSharePost().getMember())
+                    .title(pmm.getSharePost().getTitle())
+                    .timeStamp(pmm.getSharePost().getTimeStamp())
+                    .status(pmm.getSharePost().getStatus())
+                    .postType(pmm.getSharePost().getPostType())
+                    .deadline(pmm.getSharePost().getDeadline())
+                    .capacity(pmm.getSharePost().getCapacity())
+                    .currentEnrollment(pmm.getSharePost().getCurrentEnrollment())
+                    .category(pmm.getSharePost().getCategory().getName())
+                    .btmCategory(pmm.getSharePost().getBtmCategory())
+                    .build());
+        }
+        return sharePostListRess;
+    }
+
 
     //특정 나눔글 상세조회?
     public SharePostReadRes read(Long requestIdx, Long idx) {
