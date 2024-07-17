@@ -58,7 +58,7 @@ public class SharePostService {
     }
 
     //내가 작성한 나눔글 전체조회
-    public List<SharePostListRes> list(Long loginUserIdx) {
+    public List<SharePostListRes> userlist(Long loginUserIdx) {
         Member member = Member.builder()
                 .idx(loginUserIdx)
                 .build();

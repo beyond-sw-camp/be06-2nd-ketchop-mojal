@@ -39,18 +39,19 @@ public class SharePostController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<List<SharePostReadRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public ResponseEntity<List<SharePostReadRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long requestIdx = customUserDetails.getMember().getIdx();
         List<SharePostReadRes> result = sharePostService.list(requestIdx);
         return ResponseEntity.ok(result);
+    }
 
     //내가 작성한 글 전체조회
     @RequestMapping(method = RequestMethod.GET, value = "/users/list") //git conflict - uri 수정
-    public ResponseEntity<List<SharePostListRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    public ResponseEntity<List<SharePostListRes>> userlist(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
 
-        List<SharePostListRes> response= sharePostService.list(loginUserIdx);
+        List<SharePostListRes> response= sharePostService.userlist(loginUserIdx);
         return ResponseEntity.ok(response);
 
     }
