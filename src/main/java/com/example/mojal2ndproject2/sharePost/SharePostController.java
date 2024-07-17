@@ -36,8 +36,4 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/michin")
-    public void michin(String email){
-        sharePostService.test(email);
-    }
 }
