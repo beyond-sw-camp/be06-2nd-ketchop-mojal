@@ -17,6 +17,23 @@ import java.util.List;
 public class ExchangePostController {
     private final ExchangePostService exchangePostService;
 
+    // 내가 작성한 교환글 전체 조회
+    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list")
+    public ResponseEntity<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        List<ReadExchangePostRes> response = exchangePostService.authorExchangeList(requestIdx);
+        return ResponseEntity.ok(response);
+    }
+
+
+    // 내가 참여한 교환글 전체 조회
+    @RequestMapping(method = RequestMethod.GET, value = "/users/list")
+    public ResponseEntity<List<ReadExchangePostRes>> exchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        List<ReadExchangePostRes> response = exchangePostService.exchangeList(requestIdx);
+        return ResponseEntity.ok(response);
+    }
+
     //교환글생성
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
     public ResponseEntity<CreateExchangePostRes> create( @AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody CreateExchangePostReq req) {
