@@ -2,17 +2,18 @@ package com.example.mojal2ndproject2.sharePost;
 
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
+import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/shareposts")
@@ -36,8 +37,13 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/michin")
-    public void michin(String email){
-        sharePostService.test(email);
+    //내가 작성한 글 전체조회
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    public ResponseEntity<List<SharePostListRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+        //로그인한 유저 정보
+        Long loginUserIdx = customUserDetails.getMember().getIdx();
+
+        List<SharePostListRes> response= sharePostService.list(loginUserIdx);
+        return ResponseEntity.ok(response);
     }
 }

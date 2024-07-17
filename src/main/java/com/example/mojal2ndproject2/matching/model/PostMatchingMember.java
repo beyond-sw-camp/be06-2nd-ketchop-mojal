@@ -17,12 +17,15 @@ public class PostMatchingMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+
     @ManyToOne
     @JoinColumn(name = "share_post_idx")
     private SharePost sharePost;
+
     @ManyToOne
     @JoinColumn(name = "member_idx")
     private Member member;
+
     @ManyToOne
     @JoinColumn(name = "exchange_post_idx")
     private ExchangePost exchangePost;
