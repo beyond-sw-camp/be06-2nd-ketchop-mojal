@@ -3,12 +3,12 @@ package com.example.mojal2ndproject2.exchangepost;
 import com.example.mojal2ndproject2.category.Category;
 import com.example.mojal2ndproject2.category.CategoryRepository;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
-import com.example.mojal2ndproject2.exchangepost.model.dto.respone.ExchangePostReadRes;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
+import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +30,15 @@ public class ExchangePostService {
     private final CategoryRepository categoryRepository;
 
 
-    public List<ExchangePostReadRes> authorExchangeList(Long requestIdx) {
+    public List<ReadExchangePostRes> authorExchangeList(Long requestIdx) {
         Member member = Member.builder()
                 .idx(requestIdx)
                 .build();
         List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
-        List<ExchangePostReadRes> exchangePostReadResList = new ArrayList<>();
+        List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
         for (ExchangePost e : result) {
             if (e.getMember().getIdx() == requestIdx) {
-                ExchangePostReadRes exchangePostReadRes = ExchangePostReadRes.builder()
+                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
                         .idx(e.getIdx())
                         .title(e.getTitle())
                         .timeStamp(e.getTimeStamp())
@@ -56,16 +56,16 @@ public class ExchangePostService {
         return exchangePostReadResList;
     }
 
-    public List<ExchangePostReadRes> exchangeList(Long requestIdx) {
+    public List<ReadExchangePostRes> exchangeList(Long requestIdx) {
         Member member = Member.builder()
                 .idx(requestIdx)
                 .build();
-        List<ExchangePostReadRes> exchangePostReadResList = new ArrayList<>();
+        List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
         List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
 
         for (PostMatchingMember p : postMatchingMemberList ) {
             if (p.getExchangePost() != null) {
-                ExchangePostReadRes exchangePostReadRes = ExchangePostReadRes.builder()
+                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
                         .idx(p.getExchangePost().getIdx())
                         .title(p.getExchangePost().getTitle())
                         .timeStamp(p.getExchangePost().getTimeStamp())
