@@ -55,4 +55,14 @@ public class SharePostController {
         return ResponseEntity.ok(response);
 
     }
+
+    //내가 참여한 글 전체조회
+    @RequestMapping(method = RequestMethod.GET, value = "/listopen")
+    public ResponseEntity<List<SharePostListRes>> listopen(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+        //로그인한 유저 정보
+        Long loginUserIdx = customUserDetails.getMember().getIdx();
+
+        List<SharePostListRes> response= sharePostService.listOpen(loginUserIdx);
+        return ResponseEntity.ok(response);
+    }
 }
