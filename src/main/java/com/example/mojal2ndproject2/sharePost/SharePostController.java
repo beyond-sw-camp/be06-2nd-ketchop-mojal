@@ -4,6 +4,7 @@ import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/shareposts")
+@RequestMapping("/post/share")
 @RequiredArgsConstructor
 public class SharePostController {
     private final SharePostService sharePostService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/create")
+    @RequestMapping(method = RequestMethod.POST, value = "/users/create")
     public ResponseEntity<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                      @RequestBody SharePostCreateReq request){
         Long requestIdx = customUserDetails.getMember().getIdx();
@@ -36,8 +37,10 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/michin")
-    public void michin(String email){
-        sharePostService.test(email);
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    public ResponseEntity<List<SharePostReadRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        List<SharePostReadRes> result = sharePostService.list(requestIdx);
+        return ResponseEntity.ok(result);
     }
 }
