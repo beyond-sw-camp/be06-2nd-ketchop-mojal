@@ -6,6 +6,7 @@ import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
+import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ import org.springframework.stereotype.Service;
 public class SharePostService {
     private final SharePostRepository sharePostRepository;
     private final MemberRepository memberRepository;
-    public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) {
+    
+  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) {
         Member member = Member.builder().idx(requestIdx).build();
 
         Category category = Category.builder().idx(request.getCategoryIdx()).build();
@@ -51,10 +53,41 @@ public class SharePostService {
                 .title(result.getTitle())
                 .build();
 
+
         return sharePostCreateRes;
     }
+
+    //내가 작성한 나눔글 전체조회
+    public List<SharePostListRes> list(Long loginUserIdx) {
+        Member member = Member.builder()
+                .idx(loginUserIdx)
+                .build();
+        List<SharePost> posts = sharePostRepository.findAllByMember(member);
+
+        List<SharePostListRes> sharePostListRess = new ArrayList<>();
+        for (SharePost post : posts) {
+            sharePostListRess.add(SharePostListRes.builder()
+                    .writer(post.getMember())
+                    .title(post.getTitle())
+                    .timeStamp(post.getTimeStamp())
+                    .status(post.getStatus())
+                    .postType(post.getPostType())
+                    .deadline(post.getDeadline())
+                    .capacity(post.getCapacity())
+                    .currentEnrollment(post.getCurrentEnrollment())
+                    .category(post.getCategory().getName())
+                    .btmCategory(post.getBtmCategory())
+                    .build());
+        }
+        return sharePostListRess;
+    }
+
+    //내가 참여한 나눔글
+
+    //나눔글 조회
     public SharePostReadRes read(Long requestIdx, Long idx) {
         Optional<SharePost> result = sharePostRepository.findById(idx);
+
         if(result.isPresent()){
             SharePost sharePost = result.get();
             Member autor = sharePost.getMember();
@@ -107,6 +140,7 @@ public class SharePostService {
             return null;
         }
     }
+
 
     public List<SharePostReadRes> list(Long requestIdx){
         List<SharePost> posts = sharePostRepository.findAll();

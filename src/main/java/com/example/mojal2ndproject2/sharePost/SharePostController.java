@@ -2,18 +2,19 @@ package com.example.mojal2ndproject2.sharePost;
 
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
+import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/post/share")
@@ -42,5 +43,15 @@ public class SharePostController {
         Long requestIdx = customUserDetails.getMember().getIdx();
         List<SharePostReadRes> result = sharePostService.list(requestIdx);
         return ResponseEntity.ok(result);
+
+    //내가 작성한 글 전체조회
+    @RequestMapping(method = RequestMethod.GET, value = "/users/list") //git conflict - uri 수정
+    public ResponseEntity<List<SharePostListRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+        //로그인한 유저 정보
+        Long loginUserIdx = customUserDetails.getMember().getIdx();
+
+        List<SharePostListRes> response= sharePostService.list(loginUserIdx);
+        return ResponseEntity.ok(response);
+
     }
 }
