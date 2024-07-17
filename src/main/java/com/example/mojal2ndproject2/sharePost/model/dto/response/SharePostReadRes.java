@@ -9,11 +9,14 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-@Setter
+@Getter
 public class SharePostReadRes {
+    private Long authorIdx;
+    private String author;
     private String title;
     private String contents;
     private String timeStamp;
@@ -24,6 +27,5 @@ public class SharePostReadRes {
     private Integer currentEnrollment;
     private String category;
     private String btmCategory;
-    private Member writer;
     private List<String> matchingMembers;
 }
