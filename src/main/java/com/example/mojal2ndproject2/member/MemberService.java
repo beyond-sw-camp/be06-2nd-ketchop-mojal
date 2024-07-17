@@ -34,22 +34,22 @@ public class MemberService {
         Member savedMember = memberRepository.save(member); //Todo 예외처리 필요
 
         //2. 카테고리 저장
-        for (Long categoryIdx : request.getCategories()) {
-            Optional<Category> result = categoryRepository.findById(categoryIdx);
-            if(result.isPresent()){
-                Category category = result.get();
-
-                UserHaveCategory userHaveCategory = UserHaveCategory.builder()
-                        .category(category)
-                        .member(savedMember)
-                        .build();
-
-                userHaveCategoryRepository.save(userHaveCategory); //Todo 예외 처리 필요
-            }else{
-                return null;
-            }
-
-        }
+//        for (Long categoryIdx : request.getCategories()) {
+//            Optional<Category> result = categoryRepository.findById(categoryIdx);
+//            if(result.isPresent()){
+//                Category category = result.get();
+//
+//                UserHaveCategory userHaveCategory = UserHaveCategory.builder()
+//                        .category(category)
+//                        .member(savedMember)
+//                        .build();
+//
+//                userHaveCategoryRepository.save(userHaveCategory); //Todo 예외 처리 필요
+//            }else{
+//                return null;
+//            }
+//
+//        }
 
         //3. 응답객체
         MemberSignupRes memberSignupRes = MemberSignupRes.builder()

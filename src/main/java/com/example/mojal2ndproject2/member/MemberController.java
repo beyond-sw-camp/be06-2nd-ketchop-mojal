@@ -23,6 +23,7 @@ public class MemberController {
         String uuid = emailAuthService.sendEmail(request.getEmail());
         emailAuthService.save(request.getEmail(), uuid);
         MemberSignupRes memberSignupRes = memberService.signup(request);
+        //Todo byul: redirect URL로 카테고리 선택하는 창으로 + 카카오에서도
 
         return ResponseEntity.ok(memberSignupRes);
     }
