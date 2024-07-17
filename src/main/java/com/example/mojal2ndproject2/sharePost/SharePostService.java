@@ -24,9 +24,43 @@ public class SharePostService {
     private final SharePostRepository sharePostRepository;
     private final MemberRepository memberRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
+    
+  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) {
+        Member member = Member.builder().idx(requestIdx).build();
+
+        Category category = Category.builder().idx(request.getCategoryIdx()).build();
+
+        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        SharePost sharePost = SharePost.builder()
+                .member(member)
+                .title(request.getTitle())
+                .contents(request.getContents())
+                .timeStamp(createdAt)
+                .modifyTime(createdAt)
+                .status(false)
+                .postType(true)
+                .deadline(request.getDeadline())
+                .capacity(request.getCapacity())
+                .currentEnrollment(0)
+                .category(category)
+                .btmCategory(request.getBtmCategory())
+                .build();
+
+        SharePost result = sharePostRepository.save(sharePost);
+
+        SharePostCreateRes sharePostCreateRes = SharePostCreateRes.builder()
+                .idx(result.getIdx())
+                .writerIdx(result.getMember().getIdx())
+                .title(result.getTitle())
+                .build();
+
+
+        return sharePostCreateRes;
+    }
 
     //내가 작성한 나눔글 전체조회
-    public List<SharePostListRes> list(Long loginUserIdx) {
+    public List<SharePostListRes> userlist(Long loginUserIdx) {
         Member member = Member.builder()
                 .idx(loginUserIdx)
                 .build();
@@ -82,30 +116,29 @@ public class SharePostService {
     }
 
 
-    //특정 나눔글 상세조회?
+    //나눔글 조회
     public SharePostReadRes read(Long requestIdx, Long idx) {
         Optional<SharePost> result = sharePostRepository.findById(idx);
 
         if(result.isPresent()){
             SharePost sharePost = result.get();
-            Member writer = sharePost.getMember();
-            if(writer.getIdx()==requestIdx){
+            Member autor = sharePost.getMember();
+            Long authorIdx = autor.getIdx();
+            String author = autor.getNickname();
+
+            if(authorIdx==requestIdx){
                 List<String> members = new ArrayList<>();
 
                 List<PostMatchingMember> postMatchingMembers = sharePost.getPostMatchingMembers();
                 for (PostMatchingMember m : postMatchingMembers) {
                     String nickname = m.getMember().getNickname();
-                    int index = nickname.indexOf("kToken"); // Todo 회원가입할 때 "kToken이라는 키워드 못들어가게 처리"
-                    if(index != -1){
-                        nickname = nickname.substring(0, index);
-                    }
                     members.add(nickname);
                 }
 
                 SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .writer(sharePost.getMember()) //Todo 객체를 따로 만들지? 아니면 각각 name, idx 쓸지?
+                        .authorIdx(authorIdx)
+                        .author(author)
                         .title(sharePost.getTitle())
-                        .contents(sharePost.getContents())
                         .timeStamp(sharePost.getTimeStamp())
                         .status(sharePost.getStatus())
                         .postType(sharePost.getPostType())
@@ -120,9 +153,9 @@ public class SharePostService {
                 return sharePostReadRes;
             }else{
                 SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .writer(sharePost.getMember())
+                        .authorIdx(authorIdx)
+                        .author(author)
                         .title(sharePost.getTitle())
-                        .contents(sharePost.getContents())
                         .timeStamp(sharePost.getTimeStamp())
                         .status(sharePost.getStatus())
                         .postType(sharePost.getPostType())
@@ -140,42 +173,68 @@ public class SharePostService {
         }
     }
 
-    //나눔글 작성
-    public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) {
-        Member member = Member.builder().idx(requestIdx).build();
 
-        Category category = Category.builder().idx(request.getCategoryIdx()).build();
+    public List<SharePostReadRes> list(Long requestIdx){
+        List<SharePost> posts = sharePostRepository.findAll();
+        List<SharePostReadRes> results = new ArrayList<>();
+        for (SharePost post : posts) {
+            Member autor = post.getMember();
+            Long authorIdx = autor.getIdx();
+            String author = autor.getNickname();
 
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            if(authorIdx==requestIdx){
+                List<String> members = new ArrayList<>();
 
-        SharePost sharePost = SharePost.builder()
-                .member(member)
-                .title(request.getTitle())
-                .contents(request.getContents())
-                .timeStamp(createdAt)
-                .modifyTime(createdAt)
-                .status(false)
-                .postType(true)
-                .deadline(request.getDeadline())
-                .capacity(request.getCapacity())
-                .currentEnrollment(0)
-                .category(category)
-                .btmCategory(request.getBtmCategory())
-                .build();
+                List<PostMatchingMember> postMatchingMembers = post.getPostMatchingMembers();
+                for (PostMatchingMember m : postMatchingMembers) {
+                    String nickname = m.getMember().getNickname();
+                    int index = nickname.indexOf("kToken"); // Todo 회원가입할 때 "kToken이라는 키워드 못들어가게 처리"
+                    if(index != -1){
+                        nickname = nickname.substring(0, index);
+                    }
+                    members.add(nickname);
+                }
 
-        SharePost result = sharePostRepository.save(sharePost);
+                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                        .authorIdx(authorIdx)
+                        .author(author)
+                        .title(post.getTitle())
+                        .contents(post.getContents())
+                        .timeStamp(post.getTimeStamp())
+                        .status(post.getStatus())
+                        .postType(post.getPostType())
+                        .deadline(post.getDeadline())
+                        .capacity(post.getCapacity())
+                        .currentEnrollment(post.getCurrentEnrollment())
+                        .category(post.getCategory().getName())
+                        .btmCategory(post.getBtmCategory())
+                        .matchingMembers(members)
+                        .build();
 
-        SharePostCreateRes sharePostCreateRes = SharePostCreateRes.builder()
-                .idx(result.getIdx())
-                .writerIdx(result.getMember().getIdx())
-                .title(result.getTitle())
-                .build();
+                results.add(sharePostReadRes);
+            }
+            else{
+                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                        .authorIdx(authorIdx)
+                        .author(author)
+                        .title(post.getTitle())
+                        .contents(post.getContents())
+                        .timeStamp(post.getTimeStamp())
+                        .status(post.getStatus())
+                        .postType(post.getPostType())
+                        .deadline(post.getDeadline())
+                        .capacity(post.getCapacity())
+                        .currentEnrollment(post.getCurrentEnrollment())
+                        .category(post.getCategory().getName())
+                        .btmCategory(post.getBtmCategory())
+                        .build();
 
-        return sharePostCreateRes;
+                results.add(sharePostReadRes);
+            }
+        }
+
+        return results;
     }
 
-    public void test(String email) {
-//        memberRepository.findByEmail(email);
-        throw new ArrayIndexOutOfBoundsException();
-    }
+
 }

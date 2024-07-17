@@ -38,6 +38,7 @@ public class Member {
 //    @Column(name = "signup_date")
     private String signupDate;
     private Boolean memberAuth;
+    private Long kakaoIdx;
 //    @ColumnDefault("ROLE_USER")
     private String role;
     @OneToMany(mappedBy = "member")
