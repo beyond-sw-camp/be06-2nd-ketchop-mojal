@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.sharePost.model.dto.response;
 
 import com.example.mojal2ndproject2.member.model.Member;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Builder
 public class SharePostListRes {
     private String title;
-    private String timeStamp;
+    private LocalDateTime timeStamp;
     private Boolean status;
     private Boolean postType;
     private String deadline;
@@ -20,6 +21,6 @@ public class SharePostListRes {
     private Integer currentEnrollment;
     private String category;
     private String btmCategory;
-    private Member writer;
+    private Long writerIdx;
 }
 

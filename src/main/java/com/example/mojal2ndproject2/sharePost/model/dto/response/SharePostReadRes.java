@@ -6,6 +6,7 @@ import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class SharePostReadRes {
     private String author;
     private String title;
     private String contents;
-    private String timeStamp;
+    private LocalDateTime timeStamp;
     private Boolean status;
     private Boolean postType;
     private String deadline;
