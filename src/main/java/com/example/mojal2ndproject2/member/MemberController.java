@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.member;
 
+import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.emailAuth.EmailAuthService;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
@@ -18,13 +19,13 @@ public class MemberController {
     private final EmailAuthService emailAuthService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public ResponseEntity<MemberSignupRes> signup(@RequestBody MemberSignupReq request){
+    public BaseResponse<MemberSignupRes> signup(@RequestBody MemberSignupReq request){
 
         String uuid = emailAuthService.sendEmail(request.getEmail());
         emailAuthService.save(request.getEmail(), uuid);
-        MemberSignupRes memberSignupRes = memberService.signup(request);
+        BaseResponse<MemberSignupRes> result = memberService.signup(request);
         //Todo byul: redirect URL로 카테고리 선택하는 창으로 + 카카오에서도
 
-        return ResponseEntity.ok(memberSignupRes);
+        return result;
     }
 }
