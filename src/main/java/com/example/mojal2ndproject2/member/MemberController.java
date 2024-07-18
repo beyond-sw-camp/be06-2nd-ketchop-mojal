@@ -2,11 +2,10 @@ package com.example.mojal2ndproject2.member;
 
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
-import com.example.mojal2ndproject2.emailAuth.EmailAuthService;
+import com.example.mojal2ndproject2.member.emailAuth.EmailAuthService;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

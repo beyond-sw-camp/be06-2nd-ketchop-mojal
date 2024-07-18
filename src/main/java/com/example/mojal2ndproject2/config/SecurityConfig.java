@@ -1,10 +1,10 @@
 package com.example.mojal2ndproject2.config;
 
-import com.example.mojal2ndproject2.filter.JwtFilter;
-import com.example.mojal2ndproject2.filter.LoginFilter;
-import com.example.mojal2ndproject2.jwt.JwtUtil;
-import com.example.mojal2ndproject2.oauth.OAuth2AuthenticationSuccessHandler;
-import com.example.mojal2ndproject2.oauth.OAuth2Service;
+import com.example.mojal2ndproject2.config.filter.JwtFilter;
+import com.example.mojal2ndproject2.config.filter.LoginFilter;
+import com.example.mojal2ndproject2.config.jwt.JwtUtil;
+import com.example.mojal2ndproject2.member.oauth.OAuth2AuthenticationSuccessHandler;
+import com.example.mojal2ndproject2.member.oauth.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,11 +1,8 @@
-package com.example.mojal2ndproject2.emailAuth;
+package com.example.mojal2ndproject2.member.emailAuth;
 
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
-import com.example.mojal2ndproject2.emailAuth.model.dto.request.EmailAuthReq;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

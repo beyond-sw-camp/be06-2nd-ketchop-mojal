@@ -1,4 +1,4 @@
-package com.example.mojal2ndproject2.emailAuth.model;
+package com.example.mojal2ndproject2.member.emailAuth.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
