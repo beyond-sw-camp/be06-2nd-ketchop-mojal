@@ -1,6 +1,6 @@
 package com.example.mojal2ndproject2.config;
 
-import com.example.mojal2ndproject2.jwt.JwtUtil;
+import com.example.mojal2ndproject2.config.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;

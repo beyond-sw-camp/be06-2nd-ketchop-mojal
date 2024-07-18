@@ -39,7 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .nickname(nickName)
                     .kakaoIdx(kakaoIdx)
                     .role("ROLE_USER")
-                    .memberAuth(true)
+                    .emailAuth(true)
                     .build(); //Todo signupdate 값 넣기
 
             saved = memberRepository.save(member);
