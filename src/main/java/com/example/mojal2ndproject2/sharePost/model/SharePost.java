@@ -33,7 +33,7 @@ public class SharePost {
     private LocalDateTime timeStamp;
     private LocalDateTime modifyTime;
     private Boolean status;
-    private Boolean postType; //Todo byul : Stirng 으로 바꿀지 논의
+    private String postType;
     private String deadline;
     private Integer capacity;
     private Integer currentEnrollment;

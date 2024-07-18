@@ -39,7 +39,7 @@ public class SharePostService {
                 .timeStamp(LocalDateTime.now())
                 .modifyTime(LocalDateTime.now())
                 .status(false)
-                .postType(true)
+                .postType("share")
                 .deadline(request.getDeadline())
                 .capacity(request.getCapacity())
                 .currentEnrollment(0)
@@ -66,9 +66,9 @@ public class SharePostService {
                 .build();
         List<SharePost> posts = sharePostRepository.findAllByMember(member);
 
-        List<SharePostListRes> sharePostListRess = new ArrayList<>();
+        List<SharePostListRes> sharePostListRes = new ArrayList<>();
         for (SharePost post : posts) {
-            sharePostListRess.add(SharePostListRes.builder()
+            sharePostListRes.add(SharePostListRes.builder()
                     .writerIdx(post.getMember().getIdx())
                     .title(post.getTitle())
                     .timeStamp(post.getTimeStamp())
@@ -81,7 +81,7 @@ public class SharePostService {
                     .btmCategory(post.getBtmCategory())
                     .build());
         }
-        return sharePostListRess;
+        return sharePostListRes;
     }
 
     //내가 참여한 나눔글 전체조회
@@ -256,7 +256,7 @@ public class SharePostService {
                           .timeStamp(sharePost.getTimeStamp())
                           .modifyTime(sharePost.getModifyTime())
                           .status(false)
-                          .postType(true)
+                          .postType("share")
                           .deadline(sharePost.getDeadline())
                           .capacity(sharePost.getCapacity())
                           .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
@@ -278,7 +278,7 @@ public class SharePostService {
                           .timeStamp(sharePost.getTimeStamp())
                           .modifyTime(sharePost.getModifyTime())
                           .status(false)
-                          .postType(true)
+                          .postType("share")
                           .deadline(sharePost.getDeadline())
                           .capacity(sharePost.getCapacity())
                           .currentEnrollment(sharePost.getCurrentEnrollment() + 1)

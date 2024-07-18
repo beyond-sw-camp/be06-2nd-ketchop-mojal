@@ -30,7 +30,7 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
+    @RequestMapping(method = RequestMethod.GET, value = "/enrollment")
     public ResponseEntity<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                              Long idx) {
         Long requestIdx = customUserDetails.getMember().getIdx();
@@ -54,7 +54,7 @@ public class SharePostController {
     }
 
     //내가 작성한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/users/autor/list") //git conflict - uri 수정
+    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
     public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();

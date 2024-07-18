@@ -9,6 +9,7 @@ import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryRe
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class MemberController {
     private final EmailAuthService emailAuthService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public BaseResponse<MemberSignupRes> signup(@RequestBody MemberSignupReq request) throws BaseException {
+    public BaseResponse<MemberSignupRes> signup(@Valid @RequestBody MemberSignupReq request) throws BaseException {
 
         BaseResponse<MemberSignupRes> result = memberService.signup(request);
         String uuid = emailAuthService.sendEmail(request.getEmail());
