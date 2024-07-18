@@ -1,5 +1,9 @@
 package com.example.mojal2ndproject2.exchangepost;
 
+import com.example.mojal2ndproject2.common.BaseResponse;
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.MEMBER_NOT_LOGIN;
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.TITLE_NOT_ENTERED;
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.CATEGORY_NOT_SELECTED;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
@@ -36,23 +40,23 @@ public class ExchangePostController {
 
     //교환글생성
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
-    public ResponseEntity<CreateExchangePostRes> create( @AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody CreateExchangePostReq req) {
+    public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody CreateExchangePostReq req) {
         CreateExchangePostRes res = exchangePostService.create(req, customUserDetails);
-        return ResponseEntity.ok(res);
+        return new BaseResponse<>(res);
     }
 
     //교환글전체조회
     @RequestMapping(method = RequestMethod.GET,value = "/list")
-    public ResponseEntity<List<ReadExchangePostRes>> list() {
+    public BaseResponse<List<ReadExchangePostRes>> list() {
         List<ReadExchangePostRes> res = exchangePostService.list();
-        return ResponseEntity.ok(res);
+        return new BaseResponse<>(res);
     }
 
     //교환글해당글조회
     @RequestMapping(method = RequestMethod.GET, value = "/read")
-    public ResponseEntity<ReadExchangePostRes> read(@RequestParam Long id) {
+    public BaseResponse<ReadExchangePostRes> read(@RequestParam Long id) {
         ReadExchangePostRes res = exchangePostService.read(id);
-        return ResponseEntity.ok(res);
+        return new BaseResponse<>(res);
     }
 
 }
