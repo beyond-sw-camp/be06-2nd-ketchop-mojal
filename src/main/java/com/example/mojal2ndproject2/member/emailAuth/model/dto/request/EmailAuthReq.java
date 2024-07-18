@@ -1,4 +1,4 @@
-package com.example.mojal2ndproject2.emailAuth.model.dto.request;
+package com.example.mojal2ndproject2.member.emailAuth.model.dto.request;
 
 import lombok.Getter;
 
