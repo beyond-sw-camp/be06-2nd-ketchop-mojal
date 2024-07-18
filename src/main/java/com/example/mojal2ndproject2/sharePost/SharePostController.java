@@ -46,23 +46,23 @@ public class SharePostController {
     }
 
     //내가 작성한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/users/list") //git conflict - uri 수정
-    public ResponseEntity<List<SharePostListRes>> userlist(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
+    public ResponseEntity<List<SharePostListRes>> usersAuthorlist(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
 
-        List<SharePostListRes> response= sharePostService.userlist(loginUserIdx);
+        List<SharePostListRes> response= sharePostService.usersAuthorlist(loginUserIdx);
         return ResponseEntity.ok(response);
 
     }
 
     //내가 참여한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/listopen")
-    public ResponseEntity<List<SharePostListRes>> listopen(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    @RequestMapping(method = RequestMethod.GET, value = "/users/list")
+    public ResponseEntity<List<SharePostListRes>> usersList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
 
-        List<SharePostListRes> response= sharePostService.listOpen(loginUserIdx);
+        List<SharePostListRes> response= sharePostService.usersList(loginUserIdx);
         return ResponseEntity.ok(response);
     }
 }

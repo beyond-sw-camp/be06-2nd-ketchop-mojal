@@ -60,7 +60,7 @@ public class SharePostService {
     }
 
     //내가 작성한 나눔글 전체조회
-    public List<SharePostListRes> userlist(Long loginUserIdx) {
+    public List<SharePostListRes> usersAuthorlist(Long loginUserIdx) {
         Member member = Member.builder()
                 .idx(loginUserIdx)
                 .build();
@@ -86,7 +86,7 @@ public class SharePostService {
 
     //내가 참여한 나눔글 전체조회
     //포스트매칭멤버 테이블에서 멤버-나눔글 짝을 찾아서 있으면 조회
-    public List<SharePostListRes> listOpen(Long loginUserIdx) {
+    public List<SharePostListRes> usersList(Long loginUserIdx) {
         Member member = Member.builder()
                 .idx(loginUserIdx)
                 .build();
