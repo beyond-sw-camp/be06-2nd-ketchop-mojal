@@ -4,6 +4,7 @@ import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,15 +25,18 @@ public class PostMatchingMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne
     @JoinColumn(name = "share_post_idx")
     private SharePost sharePost;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne
     @JoinColumn(name = "member_idx")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne
     @JoinColumn(name = "exchange_post_idx")
     private ExchangePost exchangePost;
 }

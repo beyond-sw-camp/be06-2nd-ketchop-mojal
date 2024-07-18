@@ -122,81 +122,76 @@ public class SharePostService {
 
 
     //나눔글 조회
-    public SharePostReadRes read(Long requestIdx, Long idx) {
-        Optional<SharePost> result = sharePostRepository.findById(idx);
+    public SharePostReadRes read(Long requestIdx, Long idx) throws BaseException {
+//        Optional<SharePost> result = sharePostRepository.findById(idx);
+        SharePost sharePost = sharePostRepository.findByIdxWithMemberAndCategory(idx)
+                .orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
 
-        if(result.isPresent()){
-            SharePost sharePost = result.get();
-            Member autor = sharePost.getMember();
-            Long authorIdx = autor.getIdx();
-            String author = autor.getNickname();
+        Member autor = sharePost.getMember();
+        Long authorIdx = autor.getIdx();
+        String author = autor.getNickname();
 
-            if(authorIdx==requestIdx){
-                List<String> members = new ArrayList<>();
+        if(authorIdx==requestIdx){
+            List<String> members = new ArrayList<>();
 
-                List<PostMatchingMember> postMatchingMembers = sharePost.getPostMatchingMembers();
-                for (PostMatchingMember m : postMatchingMembers) {
-                    String nickname = m.getMember().getNickname();
-                    members.add(nickname);
-                }
-
-                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .authorIdx(authorIdx)
-                        .author(author)
-                        .title(sharePost.getTitle())
-                        .timeStamp(sharePost.getTimeStamp())
-                        .status(sharePost.getStatus())
-                        .postType(sharePost.getPostType())
-                        .deadline(sharePost.getDeadline())
-                        .capacity(sharePost.getCapacity())
-                        .currentEnrollment(sharePost.getCurrentEnrollment())
-                        .category(sharePost.getCategory().getName())
-                        .btmCategory(sharePost.getBtmCategory())
-                        .matchingMembers(members)
-                        .build();
-
-                return sharePostReadRes;
-            }else{
-                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .authorIdx(authorIdx)
-                        .author(author)
-                        .title(sharePost.getTitle())
-                        .timeStamp(sharePost.getTimeStamp())
-                        .status(sharePost.getStatus())
-                        .postType(sharePost.getPostType())
-                        .deadline(sharePost.getDeadline())
-                        .capacity(sharePost.getCapacity())
-                        .currentEnrollment(sharePost.getCurrentEnrollment())
-                        .category(sharePost.getCategory().getName())
-                        .btmCategory(sharePost.getBtmCategory())
-                        .build();
-
-                return sharePostReadRes;
+            List<PostMatchingMember> postMatchingMembers = sharePost.getPostMatchingMembers();
+            for (PostMatchingMember m : postMatchingMembers) {
+                String nickname = m.getMember().getNickname();
+                members.add(nickname);
             }
+
+            SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                    .authorIdx(authorIdx)
+                    .author(author)
+                    .title(sharePost.getTitle())
+                    .timeStamp(sharePost.getTimeStamp())
+                    .status(sharePost.getStatus())
+                    .postType(sharePost.getPostType())
+                    .deadline(sharePost.getDeadline())
+                    .capacity(sharePost.getCapacity())
+                    .currentEnrollment(sharePost.getCurrentEnrollment())
+                    .category(sharePost.getCategory().getName())
+                    .btmCategory(sharePost.getBtmCategory())
+                    .matchingMembers(members)
+                    .build();
+
+            return sharePostReadRes;
         }else{
-            return null;
+            SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                    .authorIdx(authorIdx)
+                    .author(author)
+                    .title(sharePost.getTitle())
+                    .timeStamp(sharePost.getTimeStamp())
+                    .status(sharePost.getStatus())
+                    .postType(sharePost.getPostType())
+                    .deadline(sharePost.getDeadline())
+                    .capacity(sharePost.getCapacity())
+                    .currentEnrollment(sharePost.getCurrentEnrollment())
+                    .category(sharePost.getCategory().getName())
+                    .btmCategory(sharePost.getBtmCategory())
+                    .build();
+
+            return sharePostReadRes;
         }
     }
 
 
     public List<SharePostReadRes> list(Long requestIdx){
-        List<SharePost> posts = sharePostRepository.findAll();
+//        List<SharePost> posts = sharePostRepository.findAll();
+        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
         List<SharePostReadRes> results = new ArrayList<>();
         for (SharePost post : posts) {
-            Member autor = post.getMember();
+            Member autor = post.getMember(); //여기서 조인?
             Long authorIdx = autor.getIdx();
             String author = autor.getNickname();
 
             if(authorIdx==requestIdx){
                 List<String> members = new ArrayList<>();
 
+                //Todo byul : 근데 전체 리스트라 이거 안필요하지 않나?!
                 List<PostMatchingMember> postMatchingMembers = post.getPostMatchingMembers();
                 for (PostMatchingMember m : postMatchingMembers) {
                     String nickname = m.getMember().getNickname();
-                    int index = nickname.indexOf("kToken");
-                    if(index != -1){
-                        nickname = nickname.substring(0, index);
-                    }
                     members.add(nickname);
                 }
 
@@ -266,7 +261,7 @@ public class SharePostService {
                       .timeStamp(sharePost.getTimeStamp())
                       .modifyTime(sharePost.getModifyTime())
                       .status(false)
-                      .postType(true)
+                      .postType("share")
                       .deadline(sharePost.getDeadline())
                       .capacity(sharePost.getCapacity())
                       .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
@@ -290,7 +285,7 @@ public class SharePostService {
                       .timeStamp(sharePost.getTimeStamp())
                       .modifyTime(sharePost.getModifyTime())
                       .status(false)
-                      .postType(true)
+                      .postType("share")
                       .deadline(sharePost.getDeadline())
                       .capacity(sharePost.getCapacity())
                       .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
