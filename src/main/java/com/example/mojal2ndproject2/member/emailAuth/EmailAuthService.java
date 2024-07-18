@@ -51,7 +51,7 @@ public class EmailAuthService {
         Optional<EmailAuth> result = emailAuthRepository.findByEmailAndUuid(email, uuid);
         if(result.isPresent()){
             Member member = memberRepository.findByEmail(email).get();//Todo orElseThrow
-            member.setMemberAuth(true);
+            member.setEmailAuth(true);
             memberRepository.save(member);
         }else{
             return new BaseResponse<>(POST_USERS_UNAUTH_EMAIL);
