@@ -1,4 +1,4 @@
-package com.example.mojal2ndproject2.oauth;
+package com.example.mojal2ndproject2.member.oauth;
 
 import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.Member;

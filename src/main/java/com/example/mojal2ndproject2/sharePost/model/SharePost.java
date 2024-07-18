@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -29,10 +30,10 @@ public class SharePost {
     private Long idx;
     private String title;
     private String contents;
-    private String timeStamp;
-    private String modifyTime;
-    private Boolean status; //Todo 교환글은 Int로 바꾸기
-    private Boolean postType;
+    private LocalDateTime timeStamp;
+    private LocalDateTime modifyTime;
+    private Boolean status;
+    private Boolean postType; //Todo byul : Stirng 으로 바꿀지 논의
     private String deadline;
     private Integer capacity;
     private Integer currentEnrollment;

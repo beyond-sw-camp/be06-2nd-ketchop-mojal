@@ -1,12 +1,11 @@
-package com.example.mojal2ndproject2.emailAuth;
+package com.example.mojal2ndproject2.member.emailAuth;
 
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.POST_USERS_UNAUTH_EMAIL;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.SUCCESS;
 
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
-import com.example.mojal2ndproject2.emailAuth.model.EmailAuth;
-import com.example.mojal2ndproject2.emailAuth.model.dto.request.EmailAuthReq;
+import com.example.mojal2ndproject2.member.emailAuth.model.EmailAuth;
 import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.Member;
 import java.util.Optional;
@@ -52,7 +51,7 @@ public class EmailAuthService {
         Optional<EmailAuth> result = emailAuthRepository.findByEmailAndUuid(email, uuid);
         if(result.isPresent()){
             Member member = memberRepository.findByEmail(email).get();//Todo orElseThrow
-            member.setMemberAuth(true);
+            member.setEmailAuth(true);
             memberRepository.save(member);
         }else{
             return new BaseResponse<>(POST_USERS_UNAUTH_EMAIL);

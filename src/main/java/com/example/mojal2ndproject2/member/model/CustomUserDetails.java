@@ -36,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return member.getMemberAuth();
+        return member.getEmailAuth();
     }
 
     public Long getIdx(){

@@ -1,6 +1,6 @@
-package com.example.mojal2ndproject2.oauth;
+package com.example.mojal2ndproject2.member.oauth;
 
-import com.example.mojal2ndproject2.jwt.JwtUtil;
+import com.example.mojal2ndproject2.config.jwt.JwtUtil;
 import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.servlet.ServletException;
@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -40,7 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .nickname(nickName)
                     .kakaoIdx(kakaoIdx)
                     .role("ROLE_USER")
-                    .memberAuth(true)
+                    .emailAuth(true)
                     .build(); //Todo signupdate 값 넣기
 
             saved = memberRepository.save(member);

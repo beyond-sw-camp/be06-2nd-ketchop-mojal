@@ -9,7 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreateExchangePostRes {
     private Long idx;
-    private String name;
     private String title;
     private String content;
 }

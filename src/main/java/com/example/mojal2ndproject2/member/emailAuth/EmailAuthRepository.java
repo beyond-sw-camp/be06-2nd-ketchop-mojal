@@ -1,6 +1,6 @@
-package com.example.mojal2ndproject2.emailAuth;
+package com.example.mojal2ndproject2.member.emailAuth;
 
-import com.example.mojal2ndproject2.emailAuth.model.EmailAuth;
+import com.example.mojal2ndproject2.member.emailAuth.model.EmailAuth;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
