@@ -4,6 +4,7 @@ import com.example.mojal2ndproject2.category.Category;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,12 +39,15 @@ public class SharePost {
     private Integer capacity;
     private Integer currentEnrollment;
     private String btmCategory;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne
     @JoinColumn(name = "category_idx")
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne
     @JoinColumn(name = "member_idx")
     private Member member;
-    @OneToMany(mappedBy = "sharePost")
+    @OneToMany(mappedBy = "sharePost", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "sharePost")
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
 }

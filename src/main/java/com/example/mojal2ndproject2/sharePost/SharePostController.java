@@ -44,7 +44,7 @@ public class SharePostController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                 Long idx){
+                                                 Long idx) throws BaseException {
         Long requestIdx = customUserDetails.getMember().getIdx();
         SharePostReadRes result = sharePostService.read(requestIdx, idx);
         return ResponseEntity.ok(result);
