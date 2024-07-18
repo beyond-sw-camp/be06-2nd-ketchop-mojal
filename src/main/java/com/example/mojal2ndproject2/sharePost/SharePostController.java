@@ -1,6 +1,10 @@
 package com.example.mojal2ndproject2.sharePost;
 
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
@@ -30,12 +34,12 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/enrollment")
-    public ResponseEntity<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                             Long idx) {
-        Long requestIdx = customUserDetails.getMember().getIdx();
-        String result = sharePostService.enrollment(requestIdx, idx);
-        return ResponseEntity.ok(result);
+    @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
+    public BaseResponse<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                           Long idx) throws BaseException {
+        Member member = customUserDetails.getMember();
+        BaseResponse<String> result = sharePostService.enrollment(member, idx);
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/read")

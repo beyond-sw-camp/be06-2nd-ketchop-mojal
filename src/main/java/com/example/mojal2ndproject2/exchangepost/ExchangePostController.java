@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.exchangepost;
 
+import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.MEMBER_NOT_LOGIN;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.TITLE_NOT_ENTERED;
@@ -23,19 +24,19 @@ public class ExchangePostController {
 
     // 내가 작성한 교환글 전체 조회
     @RequestMapping(method = RequestMethod.GET, value = "/users/author/list")
-    public ResponseEntity<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long requestIdx = customUserDetails.getMember().getIdx();
-        List<ReadExchangePostRes> response = exchangePostService.authorExchangeList(requestIdx);
-        return ResponseEntity.ok(response);
+        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.authorExchangeList(requestIdx);
+        return response;
     }
 
 
     // 내가 참여한 교환글 전체 조회
     @RequestMapping(method = RequestMethod.GET, value = "/users/list")
-    public ResponseEntity<List<ReadExchangePostRes>> exchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public BaseResponse<List<ReadExchangePostRes>> exchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long requestIdx = customUserDetails.getMember().getIdx();
-        List<ReadExchangePostRes> response = exchangePostService.exchangeList(requestIdx);
-        return ResponseEntity.ok(response);
+        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.exchangeList(requestIdx);
+        return response;
     }
 
     //교환글생성
