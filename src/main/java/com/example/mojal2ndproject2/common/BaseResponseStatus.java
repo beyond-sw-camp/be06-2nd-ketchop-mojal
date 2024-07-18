@@ -23,6 +23,9 @@ public enum BaseResponseStatus {
     COURSE_LIST_NULL(false,2005,"등록된 코스가 존재하지 않습니다."),
     COURSE_NULL(false,2006,"등록된 코스가 존재하지 않습니다."),
 
+    /**2200 : Login에러**/
+    MEMBER_NOT_LOGIN(false,2204,"로그인해주세요."),
+
     /**
      * 3000 : MEMBER 에러
      */
@@ -37,11 +40,20 @@ public enum BaseResponseStatus {
 
 
     /**
-     * 4000 : 주문 및 결제 에러
+     * 4000 : 게시글 에러
      */
-    ORDERS_VALIDATION_FAIL(false, 4001, "결제 정보가 잘못되었습니다."),
-    IAMPORT_ERROR(false, 4002, "결제 금액이 잘못되었습니다."),
-    ORDERS_NOT_ORDERED(false, 4003, "결제 정보가 없습니다. 구해 후 이용해주세요."),
+    TITLE_NOT_ENTERED(false, 4101, "제목이 입력되지 않았습니다"),
+    TITLE_CHARACTER_LIMIT_OVER(false, 4102, "제목의 글자수 제한을 초과하였습니다"),
+    CATEGORY_NOT_SELECTED(false, 4103, "재능의 상위 카테고리를 선택하지 않았습니다."),
+    BTM_CATEGORY_CHARACTER_LIMIT_OVER(false, 4104, "하위 카테고리의 글자수 제한을 초과하였습니다."),
+    CONTETNTS_NOT_ENTERED(false, 4105, "소개글이 입력되지 않았습니다."),
+    CONTETNTS_CHARACTER_LIMIT_OVER(false, 4106, "소개글의 글자수 제한을 초과하였습니다."),
+    NOT_SELECTED_POST_STATUS(false, 4107, "교환/나눔을 선택하지 않았습니다."),
+    TAKE_CATEGORY_NOT_SELECTED(false, 4108, "받고싶은 재능의 상위 카테고리를 선택하지 않았습니다."),
+    TIME_NOT_SET(false, 4109, "시간을 설정해주세요."),
+    TIME_SET_IN_24HRS(false, 4110, "0~24시간 내에서만 설정 가능합니다."),
+    NUM_OF_PEOPLE_NOT_SET(false, 4111, "모집 인원을 설정하지 않았습니다."),
+
 
 
 

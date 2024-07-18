@@ -11,6 +11,7 @@ import lombok.Getter;
 public class ReadExchangePostRes {
     private Long idx;
     private Long memberIdx;
+    private String memberNickname;
     private String giveBtmCategory;
     private String takeBtmCategory;
     private String giveCategory;
