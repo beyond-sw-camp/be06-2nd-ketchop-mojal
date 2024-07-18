@@ -8,11 +8,15 @@ import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.member.model.Member;
+import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
+import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,26 +45,7 @@ public class MemberService {
                 .signupDate(LocalDateTime.now())
                 .build();
 
-        Member savedMember = memberRepository.save(member); //Todo byul : 예외처리 필요???
-
-        //2. 카테고리 저장
-//        for (Long categoryIdx : request.getCategories()) {
-//            Optional<Category> result = categoryRepository.findById(categoryIdx);
-//            if(result.isPresent()){
-//                Category category = result.get();
-//
-//                UserHaveCategory userHaveCategory = UserHaveCategory.builder()
-//                        .category(category)
-//                        .member(savedMember)
-//                        .build();
-//
-//                userHaveCategoryRepository.save(userHaveCategory); //
-//            }else{
-//                return null;
-//            }
-//
-//        }
-
+        Member savedMember = memberRepository.save(member);
 
         //3. 응답객체
         MemberSignupRes memberSignupRes = MemberSignupRes.builder()
@@ -70,5 +55,20 @@ public class MemberService {
                 .build();
 
         return new BaseResponse<>(memberSignupRes);
+    }
+
+    public List<Long> addCategory(Member user, MemberAddCategoryReq request) {//Todo byul: 테스트 해보기
+        List<UserHaveCategory> categories = new ArrayList<>();
+
+        for (Long categoryIdx : request.getCategories()) {
+            Category category = Category.builder().idx(categoryIdx).build();
+            UserHaveCategory userHaveCategory = UserHaveCategory.builder()
+                    .member(user)
+                    .category(category)
+                    .build();
+
+            userHaveCategoryRepository.save(userHaveCategory); //Todo byul : 세이브가 잘 안된 경우도 예외처리?
+        }
+        return request.getCategories();
     }
 }
