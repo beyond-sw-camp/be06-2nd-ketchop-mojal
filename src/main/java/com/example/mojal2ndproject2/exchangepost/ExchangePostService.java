@@ -74,8 +74,8 @@ public class ExchangePostService {
                         .memberNickname(p.getMember().getNickname())
                         .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
                         .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
-                        .giveCategoryName(p.getExchangePost().getGiveCategory().getName())
-                        .takeCategoryName(p.getExchangePost().getTakeCategory().getName())
+                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
+                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
                         .build();
                 exchangePostReadResList.add(exchangePostReadRes);
             }
