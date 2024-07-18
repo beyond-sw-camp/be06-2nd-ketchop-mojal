@@ -1,6 +1,9 @@
 package com.example.mojal2ndproject2.sharePost;
 
 import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.MemberRepository;
@@ -17,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.THIS_POST_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -236,62 +241,65 @@ public class SharePostService {
         return results;
     }
 
-    public String enrollment(Long requestIdx, Long idx) {
-      Optional<SharePost> result = sharePostRepository.findById(idx);
-      Member member = Member.builder().idx(requestIdx).build();
+    public BaseResponse<String> enrollment(Member member, Long idx) throws BaseException {
+      SharePost sharePost = sharePostRepository.findById(idx).orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
+      Optional<PostMatchingMember> now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost);
+        if (now.isPresent()) {
+            throw new BaseException(BaseResponseStatus.ALREADY_REQUEST);
+        }
       String response="";
-      if (result.isPresent()) {
-          SharePost sharePost = result.get();
-          if (sharePost.getStatus() == false) {
-              if (sharePost.getCapacity() == sharePost.getCurrentEnrollment() + 1) {
-                  PostMatchingMember pmm = PostMatchingMember.builder()
-                          .sharePost(sharePost)
-                          .member(member)
-                          .build();
-                  SharePost sharePost1 = SharePost.builder()
-                          .idx(sharePost.getIdx())
-                          .member(member)
-                          .title(sharePost.getTitle())
-                          .contents(sharePost.getContents())
-                          .timeStamp(sharePost.getTimeStamp())
-                          .modifyTime(sharePost.getModifyTime())
-                          .status(false)
-                          .postType(true)
-                          .deadline(sharePost.getDeadline())
-                          .capacity(sharePost.getCapacity())
-                          .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
-                          .category(sharePost.getCategory())
-                          .btmCategory(sharePost.getBtmCategory())
-                          .build();
-                  sharePostRepository.save(sharePost1);
-              }
-              else {
-                  PostMatchingMember pmm = PostMatchingMember.builder()
-                          .sharePost(sharePost)
-                          .member(member)
-                          .build();
-                  SharePost sharePost1 = SharePost.builder()
-                          .idx(sharePost.getIdx())
-                          .member(member)
-                          .title(sharePost.getTitle())
-                          .contents(sharePost.getContents())
-                          .timeStamp(sharePost.getTimeStamp())
-                          .modifyTime(sharePost.getModifyTime())
-                          .status(false)
-                          .postType(true)
-                          .deadline(sharePost.getDeadline())
-                          .capacity(sharePost.getCapacity())
-                          .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
-                          .category(sharePost.getCategory())
-                          .btmCategory(sharePost.getBtmCategory())
-                          .build();
-                  sharePostRepository.save(sharePost1);
-              }
-              response = "나눔글 참여에 성공하였습니다";
+//          SharePost sharePost = result.get();
+      if (sharePost.getStatus() == false) {
+          if (sharePost.getCapacity() == sharePost.getCurrentEnrollment() + 1) {
+              PostMatchingMember pmm = PostMatchingMember.builder()
+                      .sharePost(sharePost)
+                      .member(member)
+                      .exchangePost(null)
+                      .build();
+              postMatchingMemberRepository.save(pmm);
+              SharePost sharePost1 = SharePost.builder()
+                      .idx(sharePost.getIdx())
+                      .member(member)
+                      .title(sharePost.getTitle())
+                      .contents(sharePost.getContents())
+                      .timeStamp(sharePost.getTimeStamp())
+                      .modifyTime(sharePost.getModifyTime())
+                      .status(false)
+                      .postType(true)
+                      .deadline(sharePost.getDeadline())
+                      .capacity(sharePost.getCapacity())
+                      .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
+                      .category(sharePost.getCategory())
+                      .btmCategory(sharePost.getBtmCategory())
+                      .build();
+              sharePostRepository.save(sharePost1);
           }
-      }else{
-          response="이미 마감됐습니다";
+          else {
+              PostMatchingMember pmm = PostMatchingMember.builder()
+                      .sharePost(sharePost)
+                      .member(member)
+                      .exchangePost(null)
+                      .build();
+              postMatchingMemberRepository.save(pmm);
+              SharePost sharePost1 = SharePost.builder()
+                      .idx(sharePost.getIdx())
+                      .member(member)
+                      .title(sharePost.getTitle())
+                      .contents(sharePost.getContents())
+                      .timeStamp(sharePost.getTimeStamp())
+                      .modifyTime(sharePost.getModifyTime())
+                      .status(false)
+                      .postType(true)
+                      .deadline(sharePost.getDeadline())
+                      .capacity(sharePost.getCapacity())
+                      .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
+                      .category(sharePost.getCategory())
+                      .btmCategory(sharePost.getBtmCategory())
+                      .build();
+              sharePostRepository.save(sharePost1);
+          }
+              response = "나눔글 참여 성공하였습니다";
       }
-      return response;
+      return new BaseResponse<>(response);
     }
 }
