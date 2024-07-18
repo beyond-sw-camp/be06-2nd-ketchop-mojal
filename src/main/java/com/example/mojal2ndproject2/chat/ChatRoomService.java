@@ -24,10 +24,10 @@ public class ChatRoomService {
     private final ChatMessageRepository chatMessageRepository;
 
     //내가 참여한 채팅방 리스트 반환
-    public List<Long> findMyChatRoomList(CustomUserDetails customUserDetails) {
-        Long loginUserIdx = customUserDetails.getMember().getIdx();
+    public List<Long> findMyChatRoomList(Long idx, CustomUserDetails customUserDetails) {
+//        Long loginUserIdx = customUserDetails.getMember().getIdx();
         Member chatUser = Member.builder()
-                .idx(loginUserIdx)
+                .idx(idx)
                 .build();// 채팅참여자
         List<ChatRoom> chatRooms = chatRoomRepository.findAllByMember1OrMember2(chatUser, chatUser);
 
@@ -41,14 +41,14 @@ public class ChatRoomService {
 
 
     //채팅방 있나없나 검사!!
-    public boolean findChatRoom(Long postIdx, ChatMessage chatMessage, CustomUserDetails customUserDetails) {
-        Long loginUserIdx = customUserDetails.getMember().getIdx();
-        Member member1 = Member.builder()
-                .idx(loginUserIdx)
+    public boolean findChatRoom(Long postIdx, ChatMessage chatMessage) {
+//        Long loginUserIdx = customUserDetails.getMember().getIdx();
+        Member member2 = Member.builder()
+                .idx(chatMessage.getSenderIdx())
                 .build();//참여자
         Optional<ExchangePost> post = exchangePostRepository.findById(postIdx);
         if(post.isPresent()) {
-            Member member2 = Member.builder()
+            Member member1 = Member.builder()
                     .idx(post.get().getMember().getIdx())
                     .build(); //작성자
 
@@ -64,14 +64,14 @@ public class ChatRoomService {
     }
 
     //채팅방 생성
-    public ChatRoom create(Long postIdx, CustomUserDetails customUserDetails) {
+    public ChatRoom create(Long postIdx, Long senderIdx) {
         ExchangePost exchangePost = ExchangePost.builder()
                 .idx(postIdx)
                 .build();
 
-        Long loginUserIdx = customUserDetails.getMember().getIdx();
+//        Long loginUserIdx = customUserDetails.getMember().getIdx();
         Member member = Member.builder()
-                .idx(loginUserIdx)
+                .idx(senderIdx)
                 .build();
 
         Optional<ExchangePost> post = exchangePostRepository.findById(postIdx);
