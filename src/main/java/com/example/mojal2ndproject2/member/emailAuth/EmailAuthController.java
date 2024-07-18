@@ -1,9 +1,8 @@
-package com.example.mojal2ndproject2.emailAuth;
+package com.example.mojal2ndproject2.member.emailAuth;
 
-import com.example.mojal2ndproject2.emailAuth.model.dto.request.EmailAuthReq;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +14,8 @@ public class EmailAuthController {
     private final EmailAuthService emailAuthService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
-    public ResponseEntity<String> verify(String email, String uuid){
-        String result = emailAuthService.verify(email, uuid);
-        return ResponseEntity.ok(result);
+    public BaseResponse<BaseResponseStatus> verify(String email, String uuid){
+        BaseResponse<BaseResponseStatus> result = emailAuthService.verify(email, uuid);
+        return result;
     }
 }

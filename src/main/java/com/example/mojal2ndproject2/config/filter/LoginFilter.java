@@ -1,6 +1,6 @@
-package com.example.mojal2ndproject2.filter;
+package com.example.mojal2ndproject2.config.filter;
 
-import com.example.mojal2ndproject2.jwt.JwtUtil;
+import com.example.mojal2ndproject2.config.jwt.JwtUtil;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberLoginReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,6 +68,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println(failed.getCause());
         System.out.println(failed.getMessage());
         super.unsuccessfulAuthentication(request, response, failed);
-        //Todo 에러 메세지 보내기
+        //Todo 에러 메세지 보내기 -> 응답을 보내는 필터를 찾아서 거기서 응답
+        PrintWriter out = response.getWriter();
+        out.println("{\"isSuccess\": false, \"message\":\"이메일 인증 후 다시 로그인을 시도해주세요.\"");
     }
 }

@@ -1,4 +1,4 @@
-package com.example.mojal2ndproject2.jwt;
+package com.example.mojal2ndproject2.config.jwt;
 
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;

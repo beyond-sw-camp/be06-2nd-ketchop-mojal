@@ -11,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -26,7 +28,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
+@Setter //Todo byul : 이거 없애고 이거 쓰는 부분은 builder로
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +36,9 @@ public class Member {
     private String nickname;
     private String email;
     private String password;
-//    @CreationTimestamp
-//    @Column(name = "signup_date")
-    private String signupDate;
-    private Boolean memberAuth;
+    private LocalDateTime signupDate;
+    private Boolean emailAuth;
     private Long kakaoIdx;
-//    @ColumnDefault("ROLE_USER")
     private String role;
     @OneToMany(mappedBy = "member")
     private List<SharePost> sharePosts = new ArrayList<>();

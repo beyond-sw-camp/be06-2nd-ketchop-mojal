@@ -1,6 +1,6 @@
-package com.example.mojal2ndproject2.filter;
+package com.example.mojal2ndproject2.config.filter;
 
-import com.example.mojal2ndproject2.jwt.JwtUtil;
+import com.example.mojal2ndproject2.config.jwt.JwtUtil;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.servlet.FilterChain;

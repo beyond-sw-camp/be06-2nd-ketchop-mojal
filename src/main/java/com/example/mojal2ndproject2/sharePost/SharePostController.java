@@ -30,6 +30,14 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
+    public ResponseEntity<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                             Long idx) {
+        Long requestIdx = customUserDetails.getMember().getIdx();
+        String result = sharePostService.enrollment(requestIdx, idx);
+        return ResponseEntity.ok(result);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  Long idx){
@@ -46,23 +54,23 @@ public class SharePostController {
     }
 
     //내가 작성한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
-    public ResponseEntity<List<SharePostListRes>> usersAuthorlist(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    @RequestMapping(method = RequestMethod.GET, value = "/users/autor/list") //git conflict - uri 수정
+    public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
 
-        List<SharePostListRes> response= sharePostService.usersAuthorlist(loginUserIdx);
+        List<SharePostListRes> response= sharePostService.authorList(loginUserIdx);
         return ResponseEntity.ok(response);
 
     }
 
     //내가 참여한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/users/list")
-    public ResponseEntity<List<SharePostListRes>> usersList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    @RequestMapping(method = RequestMethod.GET, value = "/users/enrolled/list")
+    public ResponseEntity<List<SharePostListRes>> enrolledList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
 
-        List<SharePostListRes> response= sharePostService.usersList(loginUserIdx);
+        List<SharePostListRes> response= sharePostService.enrolledList(loginUserIdx);
         return ResponseEntity.ok(response);
     }
 }
