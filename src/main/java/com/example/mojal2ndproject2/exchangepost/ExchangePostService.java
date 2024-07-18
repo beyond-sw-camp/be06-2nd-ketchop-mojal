@@ -2,6 +2,9 @@ package com.example.mojal2ndproject2.exchangepost;
 
 import com.example.mojal2ndproject2.category.Category;
 import com.example.mojal2ndproject2.category.CategoryRepository;
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
@@ -28,7 +31,7 @@ public class ExchangePostService {
     private final CategoryRepository categoryRepository;
 
 
-    public List<ReadExchangePostRes> authorExchangeList(Long requestIdx) {
+    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
         Member member = Member.builder()
                 .idx(requestIdx)
                 .build();
@@ -51,10 +54,10 @@ public class ExchangePostService {
                 exchangePostReadResList.add(exchangePostReadRes);
             }
         }
-        return exchangePostReadResList;
+        return new BaseResponse<>(exchangePostReadResList);
     }
 
-    public List<ReadExchangePostRes> exchangeList(Long requestIdx) {
+    public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
         Member member = Member.builder()
                 .idx(requestIdx)
                 .build();
@@ -80,7 +83,7 @@ public class ExchangePostService {
                 exchangePostReadResList.add(exchangePostReadRes);
             }
         }
-        return exchangePostReadResList;
+        return new BaseResponse<>(exchangePostReadResList);
     }
     //교환게시글 생성
     public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails){
