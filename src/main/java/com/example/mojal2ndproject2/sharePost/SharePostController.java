@@ -58,7 +58,7 @@ public class SharePostController {
     }
 
     //내가 작성한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/users/autor/list") //git conflict - uri 수정
+    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
     public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
