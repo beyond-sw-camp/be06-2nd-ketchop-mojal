@@ -38,6 +38,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth)->
                 auth
                         .requestMatchers("/post/share/users","/post/exchange/users").authenticated()
+                        .requestMatchers("/api/ws","/api/topic").permitAll() //TODO 0718 소켓 필터링 처리?
+
                         .requestMatchers(
                                 "/login",
                                 "/member/signup",
@@ -45,6 +47,7 @@ public class SecurityConfig {
                                 "/post/**",
                                 "/search/**",
                                 "/kakao/**").permitAll()
+
                         .anyRequest().permitAll()
         );
 
@@ -70,6 +73,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() { //cors error 방지
         CorsConfiguration config = new CorsConfiguration();
 
+        config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용 //TODO 0718 core추가
         config.addAllowedOrigin("http://localhost:3000"); // 허용할 출처
         config.addAllowedOrigin("http://localhost:8080"); // 허용할 출처
         config.addAllowedMethod("*"); // 허용할 메서드 (GET, POST, PUT 등)
