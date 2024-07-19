@@ -924,6 +924,57 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestId
 
 # 코딩 컨벤션
 
+### 목표
+프로젝트의 팀원들이 쉽게 따라하고 보기쉽도록 맞추기 위함.
+
+### Naming
+- 변수는 Camel Case를 사용하고 명확하게 작성한다. 다만 명확성의 차이가 없을 때는 길이가 짧은 네이밍을 선택한다.
+- 패키지명은 대문자를 사용하지 않고 소문자로만 구성한다.
+Enum 이나 상수는 대문자로 구성하고 밑줄(_)로 각 단어를 분리한다.
+메서드명은 동사로 작성한다.
+- 값을 반환하는 메서드의 경우 뭘 반환하는지 알 수 있게 메서드명을 짓는다.
+- 클래스명과 인터페이스명은 명사로 작성하고, Upper Camel Case 를 사용한다.
+- 엔티티 이름은 단수로 작성한다.
+
+### 커밋 컨벤션
+#### 커밋 메시지 구조 <br>
+```githubexpressionlanguage
+  [commit type]: commit message ([issue nubmer]) 
+```
+#### 커밋타입
+<br>
+feat:	기능 구현<br>
+fix:	버그 수정<br>
+docs:	문서, 주석 관련 작업<br>
+refactor:	리팩토링<br>
+test:	테스트 관련 작업<br>
+chore:	기타 작업<br>
+<br>
+
+#### commit message
+
+본문은 필요한 경우에 작성하고, 무엇을 왜 했는지(what과 why)를 중점으로 작성한다.
+  
+#### 깃 브랜치 전략
+  깃 브랜치 전략은 git flow 전략을 참고해서 지금 시점에 필요하지 않은 부분은 축소시키고 만들었다.
+
+**main**<br>
+언제든지 배포가 가능한 상태를 유지해야 한다. <br>
+<br>
+**develop**<br>
+다음 버전 개발을 위한 코드를 모아두는 브랜치<br>
+개발이 완료되면 main 브랜치로 머지된다.<br>
+<br>
+**feature**<br>
+기능 단위 개발 브랜치<br>
+이슈 리스트로 브랜치 생성 및 관리<br>
+네이밍은 feature/#이슈번호-브랜치명 의 형태로 생성한다.<br>
+브랜치명은 소문자로 작성한다.<br>
+featrue 브랜치에서 개발 완료 후 devleop 브랜치로 PR 요청한다.<br>
+
+
+
+
 # 시퀀스 다이어그램 
 
 # API 명세서
