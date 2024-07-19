@@ -9,6 +9,7 @@ import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryRe
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class MemberController {
     private final MemberService memberService;
     private final EmailAuthService emailAuthService;
 
+    @Operation(summary = "회원가입 테스트")
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public BaseResponse<MemberSignupRes> signup(@Valid @RequestBody MemberSignupReq request) throws BaseException {
 
