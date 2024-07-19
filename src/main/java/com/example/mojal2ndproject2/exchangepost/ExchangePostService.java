@@ -65,27 +65,45 @@ public class ExchangePostService {
     public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-        List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
+//        List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
+        List<ExchangePost> exchangePosts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member);
 
-        for (PostMatchingMember p : postMatchingMemberList ) {
-            if (p.getExchangePost() != null) {
+            for (ExchangePost e : exchangePosts) {
                 ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                        .idx(p.getExchangePost().getIdx())
-                        .title(p.getExchangePost().getTitle())
-                        .timeStamp(p.getExchangePost().getTimeStamp())
-                        .modifyTime(p.getExchangePost().getModifyTime())
-                        .status(p.getExchangePost().getStatus())
-                        .postType(p.getExchangePost().getPostType())
-                        .memberIdx(p.getMember().getIdx())
-                        .memberNickname(p.getMember().getNickname())
-                        .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
-                        .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
-                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
-                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
+                        .idx(e.getIdx())
+                        .title(e.getTitle())
+                        .timeStamp(e.getTimeStamp())
+                        .modifyTime(e.getModifyTime())
+                        .status(e.getStatus())
+                        .postType(e.getPostType())
+                        .memberIdx(e.getMember().getIdx())
+                        .memberNickname(e.getMember().getNickname())
+                        .giveBtmCategory(e.getGiveBtmCategory())
+                        .takeBtmCategory(e.getTakeBtmCategory())
+                        .giveCategory(e.getGiveCategory().getName())
+                        .takeCategory(e.getTakeCategory().getName())
                         .build();
                 exchangePostReadResList.add(exchangePostReadRes);
             }
-        }
+//        for (PostMatchingMember p : postMatchingMemberList ) {
+//            if (p.getExchangePost() != null) {
+//                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
+//                        .idx(p.getExchangePost().getIdx())
+//                        .title(p.getExchangePost().getTitle())
+//                        .timeStamp(p.getExchangePost().getTimeStamp())
+//                        .modifyTime(p.getExchangePost().getModifyTime())
+//                        .status(p.getExchangePost().getStatus())
+//                        .postType(p.getExchangePost().getPostType())
+//                        .memberIdx(p.getMember().getIdx())
+//                        .memberNickname(p.getMember().getNickname())
+//                        .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
+//                        .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
+//                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
+//                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
+//                        .build();
+//                exchangePostReadResList.add(exchangePostReadRes);
+//            }
+//        }
         return new BaseResponse<>(exchangePostReadResList);
     }
     //교환게시글 생성

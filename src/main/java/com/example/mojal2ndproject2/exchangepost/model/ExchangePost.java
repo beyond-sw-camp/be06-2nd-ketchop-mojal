@@ -43,6 +43,6 @@ public class ExchangePost {
 
     @OneToMany(mappedBy = "exchangePost")
     private List<ChatRoom> chatRooms = new ArrayList<>();
-    @OneToMany(mappedBy = "exchangePost")
+    @OneToMany(mappedBy = "exchangePost", fetch = FetchType.LAZY)
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
 }
