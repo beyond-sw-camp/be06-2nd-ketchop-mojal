@@ -1,6 +1,9 @@
 package com.example.mojal2ndproject2.sharePost;
 
 import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.MemberRepository;
@@ -17,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.THIS_POST_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +44,7 @@ public class SharePostService {
                 .timeStamp(LocalDateTime.now())
                 .modifyTime(LocalDateTime.now())
                 .status(false)
-                .postType(true)
+                .postType("share")
                 .deadline(request.getDeadline())
                 .capacity(request.getCapacity())
                 .currentEnrollment(0)
@@ -66,9 +71,9 @@ public class SharePostService {
                 .build();
         List<SharePost> posts = sharePostRepository.findAllByMember(member);
 
-        List<SharePostListRes> sharePostListRess = new ArrayList<>();
+        List<SharePostListRes> sharePostListRes = new ArrayList<>();
         for (SharePost post : posts) {
-            sharePostListRess.add(SharePostListRes.builder()
+            sharePostListRes.add(SharePostListRes.builder()
                     .writerIdx(post.getMember().getIdx())
                     .title(post.getTitle())
                     .timeStamp(post.getTimeStamp())
@@ -81,7 +86,7 @@ public class SharePostService {
                     .btmCategory(post.getBtmCategory())
                     .build());
         }
-        return sharePostListRess;
+        return sharePostListRes;
     }
 
     //내가 참여한 나눔글 전체조회
@@ -117,81 +122,76 @@ public class SharePostService {
 
 
     //나눔글 조회
-    public SharePostReadRes read(Long requestIdx, Long idx) {
-        Optional<SharePost> result = sharePostRepository.findById(idx);
+    public SharePostReadRes read(Long requestIdx, Long idx) throws BaseException {
+//        Optional<SharePost> result = sharePostRepository.findById(idx);
+        SharePost sharePost = sharePostRepository.findByIdxWithMemberAndCategory(idx)
+                .orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
 
-        if(result.isPresent()){
-            SharePost sharePost = result.get();
-            Member autor = sharePost.getMember();
-            Long authorIdx = autor.getIdx();
-            String author = autor.getNickname();
+        Member autor = sharePost.getMember();
+        Long authorIdx = autor.getIdx();
+        String author = autor.getNickname();
 
-            if(authorIdx==requestIdx){
-                List<String> members = new ArrayList<>();
+        if(authorIdx==requestIdx){
+            List<String> members = new ArrayList<>();
 
-                List<PostMatchingMember> postMatchingMembers = sharePost.getPostMatchingMembers();
-                for (PostMatchingMember m : postMatchingMembers) {
-                    String nickname = m.getMember().getNickname();
-                    members.add(nickname);
-                }
-
-                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .authorIdx(authorIdx)
-                        .author(author)
-                        .title(sharePost.getTitle())
-                        .timeStamp(sharePost.getTimeStamp())
-                        .status(sharePost.getStatus())
-                        .postType(sharePost.getPostType())
-                        .deadline(sharePost.getDeadline())
-                        .capacity(sharePost.getCapacity())
-                        .currentEnrollment(sharePost.getCurrentEnrollment())
-                        .category(sharePost.getCategory().getName())
-                        .btmCategory(sharePost.getBtmCategory())
-                        .matchingMembers(members)
-                        .build();
-
-                return sharePostReadRes;
-            }else{
-                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .authorIdx(authorIdx)
-                        .author(author)
-                        .title(sharePost.getTitle())
-                        .timeStamp(sharePost.getTimeStamp())
-                        .status(sharePost.getStatus())
-                        .postType(sharePost.getPostType())
-                        .deadline(sharePost.getDeadline())
-                        .capacity(sharePost.getCapacity())
-                        .currentEnrollment(sharePost.getCurrentEnrollment())
-                        .category(sharePost.getCategory().getName())
-                        .btmCategory(sharePost.getBtmCategory())
-                        .build();
-
-                return sharePostReadRes;
+            List<PostMatchingMember> postMatchingMembers = sharePost.getPostMatchingMembers();
+            for (PostMatchingMember m : postMatchingMembers) {
+                String nickname = m.getMember().getNickname();
+                members.add(nickname);
             }
+
+            SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                    .authorIdx(authorIdx)
+                    .author(author)
+                    .title(sharePost.getTitle())
+                    .timeStamp(sharePost.getTimeStamp())
+                    .status(sharePost.getStatus())
+                    .postType(sharePost.getPostType())
+                    .deadline(sharePost.getDeadline())
+                    .capacity(sharePost.getCapacity())
+                    .currentEnrollment(sharePost.getCurrentEnrollment())
+                    .category(sharePost.getCategory().getName())
+                    .btmCategory(sharePost.getBtmCategory())
+                    .matchingMembers(members)
+                    .build();
+
+            return sharePostReadRes;
         }else{
-            return null;
+            SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                    .authorIdx(authorIdx)
+                    .author(author)
+                    .title(sharePost.getTitle())
+                    .timeStamp(sharePost.getTimeStamp())
+                    .status(sharePost.getStatus())
+                    .postType(sharePost.getPostType())
+                    .deadline(sharePost.getDeadline())
+                    .capacity(sharePost.getCapacity())
+                    .currentEnrollment(sharePost.getCurrentEnrollment())
+                    .category(sharePost.getCategory().getName())
+                    .btmCategory(sharePost.getBtmCategory())
+                    .build();
+
+            return sharePostReadRes;
         }
     }
 
 
     public List<SharePostReadRes> list(Long requestIdx){
-        List<SharePost> posts = sharePostRepository.findAll();
+//        List<SharePost> posts = sharePostRepository.findAll();
+        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
         List<SharePostReadRes> results = new ArrayList<>();
         for (SharePost post : posts) {
-            Member autor = post.getMember();
+            Member autor = post.getMember(); //여기서 조인?
             Long authorIdx = autor.getIdx();
             String author = autor.getNickname();
 
             if(authorIdx==requestIdx){
                 List<String> members = new ArrayList<>();
 
+                //Todo byul : 근데 전체 리스트라 이거 안필요하지 않나?!
                 List<PostMatchingMember> postMatchingMembers = post.getPostMatchingMembers();
                 for (PostMatchingMember m : postMatchingMembers) {
                     String nickname = m.getMember().getNickname();
-                    int index = nickname.indexOf("kToken");
-                    if(index != -1){
-                        nickname = nickname.substring(0, index);
-                    }
                     members.add(nickname);
                 }
 
@@ -236,62 +236,66 @@ public class SharePostService {
         return results;
     }
 
-    public String enrollment(Long requestIdx, Long idx) {
-      Optional<SharePost> result = sharePostRepository.findById(idx);
-      Member member = Member.builder().idx(requestIdx).build();
+    public BaseResponse<String> enrollment(Member member, Long idx) throws BaseException {
+      SharePost sharePost = sharePostRepository.findById(idx).orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
+      Optional<PostMatchingMember> now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost);
+        if (now.isPresent()) {
+            throw new BaseException(BaseResponseStatus.ALREADY_REQUEST);
+        }
       String response="";
-      if (result.isPresent()) {
-          SharePost sharePost = result.get();
-          if (sharePost.getStatus() == false) {
-              if (sharePost.getCapacity() == sharePost.getCurrentEnrollment() + 1) {
-                  PostMatchingMember pmm = PostMatchingMember.builder()
-                          .sharePost(sharePost)
-                          .member(member)
-                          .build();
-                  SharePost sharePost1 = SharePost.builder()
-                          .idx(sharePost.getIdx())
-                          .member(member)
-                          .title(sharePost.getTitle())
-                          .contents(sharePost.getContents())
-                          .timeStamp(sharePost.getTimeStamp())
-                          .modifyTime(sharePost.getModifyTime())
-                          .status(false)
-                          .postType(true)
-                          .deadline(sharePost.getDeadline())
-                          .capacity(sharePost.getCapacity())
-                          .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
-                          .category(sharePost.getCategory())
-                          .btmCategory(sharePost.getBtmCategory())
-                          .build();
-                  sharePostRepository.save(sharePost1);
-              }
-              else {
-                  PostMatchingMember pmm = PostMatchingMember.builder()
-                          .sharePost(sharePost)
-                          .member(member)
-                          .build();
-                  SharePost sharePost1 = SharePost.builder()
-                          .idx(sharePost.getIdx())
-                          .member(member)
-                          .title(sharePost.getTitle())
-                          .contents(sharePost.getContents())
-                          .timeStamp(sharePost.getTimeStamp())
-                          .modifyTime(sharePost.getModifyTime())
-                          .status(false)
-                          .postType(true)
-                          .deadline(sharePost.getDeadline())
-                          .capacity(sharePost.getCapacity())
-                          .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
-                          .category(sharePost.getCategory())
-                          .btmCategory(sharePost.getBtmCategory())
-                          .build();
-                  sharePostRepository.save(sharePost1);
-              }
-              response = "나눔글 참여에 성공하였습니다";
+
+//          SharePost sharePost = result.get();
+      if (sharePost.getStatus() == false) {
+          if (sharePost.getCapacity() == sharePost.getCurrentEnrollment() + 1) {
+              PostMatchingMember pmm = PostMatchingMember.builder()
+                      .sharePost(sharePost)
+                      .member(member)
+                      .exchangePost(null)
+                      .build();
+              postMatchingMemberRepository.save(pmm);
+              SharePost sharePost1 = SharePost.builder()
+                      .idx(sharePost.getIdx())
+                      .member(member)
+                      .title(sharePost.getTitle())
+                      .contents(sharePost.getContents())
+                      .timeStamp(sharePost.getTimeStamp())
+                      .modifyTime(sharePost.getModifyTime())
+                      .status(false)
+                      .postType("share")
+                      .deadline(sharePost.getDeadline())
+                      .capacity(sharePost.getCapacity())
+                      .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
+                      .category(sharePost.getCategory())
+                      .btmCategory(sharePost.getBtmCategory())
+                      .build();
+              sharePostRepository.save(sharePost1);
           }
-      }else{
-          response="이미 마감됐습니다";
+          else {
+              PostMatchingMember pmm = PostMatchingMember.builder()
+                      .sharePost(sharePost)
+                      .member(member)
+                      .exchangePost(null)
+                      .build();
+              postMatchingMemberRepository.save(pmm);
+              SharePost sharePost1 = SharePost.builder()
+                      .idx(sharePost.getIdx())
+                      .member(member)
+                      .title(sharePost.getTitle())
+                      .contents(sharePost.getContents())
+                      .timeStamp(sharePost.getTimeStamp())
+                      .modifyTime(sharePost.getModifyTime())
+                      .status(false)
+                      .postType("share")
+                      .deadline(sharePost.getDeadline())
+                      .capacity(sharePost.getCapacity())
+                      .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
+                      .category(sharePost.getCategory())
+                      .btmCategory(sharePost.getBtmCategory())
+                      .build();
+              sharePostRepository.save(sharePost1);
+          }
+              response = "나눔글 참여 성공하였습니다";
       }
-      return response;
+      return new BaseResponse<>(response);
     }
 }

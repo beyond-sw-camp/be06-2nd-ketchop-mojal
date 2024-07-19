@@ -1,6 +1,10 @@
 package com.example.mojal2ndproject2.sharePost;
 
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
@@ -31,16 +35,16 @@ public class SharePostController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
-    public ResponseEntity<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                             Long idx) {
-        Long requestIdx = customUserDetails.getMember().getIdx();
-        String result = sharePostService.enrollment(requestIdx, idx);
-        return ResponseEntity.ok(result);
+    public BaseResponse<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                           Long idx) throws BaseException {
+        Member member = customUserDetails.getMember();
+        BaseResponse<String> result = sharePostService.enrollment(member, idx);
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                 Long idx){
+                                                 Long idx) throws BaseException {
         Long requestIdx = customUserDetails.getMember().getIdx();
         SharePostReadRes result = sharePostService.read(requestIdx, idx);
         return ResponseEntity.ok(result);
@@ -54,7 +58,7 @@ public class SharePostController {
     }
 
     //내가 작성한 글 전체조회
-    @RequestMapping(method = RequestMethod.GET, value = "/users/autor/list") //git conflict - uri 수정
+    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
     public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();

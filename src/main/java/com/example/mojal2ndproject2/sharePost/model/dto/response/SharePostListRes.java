@@ -15,7 +15,7 @@ public class SharePostListRes {
     private String title;
     private LocalDateTime timeStamp;
     private Boolean status;
-    private Boolean postType;
+    private String postType;
     private String deadline;
     private Integer capacity;
     private Integer currentEnrollment;
