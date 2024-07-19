@@ -28,17 +28,17 @@ public class GlobalExceptionHandler {
 
     //@Valid의 예외처리부분
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Response> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<BaseResponse<String>> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity
                 .badRequest()
-                .body(new Response("Validation Error", e.getBindingResult().getAllErrors().get(0).getDefaultMessage()));
+                .body(new BaseResponse<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage()));
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class Response {
-        private String code;
-        private String message;
-    }
+//    @Getter
+//    @AllArgsConstructor
+//    public static class Response {
+//        private String code;
+//        private String message;
+//    }
 
 }
