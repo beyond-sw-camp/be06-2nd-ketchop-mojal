@@ -41,23 +41,23 @@ public class Member {
     private Boolean emailAuth;
     private Long kakaoIdx;
     private String role;
-//    @OneToMany(mappedBy = "member" ,fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member" ,fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "member")
     private List<SharePost> sharePosts = new ArrayList<>();
-//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "member")
     private List<ExchangePost> exchangePosts = new ArrayList<>();
-//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "member")
     private List<UserHaveCategory> userHaveCategories = new ArrayList<>();
-//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "member")
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
-//    @OneToMany(mappedBy = "member1", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "member1")
+    @OneToMany(mappedBy = "member1", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "member1")
     private List<ChatRoom> chatRooms = new ArrayList<>();
-//    @OneToMany(mappedBy = "member2", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "member2")
+    @OneToMany(mappedBy = "member2", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "member2")
     private List<ChatRoom> chatRooms2 = new ArrayList<>();
 
 }
