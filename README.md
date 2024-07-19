@@ -1,13 +1,10 @@
 # be06-2nd-ketchop-mojal
-
-<br>
-<br>
+<br><br>
 
 <div align=center>
 <h3>Mojal</h3>
 <h4>👽한별, 🐹구은주, 🐨최정완, 🦊도지민, 🤖안준홍</h4>
 </div>
-
 <br>
 
 <div align=center>
@@ -115,13 +112,9 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 5. 실시간 데이터 복제 설정 <br>
     - 주 DB 서버 복구 및 테스트 완료 후, 미러 DB 서버와 동기화 <br>
     - 데이터 완전 동기화 후 서비스 다시 주 DB 서버로 전환 <br>
-
-
 <br>
 
 # 📚기능/요구사항/테스트 명세서
-
-
 <summary> <h3>1. 기능 명세서</h3> </summary>
 <p>
 
@@ -587,21 +580,20 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 <p>
 <br>
 
-<h3>나눔글 전체조회 코드</h3>
-
-<h4>성능개선 전 코드 </h4>
+### 나눔글 전체조회
 
 ```java
 public List<SharePostListRes> authorList(Long loginUserIdx) {
     Member member = Member.builder()
             .idx(loginUserIdx)
             .build();
-    //1번 쿼리
+    //쿼리 발생
     List<SharePost> posts = sharePostRepository.findAllByMember(member);
 
     List<SharePostListRes> sharePostListRes = new ArrayList<>();
     for (SharePost post : posts) {
         sharePostListRes.add(SharePostListRes.builder()
+                //쿼리 발생
                 .writerIdx(post.getMember().getIdx())
                 .title(post.getTitle())
                 .timeStamp(post.getTimeStamp())
@@ -610,7 +602,7 @@ public List<SharePostListRes> authorList(Long loginUserIdx) {
                 .deadline(post.getDeadline())
                 .capacity(post.getCapacity())
                 .currentEnrollment(post.getCurrentEnrollment())
-                //2번 쿼리
+                //쿼리 발생
                 .category(post.getCategory().getName())
                 .btmCategory(post.getBtmCategory())
                 .build());
@@ -621,61 +613,41 @@ public List<SharePostListRes> authorList(Long loginUserIdx) {
 </p>
 <br>
 
-<h4>Before</h4>
-<p>개선전 나눔글 전체조회 쿼리 실행시 쿼리를 3번 조회한다.</p>
-<img src="assets/image/성능개선/나눔글전체조회-개선전.png" width="80%" />
-
-<br>
-
-
-<h4>성능개선 후 코드 </h4>
+### Before
+#### 메서드 실행 시간
+`ResponseEntity com.example.mojal2ndproject2.sharePost.SharePostController.list(CustomUserDetails) - 시간 - 75ms`
+#### 쿼리 발생 횟수
+나눔글 전체조회 시 3번의 쿼리가 발생한다.
+<img src="assets/image/성능개선/나눔글전체조회-개선전.png" width="80%" /><br>
+### After
+1. 테이블을 JOIN FETCH해서 조회
 
 ```java
-public List<SharePostListRes> authorList(Long loginUserIdx) {
-        Member member = Member.builder()
-                .idx(loginUserIdx)
-                .build();
-//        List<SharePost> posts = sharePostRepository.findAllByMember(member);
-				//1번 쿼리
-        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
-
-        List<SharePostListRes> sharePostListRes = new ArrayList<>();
-        for (SharePost post : posts) {
-            sharePostListRes.add(SharePostListRes.builder()
-                    .writerIdx(post.getMember().getIdx())
-                    .title(post.getTitle())
-                    .timeStamp(post.getTimeStamp())
-                    .status(post.getStatus())
-                    .postType(post.getPostType())
-                    .deadline(post.getDeadline())
-                    .capacity(post.getCapacity())
-                    .currentEnrollment(post.getCurrentEnrollment())
-                    .category(post.getCategory().getName())
-                    .btmCategory(post.getBtmCategory())
-                    .build());
-        }
-        return sharePostListRes;
-    }
+// JOIN FETCH 사용 전
+        List<SharePost> posts = sharePostRepository.findAllByMember(member);
 ```
-
-<h4>After - fetch join 사용 후</h4>
-<p>쿼리 조회가 3번에서 1번으로 성능개선된 것을 확인할 수 있다. </p>
-<br>
-<img src="assets/image/성능개선/나눔글전체조회-개선후.png" width="80%" />
-
+```java
+// JOIN FETCH 사용 
+        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
+```
+#### 메서드 실행 시간
+`ResponseEntity com.example.mojal2ndproject2.sharePost.SharePostController.list(CustomUserDetails) - 시간 - 56ms`
+#### 쿼리 발생 횟수
+1번의 쿼리 발생<br>
+<img src="assets/image/성능개선/나눔글전체조회-개선후.png" width="30%" />
+#### 개선 사항
+- 메서드 실행 시간이 75ms -> 56ms로 감소.
+- 개선 전 3번 발생하던 쿼리가 개선 후 1번으로 감소.
 </details>
+
 <details>
 <summary> <b> 교환글 전체조회 </b> </summary>
-<p>
 <br>
 
-<h3>교환글 전체조회 코드</h3>
-
-<h4>성능개선 전 코드 </h4>
-
+### 교환글 전체조회
 ```java
- //교환게시글 전체조회
 public List<ReadExchangePostRes> list() throws BaseException{
+    //쿼리 발생
     List<ExchangePost> result = exchangePostRepository.findAll();
 
     List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
@@ -686,13 +658,13 @@ public List<ReadExchangePostRes> list() throws BaseException{
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .postType(post.getPostType())
-                .giveCategory(post.getGiveCategory().getName())
-                .takeCategory(post.getTakeCategory().getName())
+                .giveCategory(post.getGiveCategory().getName())//쿼리 발생
+                .takeCategory(post.getTakeCategory().getName())//쿼리 발생
                 .giveBtmCategory(post.getGiveBtmCategory())
                 .takeBtmCategory(post.getTakeBtmCategory())
                 .timeStamp(post.getTimeStamp())
                 .modifyTime(post.getModifyTime())
-                .memberIdx(post.getMember().getIdx())
+                .memberIdx(post.getMember().getIdx())//쿼리 발생
                 .status(post.getStatus())
                 .build();
         getExchangePostReadList.add(getReadRes);
@@ -701,50 +673,32 @@ public List<ReadExchangePostRes> list() throws BaseException{
     return getExchangePostReadList;
 }
 ```
-</p>
 <br>
 
-<h4>Before</h4>
-<p>개선전 교환글 전체조회 쿼리 실행시 쿼리를 6번 조회한다.</p>
-<img src="assets/image/성능개선/교환게시글전체조회-개선전.PNG" width="80%" />
-
-<br>
-
-
-<h4>성능개선 후 코드 </h4>
-
+### Before
+#### 메서드 실행 시간
+``
+#### 쿼리 발생 횟수
+교환글 전체 조회 시 6번의 쿼리 발생
+<img src="assets/image/성능개선/교환게시글전체조회-개선전.PNG" width="80%" /><br>
+### After
+1. 테이블을 JOIN FETCH 사용해서 조회 
 ```java
-public List<SharePostListRes> authorList(Long loginUserIdx) {
-        Member member = Member.builder()
-                .idx(loginUserIdx)
-                .build();
-//        List<SharePost> posts = sharePostRepository.findAllByMember(member);
-				//1번 쿼리
-        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
-
-        List<SharePostListRes> sharePostListRes = new ArrayList<>();
-        for (SharePost post : posts) {
-            sharePostListRes.add(SharePostListRes.builder()
-                    .writerIdx(post.getMember().getIdx())
-                    .title(post.getTitle())
-                    .timeStamp(post.getTimeStamp())
-                    .status(post.getStatus())
-                    .postType(post.getPostType())
-                    .deadline(post.getDeadline())
-                    .capacity(post.getCapacity())
-                    .currentEnrollment(post.getCurrentEnrollment())
-                    .category(post.getCategory().getName())
-                    .btmCategory(post.getBtmCategory())
-                    .build());
-        }
-        return sharePostListRes;
-    }
+//JOIN FETCH 사용 전
+        List<SharePost> posts = sharePostRepository.findAllByMember(member);
 ```
-
-<h4>After - fetch join 사용 후</h4>
-<p>쿼리 조회가 6번에서 1번으로 성능개선된 것을 확인할 수 있다. </p>
-<br>
+```java
+//JOIN FETCH 사용
+        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
+```
+#### 메서드 실행 시간
+``
+#### 쿼리 발생 횟수
+1번의 쿼리 발생<br>
 <img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
+#### 개선 사항
+- 메서드 실행 시간이 ms -> ms로 감소.
+- 개선 전 6번 발생하던 쿼리가 개선 후 1번으로 감소.
 
 </details>
 <details>
