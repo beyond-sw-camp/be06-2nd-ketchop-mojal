@@ -143,8 +143,7 @@ public class ExchangePostService {
         if(customUserDetails.getMember() == null){
             throw new BaseException(BaseResponseStatus.MEMBER_NOT_LOGIN);
         }
-
-
+        // TODO byul : 코드 확인
 
 
         ExchangePost exchangePost = ExchangePost.builder()

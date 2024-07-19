@@ -23,6 +23,7 @@ public class SharePostCreateReq {
     private String contents;
     @NotBlank(message = "기간을 정해주세요")
     @NotNull(message = "기간을 정해주세요")
+    // TODO byul : 0~24까지만
     private String deadline;
     @NotBlank(message = "인원을 정해주세요")
     @NotNull(message = "인원을 정해주세요")
