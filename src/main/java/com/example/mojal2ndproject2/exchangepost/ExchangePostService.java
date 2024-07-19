@@ -57,10 +57,8 @@ public class ExchangePostService {
         return new BaseResponse<>(exchangePostReadResList);
     }
 
-    public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
-        Member member = Member.builder()
-                .idx(requestIdx)
-                .build();
+    public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
+
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
         List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
 

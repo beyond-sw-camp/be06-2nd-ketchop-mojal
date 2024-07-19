@@ -9,6 +9,7 @@ import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchang
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import com.example.mojal2ndproject2.member.model.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,8 +35,8 @@ public class ExchangePostController {
     // 내가 참여한 교환글 전체 조회
     @RequestMapping(method = RequestMethod.GET, value = "/users/list")
     public BaseResponse<List<ReadExchangePostRes>> exchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long requestIdx = customUserDetails.getMember().getIdx();
-        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.exchangeList(requestIdx);
+        Member member = customUserDetails.getMember();
+        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.exchangeList(member);
         return response;
     }
 
