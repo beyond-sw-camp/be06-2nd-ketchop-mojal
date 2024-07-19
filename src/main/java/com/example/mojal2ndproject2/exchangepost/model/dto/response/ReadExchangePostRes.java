@@ -21,5 +21,5 @@ public class ReadExchangePostRes {
     private String timeStamp;
     private String modifyTime;
     private Boolean status;
-    private Boolean postType;
+    private String postType;
 }

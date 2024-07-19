@@ -9,13 +9,17 @@ import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchang
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@ControllerAdvice
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post/exchange")
@@ -41,22 +45,22 @@ public class ExchangePostController {
 
     //교환글생성
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
-    public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody CreateExchangePostReq req) {
-        CreateExchangePostRes res = exchangePostService.create(req, customUserDetails);
-        return new BaseResponse<>(res);
+    public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @Valid @RequestBody CreateExchangePostReq req) throws BaseException {
+            CreateExchangePostRes res = exchangePostService.create(req, customUserDetails);
+            return new BaseResponse<>(res);
     }
 
     //교환글전체조회
     @RequestMapping(method = RequestMethod.GET,value = "/list")
-    public BaseResponse<List<ReadExchangePostRes>> list() {
+    public BaseResponse<List<ReadExchangePostRes>> list() throws BaseException{
         List<ReadExchangePostRes> res = exchangePostService.list();
         return new BaseResponse<>(res);
     }
 
     //교환글해당글조회
     @RequestMapping(method = RequestMethod.GET, value = "/read")
-    public BaseResponse<ReadExchangePostRes> read(@RequestParam Long id) {
-        ReadExchangePostRes res = exchangePostService.read(id);
+    public BaseResponse<ReadExchangePostRes> read(@RequestParam Long idx) throws BaseException {
+        ReadExchangePostRes res = exchangePostService.read(idx);
         return new BaseResponse<>(res);
     }
 

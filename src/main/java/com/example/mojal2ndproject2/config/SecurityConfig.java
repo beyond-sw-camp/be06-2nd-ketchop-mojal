@@ -37,9 +37,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((auth)->
                 auth
-                        .requestMatchers("/post/share/users","/post/exchange/users").authenticated()
+                        .requestMatchers("/post/share/users","/post/exchange/users",
+                                "/post/exchange/users/create").authenticated()
                         .requestMatchers("/api/ws","/api/topic").permitAll() //TODO 0718 소켓 필터링 처리?
-
                         .requestMatchers(
                                 "/login",
                                 "/member/signup",
@@ -47,7 +47,6 @@ public class SecurityConfig {
                                 "/post/**",
                                 "/search/**",
                                 "/kakao/**").permitAll()
-
                         .anyRequest().permitAll()
         );
 
