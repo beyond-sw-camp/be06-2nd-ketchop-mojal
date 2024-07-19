@@ -55,8 +55,7 @@ public enum BaseResponseStatus {
     NUM_OF_PEOPLE_NOT_SET(false, 4111, "모집 인원을 설정하지 않았습니다."),
     THIS_POST_NOT_EXIST(false, 4112, "해당 게시글이 존재하지 않습니다"),
     ALREADY_REQUEST(false, 4113, "이미 신청한 게시글입니다."),
-    THIS_POST_NOT_EXIST(false, 4114, "해당 게시글이 존재하지 않습니다"),
-    GIVE_CATEGORY_NOT_IN_LIST(false, 4115, "주고싶은 재능의 상위 카테고리가 범위를 벗어났습니다."),
+    GIVE_CATEGORY_NOT_IN_LIST(false, 4114, "주고싶은 재능의 상위 카테고리가 범위를 벗어났습니다."),
 
 
 
