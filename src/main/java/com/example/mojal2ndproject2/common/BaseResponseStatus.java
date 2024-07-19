@@ -26,6 +26,9 @@ public enum BaseResponseStatus {
     /**2200 : Login에러**/
     MEMBER_NOT_LOGIN(false,2204,"로그인해주세요."),
 
+    /**2100 : Login에러**/
+    CHECK_CATEGORY_MORE_THAN_ONE(false,2101,"내 재능을 하나 이상 체크 해 주세요."),
+
     /**
      * 3000 : MEMBER 에러
      */
