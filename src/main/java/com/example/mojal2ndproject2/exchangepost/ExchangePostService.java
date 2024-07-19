@@ -38,6 +38,7 @@ public class ExchangePostService {
     private final CategoryRepository categoryRepository;
     private final UserHaveCategoryRepository userHaveCategoryRepository;
 
+    /********************내가 작성한 교환글 전체조회*********************/
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
         Member member = Member.builder()
                 .idx(requestIdx)
@@ -64,6 +65,7 @@ public class ExchangePostService {
         return new BaseResponse<>(exchangePostReadResList);
     }
 
+/***************************내가 참여한 교환 게시글 전체조회**********************************/
     public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
@@ -87,28 +89,10 @@ public class ExchangePostService {
                         .build();
                 exchangePostReadResList.add(exchangePostReadRes);
             }
-//        for (PostMatchingMember p : postMatchingMemberList ) {
-//            if (p.getExchangePost() != null) {
-//                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-//                        .idx(p.getExchangePost().getIdx())
-//                        .title(p.getExchangePost().getTitle())
-//                        .timeStamp(p.getExchangePost().getTimeStamp())
-//                        .modifyTime(p.getExchangePost().getModifyTime())
-//                        .status(p.getExchangePost().getStatus())
-//                        .postType(p.getExchangePost().getPostType())
-//                        .memberIdx(p.getMember().getIdx())
-//                        .memberNickname(p.getMember().getNickname())
-//                        .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
-//                        .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
-//                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
-//                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
-//                        .build();
-//                exchangePostReadResList.add(exchangePostReadRes);
-//            }
-//        }
         return new BaseResponse<>(exchangePostReadResList);
     }
-    //교환게시글 생성
+
+    /*****************************교환게시글 생성*********************************/
     public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails) throws BaseException {
         LocalDateTime createdAt = LocalDateTime.now();
 
