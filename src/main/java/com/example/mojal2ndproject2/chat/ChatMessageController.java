@@ -8,16 +8,18 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/app")
 public class ChatMessageController {
     private final ChatMessageService chatMessageService;
 
     //config 파일에서 setApplicationDestinationPrefixes()를 통해 prefix를 "/app"으로 설정 해주었기 때문에,
     //경로가 한번 더 수정되어 “/app/chat.sendMessage/{roomId}”로 바뀐다.
-    @MessageMapping("/chat.sendMessage/{roomId}")
+    @MessageMapping("/chat.sendMessage/{roomId}") //sendMessage 누르면 여기로 옴
     @SendTo("/topic/{roomId}")
     public ChatMessage sendMessage(@DestinationVariable Long roomIdx, @Payload ChatMessage chatMessage) {
         log.info("[SENDER - {}] messages : {}, timestamp : {}", chatMessage.getSenderIdx(), chatMessage.getMessage(), chatMessage.getTimeStamp());

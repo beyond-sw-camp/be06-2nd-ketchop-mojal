@@ -61,10 +61,7 @@ public class MemberController {
     public BaseResponse<MemberSignupRes> signup(@Valid @RequestBody MemberSignupReq request) throws BaseException {
 
         BaseResponse<MemberSignupRes> result = memberService.signup(request);
-        String uuid = emailAuthService.sendEmail(request.getEmail());
-        emailAuthService.save(request.getEmail(), uuid);
-        //Todo byul: redirect URL로 카테고리 선택하는 창으로 + 카카오에서도
-
+        emailAuthService.sendEmail(request.getEmail());
         return result;
     }
 

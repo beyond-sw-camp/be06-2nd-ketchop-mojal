@@ -35,6 +35,8 @@ public class EmailAuthService {
 
         emailSender.send(message);
 
+        save(email, uuid);
+
         return uuid;
     }
 

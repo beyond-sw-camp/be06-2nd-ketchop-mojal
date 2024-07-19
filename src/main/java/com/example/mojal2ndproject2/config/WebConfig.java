@@ -12,9 +12,9 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+                registry.addMapping("/ws/**")
                         .allowedOrigins("http://127.0.0.1:5500") // 프론트엔드가 호스팅되는 도메인
-                        .allowedOrigins("http://127.0.0.1:64931")
+                        .allowedOrigins("http://127.0.0.1:56030")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
             }
         };
