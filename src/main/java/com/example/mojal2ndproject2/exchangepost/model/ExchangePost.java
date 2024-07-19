@@ -25,7 +25,7 @@ public class ExchangePost {
     private String timeStamp;
     private String modifyTime;
     private Boolean status;
-    private Boolean postType;
+    private String postType;
     private String giveBtmCategory;
     private String takeBtmCategory;
     @ManyToOne(fetch = FetchType.LAZY)

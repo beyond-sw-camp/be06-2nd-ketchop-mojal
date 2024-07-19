@@ -51,8 +51,17 @@ public class EmailAuthService {
         Optional<EmailAuth> result = emailAuthRepository.findByEmailAndUuid(email, uuid);
         if(result.isPresent()){
             Member member = memberRepository.findByEmail(email).get();//Todo orElseThrow
-            member.setEmailAuth(true);
-            memberRepository.save(member);
+            Member newMember = Member.builder()
+                    .idx(member.getIdx())
+                    .nickname(member.getNickname())
+                    .password(member.getPassword())
+                    .email(member.getEmail())
+                    .role(member.getRole())
+                    .signupDate(member.getSignupDate())
+                    .emailAuth(true)
+                    .build();
+
+            memberRepository.save(newMember);
         }else{
             return new BaseResponse<>(POST_USERS_UNAUTH_EMAIL);
         }

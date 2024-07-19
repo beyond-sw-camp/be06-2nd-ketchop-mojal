@@ -10,12 +10,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
 public class UserHaveCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

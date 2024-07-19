@@ -7,6 +7,7 @@ import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,7 +29,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter //Todo byul : 이거 없애고 이거 쓰는 부분은 builder로
+//@Setter //Todo byul : 이거 없애고 이거 쓰는 부분은 builder로
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,16 +41,22 @@ public class Member {
     private Boolean emailAuth;
     private Long kakaoIdx;
     private String role;
+//    @OneToMany(mappedBy = "member" ,fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "member")
     private List<SharePost> sharePosts = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "member")
     private List<ExchangePost> exchangePosts = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "member")
     private List<UserHaveCategory> userHaveCategories = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "member")
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
+//    @OneToMany(mappedBy = "member1", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "member1")
     private List<ChatRoom> chatRooms = new ArrayList<>();
+//    @OneToMany(mappedBy = "member2", fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "member2")
     private List<ChatRoom> chatRooms2 = new ArrayList<>();
 
