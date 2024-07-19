@@ -69,7 +69,8 @@ public class SharePostService {
         Member member = Member.builder()
                 .idx(loginUserIdx)
                 .build();
-        List<SharePost> posts = sharePostRepository.findAllByMember(member);
+//        List<SharePost> posts = sharePostRepository.findAllByMember(member);
+        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
 
         List<SharePostListRes> sharePostListRes = new ArrayList<>();
         for (SharePost post : posts) {

@@ -57,7 +57,7 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    //내가 작성한 글 전체조회
+    //내가 작성한 나눔글 전체조회
     @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
     public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
