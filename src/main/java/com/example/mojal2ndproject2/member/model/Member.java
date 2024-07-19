@@ -29,7 +29,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter //Todo byul : 이거 없애고 이거 쓰는 부분은 builder로
+//@Setter //Todo byul : 이거 없애고 이거 쓰는 부분은 builder로
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
