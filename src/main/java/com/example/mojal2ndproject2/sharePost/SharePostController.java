@@ -72,9 +72,9 @@ public class SharePostController {
     @RequestMapping(method = RequestMethod.GET, value = "/users/enrolled/list")
     public ResponseEntity<List<SharePostListRes>> enrolledList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
-        Long loginUserIdx = customUserDetails.getMember().getIdx();
+        Member member = customUserDetails.getMember();
 
-        List<SharePostListRes> response= sharePostService.enrolledList(loginUserIdx);
+        List<SharePostListRes> response= sharePostService.enrolledList(member);
         return ResponseEntity.ok(response);
     }
 }

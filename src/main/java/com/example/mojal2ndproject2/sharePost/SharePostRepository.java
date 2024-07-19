@@ -20,4 +20,6 @@ public interface SharePostRepository extends JpaRepository<SharePost, Long> {
     List<SharePost> findAllPostWithMemberAndCategory();
     @Query("SELECT sp FROM SharePost sp JOIN FETCH sp.member JOIN FETCH sp.category WHERE sp.idx = :postIdx")
     Optional<SharePost> findByIdxWithMemberAndCategory(Long postIdx);
+    @Query("SELECT sp FROM SharePost sp JOIN FETCH sp.postMatchingMembers JOIN FETCH sp.category")
+    List<SharePost> findAllByMemberWithMatchingMembersAndCategory(Member member);
 }
