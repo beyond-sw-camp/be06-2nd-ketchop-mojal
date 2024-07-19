@@ -95,13 +95,13 @@ public class ExchangePostService {
 
         //givecategory가 내가 선택한 카테고리 범위에 없으면 에러처리
         //즉, 해당카테고리가 없으면 예외처리
-//        Optional<Category> resultCategory = categoryRepository.findById(req.getGiveCategoryIdx());
-//                .orElseThrow(
-//                () -> new BaseException(GIVE_CATEGORY_NOT_IN_LIST)
-//        );
-//        if(resultCategory == null){
-//            throw new BaseException(GIVE_CATEGORY_NOT_IN_LIST);
-//        }
+        Category resultCategory = categoryRepository.findById(req.getGiveCategoryIdx()).orElseThrow(
+                () -> new BaseException(GIVE_CATEGORY_NOT_IN_LIST)
+        );
+
+        if(resultCategory == null){
+            throw new BaseException(GIVE_CATEGORY_NOT_IN_LIST);
+        }
 
         //회원이 없으면 예외처리
         if(customUserDetails.getMember() == null){
@@ -148,7 +148,7 @@ public class ExchangePostService {
 
     //교환게시글 전체조회
     public List<ReadExchangePostRes> list() throws BaseException{
-        List<ExchangePost> result = exchangePostRepository.findAll();
+        List<ExchangePost> result = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
 
         List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
 
@@ -175,7 +175,7 @@ public class ExchangePostService {
 
     //교환해당게시글 조회
     public ReadExchangePostRes read(Long idx) throws BaseException {
-        ExchangePost getExchangePost = exchangePostRepository.findById(idx).orElseThrow(
+        ExchangePost getExchangePost = exchangePostRepository.findPostByIdxWithMemberAndGiveCategoryAAndTakeCategory(idx).orElseThrow(
                 () -> new BaseException(THIS_POST_NOT_EXIST)
         );
 
