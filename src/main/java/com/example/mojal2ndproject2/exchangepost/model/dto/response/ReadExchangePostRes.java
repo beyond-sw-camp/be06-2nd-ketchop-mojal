@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -18,8 +20,8 @@ public class ReadExchangePostRes {
     private String takeCategory;
     private String title;
     private String contents;
-    private String timeStamp;
-    private String modifyTime;
+    private LocalDateTime timeStamp;
+    private LocalDateTime modifyTime;
     private Boolean status;
     private String postType;
 }
