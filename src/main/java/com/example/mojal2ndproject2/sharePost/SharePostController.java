@@ -56,11 +56,10 @@ public class SharePostController {
                     )
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
-    public ResponseEntity<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                     @RequestBody SharePostCreateReq request){
+    public BaseResponse<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody SharePostCreateReq request) throws BaseException {
         Long requestIdx = customUserDetails.getMember().getIdx();
         SharePostCreateRes result = sharePostService.create(requestIdx, request);
-        return ResponseEntity.ok(result);
+        return new BaseResponse<>(result);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/enrollment")

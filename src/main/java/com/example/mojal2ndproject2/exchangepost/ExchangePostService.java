@@ -17,6 +17,8 @@ import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchange
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
+import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
+import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,7 @@ public class ExchangePostService {
     private final ExchangePostRepository exchangePostRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
     private final CategoryRepository categoryRepository;
-
+    private final UserHaveCategoryRepository userHaveCategoryRepository;
 
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
         Member member = Member.builder()
@@ -65,31 +67,67 @@ public class ExchangePostService {
     public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-        List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
+//        List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
+        List<ExchangePost> exchangePosts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member);
 
-        for (PostMatchingMember p : postMatchingMemberList ) {
-            if (p.getExchangePost() != null) {
+            for (ExchangePost e : exchangePosts) {
                 ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                        .idx(p.getExchangePost().getIdx())
-                        .title(p.getExchangePost().getTitle())
-                        .timeStamp(p.getExchangePost().getTimeStamp())
-                        .modifyTime(p.getExchangePost().getModifyTime())
-                        .status(p.getExchangePost().getStatus())
-                        .postType(p.getExchangePost().getPostType())
-                        .memberIdx(p.getMember().getIdx())
-                        .memberNickname(p.getMember().getNickname())
-                        .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
-                        .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
-                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
-                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
+                        .idx(e.getIdx())
+                        .title(e.getTitle())
+                        .timeStamp(e.getTimeStamp())
+                        .modifyTime(e.getModifyTime())
+                        .status(e.getStatus())
+                        .postType(e.getPostType())
+                        .memberIdx(e.getMember().getIdx())
+                        .memberNickname(e.getMember().getNickname())
+                        .giveBtmCategory(e.getGiveBtmCategory())
+                        .takeBtmCategory(e.getTakeBtmCategory())
+                        .giveCategory(e.getGiveCategory().getName())
+                        .takeCategory(e.getTakeCategory().getName())
                         .build();
                 exchangePostReadResList.add(exchangePostReadRes);
             }
-        }
+//        for (PostMatchingMember p : postMatchingMemberList ) {
+//            if (p.getExchangePost() != null) {
+//                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
+//                        .idx(p.getExchangePost().getIdx())
+//                        .title(p.getExchangePost().getTitle())
+//                        .timeStamp(p.getExchangePost().getTimeStamp())
+//                        .modifyTime(p.getExchangePost().getModifyTime())
+//                        .status(p.getExchangePost().getStatus())
+//                        .postType(p.getExchangePost().getPostType())
+//                        .memberIdx(p.getMember().getIdx())
+//                        .memberNickname(p.getMember().getNickname())
+//                        .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
+//                        .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
+//                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
+//                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
+//                        .build();
+//                exchangePostReadResList.add(exchangePostReadRes);
+//            }
+//        }
         return new BaseResponse<>(exchangePostReadResList);
     }
     //교환게시글 생성
     public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails) throws BaseException {
+        LocalDateTime createdAt = LocalDateTime.now();
+
+        Category newGiveCategory = Category.builder()
+                .idx(req.getGiveCategoryIdx())
+                .build();
+        Category newTakeCategory = Category.builder()
+                .idx(req.getTakeCategoryIdx())
+                .build();
+
+        Long memberIdx = customUserDetails.getMember().getIdx();
+        Member newMember = Member.builder()
+                .idx(memberIdx)
+                .build();
+
+        //회원가입시 선택한 카테고리가 없을때 예외처리
+        UserHaveCategory userHaveCategory = userHaveCategoryRepository.findById(req.getGiveCategoryIdx()).orElseThrow(
+                () -> new BaseException(CHECK_CATEGORY_MORE_THAN_ONE)
+        );
 
         //givecategory가 내가 선택한 카테고리 범위에 없으면 에러처리
         //즉, 해당카테고리가 없으면 예외처리
@@ -105,21 +143,8 @@ public class ExchangePostService {
         if(customUserDetails.getMember() == null){
             throw new BaseException(BaseResponseStatus.MEMBER_NOT_LOGIN);
         }
+        // TODO byul : 코드 확인
 
-
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        Category newGiveCategory = Category.builder()
-                .idx(req.getGiveCategoryIdx())
-                .build();
-        Category newTakeCategory = Category.builder()
-                .idx(req.getTakeCategoryIdx())
-                .build();
-
-        Long memberIdx = customUserDetails.getMember().getIdx();
-        Member newMember = Member.builder()
-                .idx(memberIdx)
-                .build();
 
         ExchangePost exchangePost = ExchangePost.builder()
                 .title(req.getTitle())
