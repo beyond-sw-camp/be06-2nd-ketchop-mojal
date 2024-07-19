@@ -16,6 +16,7 @@ public class EmailAuthController {
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public BaseResponse<BaseResponseStatus> verify(String email, String uuid){
         BaseResponse<BaseResponseStatus> result = emailAuthService.verify(email, uuid);
+        //Todo byul: redirect URL로 카테고리 선택하는 창으로 + 카카오에서도
         return result;
     }
 }

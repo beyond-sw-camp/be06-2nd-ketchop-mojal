@@ -3,12 +3,14 @@ package com.example.mojal2ndproject2.sharePost;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
+import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
+import groovy.transform.ASTTest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -78,6 +80,7 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
+    @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     public ResponseEntity<List<SharePostReadRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long requestIdx = customUserDetails.getMember().getIdx();
