@@ -5,6 +5,8 @@ import com.example.mojal2ndproject2.category.CategoryRepository;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
@@ -14,6 +16,7 @@ import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchan
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
+import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -84,7 +89,24 @@ public class ExchangePostService {
         return new BaseResponse<>(exchangePostReadResList);
     }
     //교환게시글 생성
-    public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails){
+    public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails) throws BaseException {
+
+        //givecategory가 내가 선택한 카테고리 범위에 없으면 에러처리
+        //즉, 해당카테고리가 없으면 예외처리
+        Category resultCategory = categoryRepository.findById(req.getGiveCategoryIdx()).orElseThrow(
+                () -> new BaseException(GIVE_CATEGORY_NOT_IN_LIST)
+        );
+
+        if(resultCategory == null){
+            throw new BaseException(GIVE_CATEGORY_NOT_IN_LIST);
+        }
+
+        //회원이 없으면 예외처리
+        if(customUserDetails.getMember() == null){
+            throw new BaseException(BaseResponseStatus.MEMBER_NOT_LOGIN);
+        }
+
+
         String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         Category newGiveCategory = Category.builder()
@@ -102,7 +124,7 @@ public class ExchangePostService {
         ExchangePost exchangePost = ExchangePost.builder()
                 .title(req.getTitle())
                 .contents(req.getContents())
-                .postType(req.getPostType())
+                .postType("exchange")
                 .giveCategory(newGiveCategory)
                 .takeCategory(newTakeCategory)
                 .giveBtmCategory(req.getGiveBtmCategory())
@@ -116,15 +138,15 @@ public class ExchangePostService {
 
 
         return CreateExchangePostRes.builder()
-                .idx(memberIdx)
+                .idx(exchangePost.getIdx())
                 .title(req.getTitle())
                 .content(req.getContents())
                 .build();
     }
 
     //교환게시글 전체조회
-    public List<ReadExchangePostRes> list(){
-        List<ExchangePost> result = exchangePostRepository.findAll();
+    public List<ReadExchangePostRes> list() throws BaseException{
+        List<ExchangePost> result = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
 
         List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
 
@@ -150,10 +172,12 @@ public class ExchangePostService {
     }
 
     //교환해당게시글 조회
-    public ReadExchangePostRes read(Long id){
-        Optional<ExchangePost> result = exchangePostRepository.findById(id);
+    public ReadExchangePostRes read(Long idx) throws BaseException {
+        ExchangePost getExchangePost = exchangePostRepository.findPostByIdxWithMemberAndGiveCategoryAAndTakeCategory(idx).orElseThrow(
+                () -> new BaseException(THIS_POST_NOT_EXIST)
+        );
 
-        ExchangePost getExchangePost = result.get();
+//        ExchangePost getExchangePost = result.get();
         ReadExchangePostRes getExchangePostRes = ReadExchangePostRes.builder()
                 .idx(getExchangePost.getIdx())
                 .title(getExchangePost.getTitle())
