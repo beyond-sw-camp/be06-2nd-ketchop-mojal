@@ -4,13 +4,7 @@ import com.example.mojal2ndproject2.category.Category;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -34,14 +28,14 @@ public class ExchangePost {
     private Boolean postType;
     private String giveBtmCategory;
     private String takeBtmCategory;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_idx")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "give_category_idx")
     private Category giveCategory;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "take_category_idx")
     private Category takeCategory;
     //  idx  give_c_idx take_c_idx
@@ -49,6 +43,6 @@ public class ExchangePost {
 
     @OneToMany(mappedBy = "exchangePost")
     private List<ChatRoom> chatRooms = new ArrayList<>();
-    @OneToMany(mappedBy = "exchangePost")
+    @OneToMany(mappedBy = "exchangePost", fetch = FetchType.LAZY)
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
 }

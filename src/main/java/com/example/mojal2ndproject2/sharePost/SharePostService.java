@@ -242,7 +242,10 @@ public class SharePostService {
     }
 
     public BaseResponse<String> enrollment(Member member, Long idx) throws BaseException {
-      SharePost sharePost = sharePostRepository.findById(idx).orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
+//      SharePost sharePost = sharePostRepository.findById(idx)
+//              .orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
+        SharePost sharePost = sharePostRepository.findByIdWithMember(idx)
+                .orElseThrow(()-> new BaseException(THIS_POST_NOT_EXIST));
       Optional<PostMatchingMember> now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost);
         if (now.isPresent()) {
             throw new BaseException(BaseResponseStatus.ALREADY_REQUEST);
@@ -266,7 +269,7 @@ public class SharePostService {
                       .timeStamp(sharePost.getTimeStamp())
                       .modifyTime(sharePost.getModifyTime())
                       .status(false)
-                      .postType(true)
+                      .postType(sharePost.getPostType())
                       .deadline(sharePost.getDeadline())
                       .capacity(sharePost.getCapacity())
                       .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
@@ -290,7 +293,7 @@ public class SharePostService {
                       .timeStamp(sharePost.getTimeStamp())
                       .modifyTime(sharePost.getModifyTime())
                       .status(false)
-                      .postType(true)
+                      .postType(sharePost.getPostType())
                       .deadline(sharePost.getDeadline())
                       .capacity(sharePost.getCapacity())
                       .currentEnrollment(sharePost.getCurrentEnrollment() + 1)
