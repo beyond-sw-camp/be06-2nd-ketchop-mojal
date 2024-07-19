@@ -9,6 +9,9 @@ import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateR
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,32 @@ import java.util.List;
 public class SharePostController {
     private final SharePostService sharePostService;
 
+    @Operation(summary = "나눔글 작성",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {
+                                    @ExampleObject(name = "Valid example", value = """
+                                            {
+                                              "title" : "java 과외"
+                                              "contents" : "java 알려드립니다~~"
+                                              "deadline" : " "
+                                              "capacity" : 5
+                                              "categoryIdx" : 13
+                                              "btmCategory" : "java"
+                                            }"""),
+                                    @ExampleObject(name = "inValid example", value = """
+                                            {
+                                              "title" : ""
+                                              "contents" : "java 알려드립니다~~"
+                                              "deadline" : " "
+                                              "capacity" : 5
+                                              "categoryIdx" : 13
+                                              "btmCategory" : "java"
+                                            }"""),
+                            }
+                    )
+            ))
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
     public ResponseEntity<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                      @RequestBody SharePostCreateReq request){

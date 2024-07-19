@@ -194,8 +194,8 @@ public class SharePostService {
 
 
     public List<SharePostReadRes> list(Long requestIdx){
-        List<SharePost> posts = sharePostRepository.findAll();
-//        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
+//        List<SharePost> posts = sharePostRepository.findAll();
+        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
         List<SharePostReadRes> results = new ArrayList<>();
         for (SharePost post : posts) {
             Member autor = post.getMember(); //여기서 조인?
