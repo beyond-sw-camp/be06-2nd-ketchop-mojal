@@ -18,10 +18,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
+import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.method.annotation.SessionAttributesHandler;
 
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.CHECK_CATEGORY_MORE_THAN_ONE;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.THIS_POST_NOT_EXIST;
 
 @Service
@@ -30,13 +34,20 @@ public class SharePostService {
     private final SharePostRepository sharePostRepository;
     private final MemberRepository memberRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
-    
-  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) {
+    private final UserHaveCategoryRepository userHaveCategoryRepository;
+
+    /*******나눔글 생성***********/
+  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) throws BaseException{
+
+      //회원가입시 선택한 카테고리가 없을때 예외처리
+      UserHaveCategory userHaveCategory = userHaveCategoryRepository.findById(request.getCategoryIdx()).orElseThrow(
+              () -> new BaseException(CHECK_CATEGORY_MORE_THAN_ONE)
+      );
+
+
         Member member = Member.builder().idx(requestIdx).build();
 
         Category category = Category.builder().idx(request.getCategoryIdx()).build();
-
-//        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         SharePost sharePost = SharePost.builder()
                 .member(member)
@@ -65,7 +76,7 @@ public class SharePostService {
         return sharePostCreateRes;
     }
 
-    //내가 작성한 나눔글 전체조회
+    /****************내가 작성한 나눔글 전체조회************/
     public List<SharePostListRes> authorList(Long loginUserIdx) {
         Member member = Member.builder()
                 .idx(loginUserIdx)
@@ -91,7 +102,7 @@ public class SharePostService {
         return sharePostListRes;
     }
 
-    //내가 참여한 나눔글 전체조회
+    /***********내가 참여한 나눔글 전체조회************/
     //포스트매칭멤버 테이블에서 멤버-나눔글 짝을 찾아서 있으면 조회
     public List<SharePostListRes> enrolledList(Member member) {
 
@@ -116,29 +127,11 @@ public class SharePostService {
                     .build());
         }
 
-//        for (PostMatchingMember pmm : pmms) {
-//            if(pmm.getExchangePost() != null) { //Todo byul : 교환글 참여도 있을 때 한번 더 확인
-//                continue;
-//            }
-//
-//            sharePostListRes.add(SharePostListRes.builder()
-//                    .writerIdx(pmm.getSharePost().getMember().getIdx())
-//                    .title(pmm.getSharePost().getTitle())
-//                    .timeStamp(pmm.getSharePost().getTimeStamp())
-//                    .status(pmm.getSharePost().getStatus())
-//                    .postType(pmm.getSharePost().getPostType())
-//                    .deadline(pmm.getSharePost().getDeadline())
-//                    .capacity(pmm.getSharePost().getCapacity())
-//                    .currentEnrollment(pmm.getSharePost().getCurrentEnrollment())
-//                    .category(pmm.getSharePost().getCategory().getName())
-//                    .btmCategory(pmm.getSharePost().getBtmCategory())
-//                    .build());
-//        }
         return sharePostEnrollmentListRes;
     }
 
 
-    //나눔글 조회
+    /***************나눔글 하나 조회************/
     public SharePostReadRes read(Long requestIdx, Long idx) throws BaseException {
 //        Optional<SharePost> result = sharePostRepository.findById(idx);
         SharePost sharePost = sharePostRepository.findByIdxWithMemberAndCategory(idx)
@@ -192,7 +185,7 @@ public class SharePostService {
         }
     }
 
-
+    /**************나눔글 전체조회***************/
     public List<SharePostReadRes> list(Long requestIdx){
         List<SharePost> posts = sharePostRepository.findAll();
 //        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
@@ -201,16 +194,6 @@ public class SharePostService {
             Member autor = post.getMember(); //여기서 조인?
             Long authorIdx = autor.getIdx();
             String author = autor.getNickname();
-
-//            if(authorIdx==requestIdx){
-//                List<String> members = new ArrayList<>();
-//
-//                //Todo byul : 근데 전체 리스트라 이거 안필요하지 않나?!
-//                List<PostMatchingMember> postMatchingMembers = post.getPostMatchingMembers();
-//                for (PostMatchingMember m : postMatchingMembers) {
-//                    String nickname = m.getMember().getNickname();
-//                    members.add(nickname);
-//                }
 
                 SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
                         .authorIdx(authorIdx)
@@ -225,34 +208,15 @@ public class SharePostService {
                         .currentEnrollment(post.getCurrentEnrollment())
                         .category(post.getCategory().getName())
                         .btmCategory(post.getBtmCategory())
-//                        .matchingMembers(members)
                         .build();
 
                 results.add(sharePostReadRes);
-//            }
-//            else{
-//                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-//                        .authorIdx(authorIdx)
-//                        .author(author)
-//                        .title(post.getTitle())
-//                        .contents(post.getContents())
-//                        .timeStamp(post.getTimeStamp())
-//                        .status(post.getStatus())
-//                        .postType(post.getPostType())
-//                        .deadline(post.getDeadline())
-//                        .capacity(post.getCapacity())
-//                        .currentEnrollment(post.getCurrentEnrollment())
-//                        .category(post.getCategory().getName())
-//                        .btmCategory(post.getBtmCategory())
-//                        .build();
-//
-//                results.add(sharePostReadRes);
-//            }
         }
 
         return results;
     }
 
+    /****************내가 나눔글에 참여하기******************/
     public BaseResponse<String> enrollment(Member member, Long idx) throws BaseException {
 //      SharePost sharePost = sharePostRepository.findById(idx)
 //              .orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));

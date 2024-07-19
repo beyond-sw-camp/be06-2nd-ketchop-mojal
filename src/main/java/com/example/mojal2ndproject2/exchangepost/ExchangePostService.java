@@ -17,6 +17,8 @@ import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchange
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
+import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
+import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,7 @@ public class ExchangePostService {
     private final ExchangePostRepository exchangePostRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
     private final CategoryRepository categoryRepository;
-
+    private final UserHaveCategoryRepository userHaveCategoryRepository;
 
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
         Member member = Member.builder()
@@ -108,6 +110,24 @@ public class ExchangePostService {
     }
     //교환게시글 생성
     public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails) throws BaseException {
+        LocalDateTime createdAt = LocalDateTime.now();
+
+        Category newGiveCategory = Category.builder()
+                .idx(req.getGiveCategoryIdx())
+                .build();
+        Category newTakeCategory = Category.builder()
+                .idx(req.getTakeCategoryIdx())
+                .build();
+
+        Long memberIdx = customUserDetails.getMember().getIdx();
+        Member newMember = Member.builder()
+                .idx(memberIdx)
+                .build();
+
+        //회원가입시 선택한 카테고리가 없을때 예외처리
+        UserHaveCategory userHaveCategory = userHaveCategoryRepository.findById(req.getGiveCategoryIdx()).orElseThrow(
+                () -> new BaseException(CHECK_CATEGORY_MORE_THAN_ONE)
+        );
 
         //givecategory가 내가 선택한 카테고리 범위에 없으면 에러처리
         //즉, 해당카테고리가 없으면 예외처리
@@ -125,19 +145,7 @@ public class ExchangePostService {
         }
 
 
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        Category newGiveCategory = Category.builder()
-                .idx(req.getGiveCategoryIdx())
-                .build();
-        Category newTakeCategory = Category.builder()
-                .idx(req.getTakeCategoryIdx())
-                .build();
-
-        Long memberIdx = customUserDetails.getMember().getIdx();
-        Member newMember = Member.builder()
-                .idx(memberIdx)
-                .build();
 
         ExchangePost exchangePost = ExchangePost.builder()
                 .title(req.getTitle())
