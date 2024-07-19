@@ -7,6 +7,7 @@ import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class ExchangePost {
     private Long idx;
     private String title;
     private String contents;
-    private String timeStamp;
-    private String modifyTime;
+    private LocalDateTime timeStamp;
+    private LocalDateTime modifyTime;
     private Boolean status;
     private String postType;
     private String giveBtmCategory;
@@ -43,6 +44,6 @@ public class ExchangePost {
 
     @OneToMany(mappedBy = "exchangePost")
     private List<ChatRoom> chatRooms = new ArrayList<>();
-    @OneToMany(mappedBy = "exchangePost")
+    @OneToMany(mappedBy = "exchangePost", fetch = FetchType.LAZY)
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
 }

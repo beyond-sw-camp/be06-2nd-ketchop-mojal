@@ -2,6 +2,9 @@ package com.example.mojal2ndproject2.chat;
 
 import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +48,7 @@ public class ChatRoomController {
 
     //메세지 넣는 부분
     @PostMapping("/rooms/{roomId}/messages")
-    public void addMessage(@PathVariable String roomId, @RequestBody ChatMessage chatMessage, @AuthenticationPrincipal CustomUserDetails customUserDetails) { //포스트id, 룸id,
+    public void addMessage(@PathVariable String roomId, @RequestBody ChatMessage chatMessage, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws BaseException { //포스트id, 룸id,
 
         //포스트id를 받아서 작성자랑, 참여자 사이에 채팅방이 있는지 확인 -> chatRoom 테이블에서 확인
         if(!chatRoomService.findChatRoom(Long.parseLong(roomId), chatMessage)) {
