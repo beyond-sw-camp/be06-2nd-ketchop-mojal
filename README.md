@@ -623,7 +623,7 @@ public List<SharePostListRes> authorList(Long loginUserIdx) {
 
 <h4>Before</h4>
 <p>개선전 나눔글 전체조회 쿼리 실행시 쿼리를 3번 조회한다.</p>
-<img src="assets/image/성능개선/나눔글전체조회-개선전.png" width="100%" />
+<img src="assets/image/성능개선/나눔글전체조회-개선전.png" width="80%" />
 
 <br>
 
@@ -661,7 +661,7 @@ public List<SharePostListRes> authorList(Long loginUserIdx) {
 <h4>After - fetch join 사용 후</h4>
 <p>쿼리 조회가 3번에서 1번으로 성능개선된 것을 확인할 수 있다. </p>
 <br>
-<img src="assets/image/성능개선/나눔글전체조회-개선후.png" width="100%" />
+<img src="assets/image/성능개선/나눔글전체조회-개선후.png" width="80%" />
 
 </details>
 <details>
@@ -706,7 +706,7 @@ public List<ReadExchangePostRes> list() throws BaseException{
 
 <h4>Before</h4>
 <p>개선전 교환글 전체조회 쿼리 실행시 쿼리를 6번 조회한다.</p>
-<img src="assets/image/성능개선/교환게시글전체조회-개선전.png" width="100%" />
+<img src="assets/image/성능개선/교환게시글전체조회-개선전.PNG" width="80%" />
 
 <br>
 
@@ -744,7 +744,7 @@ public List<SharePostListRes> authorList(Long loginUserIdx) {
 <h4>After - fetch join 사용 후</h4>
 <p>쿼리 조회가 6번에서 1번으로 성능개선된 것을 확인할 수 있다. </p>
 <br>
-<img src="assets/image/성능개선/교환게시글전체조회-개선후.pn" width="100%" />
+<img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
 
 </details>
 <details>
@@ -794,7 +794,7 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
 
 <h4>Before</h4>
 <p>개선전 내가 참여한 교환글 전체조회 쿼리 실행시 쿼리를 5번 조회한다.</p>
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선전.PNG" width="100%" />
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선전.PNG" width="80%" />
 
 <br>
 <p></p>
@@ -831,9 +831,9 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 <p>쿼리 조회가 5번에서 2번으로 성능개선된 것을 확인할 수 있다. </p>
 
 <h4>After</h4>
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후1.PNG" width="100%" />
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후2.PNG" width="100%" />
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후3.PNG" width="100%" />
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후1.PNG" width="80%" />
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후2.PNG" width="80%" />
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후3.PNG" width="80%" />
 
 
 </p>
@@ -877,7 +877,7 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestId
 
 <h4>Before</h4>
 <p>개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리를 4번 조회한다.</p>
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선전.PNG" width="100%" />
+<img src="assets/image/성능개선/내가작성한교환글전체조회-개선전.PNG" width="80%" />
 
 <br>
 
@@ -916,8 +916,8 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestId
 
 <h4>After</h4>
 <p>개선전 내가 참여한 교환글 전체조회 쿼리 실행시 쿼리를 4번 조회한다.</p>
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후1.PNG" width="100%" />
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후2.PNG" width="100%" />
+<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후1.PNG" width="80%" />
+<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후2.PNG" width="80%" />
 
 </p>
 </details>
