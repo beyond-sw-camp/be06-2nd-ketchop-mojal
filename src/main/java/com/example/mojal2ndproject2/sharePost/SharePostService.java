@@ -218,14 +218,17 @@ public class SharePostService {
 
     /****************내가 나눔글에 참여하기******************/
     public BaseResponse<String> enrollment(Member member, Long idx) throws BaseException {
-//      SharePost sharePost = sharePostRepository.findById(idx)
-//              .orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
-        SharePost sharePost = sharePostRepository.findByIdWithMember(idx)
-                .orElseThrow(()-> new BaseException(THIS_POST_NOT_EXIST));
-      Optional<PostMatchingMember> now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost);
-        if (now.isPresent()) {
-            throw new BaseException(BaseResponseStatus.ALREADY_REQUEST);
+
+      SharePost sharePost = sharePostRepository.findById(idx).orElseThrow(() -> new BaseException(THIS_POST_NOT_EXIST));
+
+        //작성자가 본인글의 나눔을 신청하려고 할 때 예외처리
+        if(member.getIdx().equals(sharePost.getMember().getIdx())){
+            throw new BaseException(BaseResponseStatus.UNABLE_MY_SHAREPOST);
         }
+
+      PostMatchingMember now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost)
+              .orElseThrow(()-> new BaseException(BaseResponseStatus.ALREADY_REQUEST));
+
       String response="";
 
 //          SharePost sharePost = result.get();
