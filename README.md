@@ -580,6 +580,7 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 <p>
 <br>
 
+
 ### 나눔글 전체조회
 
 ```java
@@ -929,10 +930,13 @@ chore:	기타 작업<br>
 브랜치명은 소문자로 작성한다.<br>
 featrue 브랜치에서 개발 완료 후 devleop 브랜치로 PR 요청한다.<br>
 
+<br>
+<br>
 
 
+# 시퀀스 다이어그램
+<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%8B%9C%ED%80%80%EC%8A%A4-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8">시퀀스 다이어그램</a>
 
-# 시퀀스 다이어그램 
 
 # API 명세서
 <a href="https://localhost8080:swagger-ui/index.html">API 명세서</a>
