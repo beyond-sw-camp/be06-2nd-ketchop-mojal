@@ -2,10 +2,9 @@
 <br><br>
 
 <div align=center>
-<h3>Mojal</h3>
-<h4>👽한별, 🐹구은주, 🐨최정완, 🦊도지민, 🤖안준홍</h4>
-</div>
-<br>
+	<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/mojalLogo.png" width="30%"/>
+	<h4>👽한별, 🐹구은주, 🐨최정완, 🤖안준홍</h4>
+</div><br>
 
 <div align=center>
 	<h2>📚 Tech Stack 📚</h2>
