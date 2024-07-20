@@ -129,7 +129,6 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 
 # 🐳시스템 아키텍처
 <a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90">시스템 아키텍쳐</a><br><br>
-
 # 소프트웨어 아키텍처
 <a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%86%8C%ED%94%84%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90">소프트웨어 아키텍쳐</a><br><br>
 # 시퀀스 다이어그램
@@ -284,7 +283,7 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 </details><br><br>
 -->
 
-# 성능개선 - (N+1문제해결)
+# 성능개선
  
 <details>
 <summary> <b> 나눔글 전체조회 </b> </summary><br>
