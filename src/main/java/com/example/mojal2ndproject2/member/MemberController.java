@@ -65,6 +65,7 @@ public class MemberController {
         return result;
     }
 
+    @Operation( summary = "내 재능 카테고리 추가")
     @RequestMapping(method = RequestMethod.POST, value = "/add/category")
     public BaseResponse<List<Long>> addCategory(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                           @RequestBody MemberAddCategoryReq request){

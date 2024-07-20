@@ -7,6 +7,7 @@ import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
+import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
@@ -20,6 +21,10 @@ import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -155,11 +160,15 @@ public class ExchangePostService {
 
     //교환게시글 전체조회
     public List<ReadExchangePostRes> list() throws BaseException{
-        List<ExchangePost> result = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
+
+//        List<ExchangePost> result = exchangePostRepository.findAll();
+//        List<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
 
         List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
 
-        for (ExchangePost post: result) {
+        for (ExchangePost post: posts) {
             ReadExchangePostRes getReadRes = ReadExchangePostRes.builder()
                     .idx(post.getIdx())
                     .title(post.getTitle())

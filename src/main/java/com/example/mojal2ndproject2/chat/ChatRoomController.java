@@ -6,6 +6,7 @@ import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ public class ChatRoomController {
     private Map<Long, List<ChatMessage>> chatRooms = new HashMap<>();
 
     //전체 채팅방 idx 조회, return 값을 chatRooms.keySet() -> KeyList 로 변경
+    @Operation( summary = "채팅방 목록 조회")
     @GetMapping("/rooms")
     public List<Long> getChatRooms(Long idx, @AuthenticationPrincipal CustomUserDetails customUserDetails) {//onConneted 에서 호출이되는놈
         //TODO ej 내가있는 채팅방만 보이게 처리하기
@@ -40,6 +42,7 @@ public class ChatRoomController {
 
 
     //메세지 가져오는 부분
+    @Operation( summary = "메세지 조회")
     @GetMapping("/rooms/{roomId}/messages")
     public List<ChatMessage> getMessages(@PathVariable String roomId) {
         //전체 채팅방 정보 맵에, 받은 룸id키의 값에 메세지리스트 가져오기
@@ -47,6 +50,7 @@ public class ChatRoomController {
     }
 
     //메세지 넣는 부분
+    @Operation( summary = "방 생성")
     @PostMapping("/rooms/{roomId}/messages")
     public void createRoom(@PathVariable String roomId, @RequestBody ChatMessage chatMessage, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws BaseException { //포스트id, 룸id,
 

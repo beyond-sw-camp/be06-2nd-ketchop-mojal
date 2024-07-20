@@ -16,6 +16,7 @@ import lombok.Setter;
 @Builder
 @Getter
 public class SharePostReadRes {
+    private Long postIdx;
     private Long authorIdx;
     private String author;
     private String title;

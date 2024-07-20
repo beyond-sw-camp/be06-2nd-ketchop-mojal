@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.Time;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,6 +65,7 @@ public class SharePostController {
         return new BaseResponse<>(result);
     }
 
+    @Operation( summary = "나눔글 참여")
     @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
     public BaseResponse<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                            Long idx) throws BaseException {
@@ -72,6 +74,7 @@ public class SharePostController {
         return result;
     }
 
+    @Operation( summary = "나눔글 idx조회")
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  Long idx) throws BaseException {
@@ -80,6 +83,7 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation( summary = "나눔글 전체 조회")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     public ResponseEntity<List<SharePostReadRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
@@ -88,7 +92,8 @@ public class SharePostController {
         return ResponseEntity.ok(result);
     }
 
-    //내가 작성한 나눔글 전체조회
+    @Operation( summary = "내가 작성한 나눔글 전체 조회")
+    @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
     public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
@@ -99,7 +104,8 @@ public class SharePostController {
 
     }
 
-    //내가 참여한 글 전체조회
+    @Operation( summary = "내가 참여한 나눔글 전체 조회")
+    @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/users/enrolled/list")
     public ResponseEntity<List<SharePostListRes>> enrolledList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보

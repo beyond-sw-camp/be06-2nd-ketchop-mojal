@@ -5,6 +5,8 @@ import com.example.mojal2ndproject2.common.BaseResponse;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.MEMBER_NOT_LOGIN;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.TITLE_NOT_ENTERED;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.CATEGORY_NOT_SELECTED;
+
+import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
@@ -15,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.Time;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -31,6 +34,7 @@ public class ExchangePostController {
     private final ExchangePostService exchangePostService;
 
     // 내가 작성한 교환글 전체 조회
+    @Timer
     @Operation( summary = "내가 작성한 교환글 전체 조회")
     @RequestMapping(method = RequestMethod.GET, value = "/users/author/list")
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
@@ -41,9 +45,10 @@ public class ExchangePostController {
 
 
     // 내가 참여한 교환글 전체 조회
+    @Timer
     @Operation( summary = "내가 참여한 교환글 전체 조회")
     @RequestMapping(method = RequestMethod.GET, value = "/users/list")
-    public BaseResponse<List<ReadExchangePostRes>> exchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public BaseResponse<List<ReadExchangePostRes>> enrolledExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
         BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.exchangeList(member);
         return response;
@@ -101,6 +106,7 @@ public class ExchangePostController {
     }
 
     //교환글전체조회
+    @Timer
     @Operation( summary = "전체 교환글 조회")
     @RequestMapping(method = RequestMethod.GET,value = "/list")
     public BaseResponse<List<ReadExchangePostRes>> list() throws BaseException{
