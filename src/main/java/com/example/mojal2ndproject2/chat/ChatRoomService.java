@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.chat;
 
+import com.example.mojal2ndproject2.category.Category;
 import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
 import com.example.mojal2ndproject2.chat.model.dto.request.RoomCreateReq;
@@ -17,6 +18,7 @@ import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
@@ -79,20 +82,18 @@ public class ChatRoomService {
     //채팅방 생성
     public ChatRoom create(RoomCreateReq roomCreateReq) throws BaseException{
 
-        Optional<Member> m = memberRepository.findById(roomCreateReq.getParticipants());
-        Optional<ExchangePost> e = exchangePostRepository.findById(roomCreateReq.getPostIdx());
+        Optional<ExchangePost> e = exchangePostRepository.findById(roomCreateReq.getPostIdx()); //TODO 성능개선 필요(바로 req에서 카테고리 IDX넘길 수 있게)
 
-        if(m.isPresent() && e.isPresent()) {
+        if(e.isPresent()) {
             //채팅참여자가 선택한 카테고리 안에 교환글의 받을 카테고리가 있는지 -> 있으면 채팅방 만들어짐
-            Optional<UserHaveCategory> uhc = userHaveCategoryRepository.findByMemberAndCategory(m.get(), e.get().getTakeCategory());
+            Optional<UserHaveCategory> uhc = userHaveCategoryRepository.findByMemberAndCategory(
+                    Member.builder().idx(roomCreateReq.getParticipants()).build(),
+                    Category.builder().idx(e.get().getTakeCategory().getIdx()).build());
 
             if(!uhc.isPresent()) { //참여자가 선택한 카테고리에 교환 할 카테고리가 없는 이슈
-                throw  new BaseException(BaseResponseStatus.CHAT_NOTFIND_CATE);
+                log.info("participants category is not matched exchange post of take category.");
+                throw new BaseException(BaseResponseStatus.CHAT_NOTFIND_CATE);
             }
-
-        }
-
-        if(e.isPresent()){
 
             Member member1 = Member.builder()
                     .idx(e.get().getMember().getIdx())
@@ -110,9 +111,10 @@ public class ChatRoomService {
             ChatRoom newChatRoom = chatRoomRepository.save(chatRoom);
 
             return newChatRoom;
-        }else{
-            return null;
+
         }
+        return null;
+
     }
 
 

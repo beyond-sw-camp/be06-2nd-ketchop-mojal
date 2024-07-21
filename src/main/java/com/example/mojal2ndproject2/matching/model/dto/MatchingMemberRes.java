@@ -15,7 +15,8 @@ import lombok.Getter;
 public class MatchingMemberRes {
     private Long sharePostIdx;
 
-    private Long memberIdx;
+    private Long member1Idx; //작성자
+    private Long member2Idx; //참여자
 
     private Long exchangePostIdx;
 }
