@@ -479,30 +479,12 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
 ### After
 1. 테이블을 JOIN FETCH 사용해서 조회
 ```java
-public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
-
-    List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
+//JOIN FETCH 사용 후
     List<ExchangePost> exchangePosts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member);
-
-    for (ExchangePost e : exchangePosts) {
-        ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                .idx(e.getIdx())
-                .title(e.getTitle())
-                .timeStamp(e.getTimeStamp())
-                .modifyTime(e.getModifyTime())
-                .status(e.getStatus())
-                .postType(e.getPostType())
-                .memberIdx(e.getMember().getIdx())
-                .memberNickname(e.getMember().getNickname())
-                .giveBtmCategory(e.getGiveBtmCategory())
-                .takeBtmCategory(e.getTakeBtmCategory())
-                .giveCategory(e.getGiveCategory().getName())
-                .takeCategory(e.getTakeCategory().getName())
-                .build();
-        exchangePostReadResList.add(exchangePostReadRes);
-    }
-    return new BaseResponse<>(exchangePostReadResList);
-}
+```
+```java
+//JOIN FETCH 사용 후
+    List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member);
 ```
 #### 메서드 실행 시간
 ``
