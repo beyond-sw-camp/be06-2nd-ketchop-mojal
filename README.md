@@ -553,6 +553,7 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member)
 - 쿼리 발생 횟수 감소 : 쿼리 조회가 4번에서 1번으로 성능개선된 것을 확인할 수 있다. 
 - 메서드 실행 시간 감소
 <br>
+
 #### 성능개선 2.페이징 처리
 findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
 ```java
