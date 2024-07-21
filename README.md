@@ -561,8 +561,7 @@ findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 �
 	Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
 ```
 <br>
-</details><br><br>
-
+</details>
 
 <details>
 <summary> <b> 채팅 메세지 조회 </b></summary><br>
