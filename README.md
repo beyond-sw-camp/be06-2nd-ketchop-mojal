@@ -564,6 +564,20 @@ findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 �
 </details><br><br>
 
 
+<details>
+<summary> <b> 채팅 메세지 조회 </b></summary><br>
+
+#### 성능개선 1.페이징 처리
+```java
+	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<ChatMessage> currentMessages = chatMessageRepository.findAllByChatRoom(ChatRoom.builder().idx(roomIdx).build(), pageable);
+```
+<br>
+</details><br><br>
+
+
+
+
 
 
 
