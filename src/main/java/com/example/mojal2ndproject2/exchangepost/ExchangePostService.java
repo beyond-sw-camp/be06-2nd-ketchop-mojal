@@ -38,10 +38,13 @@ public class ExchangePostService {
     /********************내가 작성한 교환글 전체조회*********************/
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member) {
 //                List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
-        List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
+//        List<ExchangePost> posts = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
 
-        for (ExchangePost e : result) {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<ExchangePost> posts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member, pageable);
+
+        for (ExchangePost e : posts) {
             ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
                     .postIdx(e.getIdx())
                     .title(e.getTitle())
@@ -67,7 +70,9 @@ public class ExchangePostService {
 
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
 //        List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberAndSharePost(member, null);
-        List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member);
+//        List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member, pageable);
 
             for (PostMatchingMember post : posts) {
                 ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()

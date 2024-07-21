@@ -110,7 +110,7 @@ public class SharePostService {
     public List<SharePostListRes> enrolledList(Member member) {
 
         //List<PostMatchingMember> pmms = postMatchingMemberRepository.findAllByMember(member);
-        List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithMatchingMemberAndCategory(member);
+        List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithSharePostAndCategory(member);
 
 
         List<SharePostListRes> sharePostEnrollmentListRes = new ArrayList<>();
@@ -235,11 +235,8 @@ public class SharePostService {
             throw new BaseException(BaseResponseStatus.UNABLE_MY_SHAREPOST);
         }
 
-
-      Optional<PostMatchingMember> now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost);
-        if(now.isPresent()){
-            throw new BaseException(BaseResponseStatus.ALREADY_REQUEST);
-        }
+      PostMatchingMember now = postMatchingMemberRepository.findByMemberAndSharePost(member, sharePost)
+              .orElseThrow(()->new BaseException(BaseResponseStatus.ALREADY_REQUEST));
 
       String response="";
 

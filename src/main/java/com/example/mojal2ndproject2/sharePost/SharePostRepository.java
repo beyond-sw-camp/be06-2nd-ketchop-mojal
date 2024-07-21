@@ -18,12 +18,12 @@ public interface SharePostRepository extends JpaRepository<SharePost, Long> {
     @Query("SELECT sp FROM SharePost sp JOIN FETCH sp.member WHERE sp.idx = :idx")
     Optional<SharePost> findByIdWithMember(Long idx);
     @Query("SELECT sp FROM SharePost sp JOIN FETCH sp.member JOIN FETCH sp.category")
-    List<SharePost> findAllByMemberWithMemberAndCategory(Member member);
+    List<SharePost> findAllByMemberWithMemberAndCategory(Member member); //내가 작성한 나눔글 전체 조회
 
     //SELECT o FROM One o JOIN FETCH o.manyList
     @Query("SELECT sp FROM SharePost sp JOIN FETCH sp.member JOIN FETCH sp.category")
 //    List<SharePost> findAllPostWithMemberAndCategory();
-    Slice<SharePost> findAllPostWithMemberAndCategory(Pageable pageable);
+    Slice<SharePost> findAllPostWithMemberAndCategory(Pageable pageable); //나눔글 전체 조회
     @Query("SELECT sp FROM SharePost sp JOIN FETCH sp.member JOIN FETCH sp.category WHERE sp.idx = :postIdx")
-    Optional<SharePost> findByIdxWithMemberAndCategory(Long postIdx);
+    Optional<SharePost> findByIdxWithMemberAndCategory(Long postIdx); //나눔글 idx 조회
 }

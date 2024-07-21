@@ -19,6 +19,10 @@ import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
@@ -121,28 +125,46 @@ public class ChatRoomService {
     //현재 채팅방의 과거 메세지 가져오는 부분
     //TODO 0720 순환참조 오류발생하여 수정코드
     public List<MessageGetRes> findCurrentMessageList(Long roomIdx) {
-        ChatRoom chatRoom = ChatRoom.builder()
-                .idx(roomIdx)
-                .build();
-        Optional<List<ChatMessage>> currentMessages = chatMessageRepository.findAllByChatRoom(chatRoom);
 
-        if (currentMessages.isPresent()) {
+//        List<ChatMessage> currentMessages = chatMessageRepository.findAllByChatRoom(ChatRoom.builder().idx(roomIdx).build());
+        List<MessageGetRes> messageGetResList = new ArrayList<>();
 
-            List<MessageGetRes> messageGetResList = new ArrayList<>();
-            //dto 처리
-            for(ChatMessage cm : currentMessages.get()) {
-                MessageGetRes messageGetRes = MessageGetRes.builder()
-                        .idx(cm.getIdx())
-                        .senderIdx(cm.getSenderIdx())
-                        .message(cm.getMessage())
-                        .timeStamp(cm.getTimeStamp())
-                        .build();
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<ChatMessage> currentMessages = chatMessageRepository.findAllByChatRoom(ChatRoom.builder().idx(roomIdx).build(), pageable);
 
-                messageGetResList.add(messageGetRes);
-            }
+        for(ChatMessage cm : currentMessages) {
+            MessageGetRes messageGetRes = MessageGetRes.builder()
+                .idx(cm.getIdx())
+                    .senderIdx(cm.getSenderIdx())
+                    .message(cm.getMessage())
+                    .timeStamp(cm.getTimeStamp())
+                    .build();
 
-            return messageGetResList;
+            messageGetResList.add(messageGetRes);
         }
-        return new ArrayList<>();
+
+        return messageGetResList;
+
+
+//        Optional<List<ChatMessage>> currentMessages = chatMessageRepository.findAllByChatRoom(chatRoom);
+//
+//        if (currentMessages.isPresent()) {
+//
+//            List<MessageGetRes> messageGetResList = new ArrayList<>();
+//            //dto 처리
+//            for(ChatMessage cm : currentMessages.get()) {
+//                MessageGetRes messageGetRes = MessageGetRes.builder()
+//                        .idx(cm.getIdx())
+//                        .senderIdx(cm.getSenderIdx())
+//                        .message(cm.getMessage())
+//                        .timeStamp(cm.getTimeStamp())
+//                        .build();
+//
+//                messageGetResList.add(messageGetRes);
+//            }
+//
+//            return messageGetResList;
+//        }
+//        return new ArrayList<>();
     }
 }
