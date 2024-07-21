@@ -44,7 +44,8 @@ public enum BaseResponseStatus {
     //    CHAT_NOT_EXCHANGEPOST(false, 5602, "나눔글은 교환대상을 확정할 수 없습니다."),
     //    CHAT_EMPTY_MEMBER(false, 5603, "교환 상대가 존재하지 않습니다."),
     //    CHAT_ALREADY_MMEMBER(false, 5604, "이미 확정된 교환 상대가 존재합니다."),
-    CHAT_NOTFIND_CATE(false, 5605, "채팅 참여자가 선택한 카테고리 안에 교환 할 카테고리가 없습니다.");
+    CHAT_NOTFIND_CATE(false, 5605, "채팅 참여자가 선택한 카테고리 안에 교환 할 카테고리가 없습니다."),
+    CLOSED_POST(false, 5606,"이미 마감된 글입니다.");
 
 
 
