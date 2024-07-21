@@ -594,7 +594,6 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestId
 <img src="assets/image/성능개선/내가작성한교환글전체조회-개선후2.PNG" width="80%" />
 </details><br><br>
 
-# 코딩 컨벤션
 
 
 
