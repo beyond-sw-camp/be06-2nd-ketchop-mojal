@@ -190,40 +190,41 @@ public class DataInit {
         }
 
         //member2 교환글 생성
-        for(int i=31;i<32;i++){
-            ExchangePost exchangePost = ExchangePost.builder()
-                    .member(Member.builder().idx(2L).build())
-                    .contents("content"+i)
-                    .postType("exchange")
-                    .status(false)
-                    .modifyTime(LocalDateTime.now())
-                    .timeStamp(LocalDateTime.now())
-                    .giveBtmCategory("give btm category")
-                    .giveCategory(Category.builder().idx(1L).build())
-                    .title("title"+i)
-                    .takeBtmCategory("give btm category")
-                    .takeCategory(Category.builder().idx(2L).build())
-                    .build();
-            exchangePostRepository.save(exchangePost);
+        for(int i=31;i<33;i++){
+            if(i==31){
+                ExchangePost exchangePost = ExchangePost.builder()
+                        .member(Member.builder().idx(2L).build())
+                        .contents("content"+i)
+                        .postType("exchange")
+                        .status(false)
+                        .modifyTime(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
+                        .giveBtmCategory("give btm category")
+                        .giveCategory(Category.builder().idx(1L).build())
+                        .title("title"+i)
+                        .takeBtmCategory("give btm category")
+                        .takeCategory(Category.builder().idx(2L).build())
+                        .build();
+                exchangePostRepository.save(exchangePost);
+
+            }else {
+                ExchangePost exchangePost = ExchangePost.builder()
+                        .member(Member.builder().idx(2L).build())
+                        .contents("content"+i)
+                        .postType("exchange")
+                        .status(false)
+                        .modifyTime(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
+                        .giveBtmCategory("give btm category")
+                        .giveCategory(Category.builder().idx(1L).build())
+                        .title("title"+i)
+                        .takeBtmCategory("give btm category")
+                        .takeCategory(Category.builder().idx(5L).build())
+                        .build();
+                exchangePostRepository.save(exchangePost);
+            }
         }
 
-        //member3 교환글 생성
-        for(int i=32;i<33;i++){
-            ExchangePost exchangePost = ExchangePost.builder()
-                    .member(Member.builder().idx(3L).build())
-                    .contents("content"+i)
-                    .postType("exchange")
-                    .status(false)
-                    .modifyTime(LocalDateTime.now())
-                    .timeStamp(LocalDateTime.now())
-                    .giveBtmCategory("give btm category")
-                    .giveCategory(Category.builder().idx(1L).build())
-                    .title("title"+i)
-                    .takeBtmCategory("give btm category")
-                    .takeCategory(Category.builder().idx(5L).build())
-                    .build();
-            exchangePostRepository.save(exchangePost);
-        }
     }
 
 }
