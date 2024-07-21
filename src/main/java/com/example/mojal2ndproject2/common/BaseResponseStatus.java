@@ -12,17 +12,6 @@ public enum BaseResponseStatus {
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
 
-    /**
-     * 2000 : COURSE 에러
-     */
-    POST_COURSE_EMPTY_NAME(false, 2001, "코스의 이름을 입력해주세요."),
-    POST_COURSE_EMPTY_PRICE(false, 2002, "코스의 가격을 입력해주세요."),
-    POST_COURSE_EMPTY_DESCRIPTION(false, 2003, "코스의 설명을 입력해주세요."),
-
-    POST_COURSE_PRE_EXIST_NAME(false, 2004, "이미 존재하는 코스 이름입니다. 다른 이름을 입력해주세요."),
-    COURSE_LIST_NULL(false,2005,"등록된 코스가 존재하지 않습니다."),
-    COURSE_NULL(false,2006,"등록된 코스가 존재하지 않습니다."),
-
 
     /**
      * 2200 : Login에러
@@ -49,10 +38,8 @@ public enum BaseResponseStatus {
     /**
      * 4000 : 게시글 에러
      */
-    TITLE_NOT_ENTERED(false, 4101, "제목이 입력되지 않았습니다"),
-    TITLE_CHARACTER_LIMIT_OVER(false, 4102, "제목의 글자수 제한을 초과하였습니다"),
+
     CATEGORY_NOT_SELECTED(false, 4103, "재능의 상위 카테고리를 선택하지 않았습니다."),
-    BTM_CATEGORY_CHARACTER_LIMIT_OVER(false, 4104, "하위 카테고리의 글자수 제한을 초과하였습니다."),
     CONTETNTS_NOT_ENTERED(false, 4105, "소개글이 입력되지 않았습니다."),
     CONTETNTS_CHARACTER_LIMIT_OVER(false, 4106, "소개글의 글자수 제한을 초과하였습니다."),
     NOT_SELECTED_POST_STATUS(false, 4107, "교환/나눔을 선택하지 않았습니다."),
@@ -73,7 +60,8 @@ public enum BaseResponseStatus {
 //    CHAT_NOT_EXCHANGEPOST(false, 5602, "나눔글은 교환대상을 확정할 수 없습니다."),
 //    CHAT_EMPTY_MEMBER(false, 5603, "교환 상대가 존재하지 않습니다."),
 //    CHAT_ALREADY_MMEMBER(false, 5604, "이미 확정된 교환 상대가 존재합니다."),
-    CHAT_NOTFIND_CATE(false, 5605, "채팅 참여자가 선택한 카테고리 안에 교환 할 카테고리가 없습니다.");
+    CHAT_NOTFIND_CATE(false, 5605, "채팅 참여자가 선택한 카테고리 안에 교환 할 카테고리가 없습니다."),
+    CLOSED_POST(false, 5606, "이미 마감된 글입니다.");
 
 
 

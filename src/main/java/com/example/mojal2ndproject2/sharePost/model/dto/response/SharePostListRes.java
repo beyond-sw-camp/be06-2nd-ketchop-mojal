@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 public class SharePostListRes {
+    private Long postIdx;
     private String title;
     private LocalDateTime timeStamp;
     private Boolean status;
@@ -21,6 +22,6 @@ public class SharePostListRes {
     private Integer currentEnrollment;
     private String category;
     private String btmCategory;
-    private Long writerIdx;
+    private Long memberIdx;
 }
 

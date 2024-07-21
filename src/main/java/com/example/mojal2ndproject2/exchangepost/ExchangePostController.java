@@ -2,9 +2,6 @@ package com.example.mojal2ndproject2.exchangepost;
 
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
-import static com.example.mojal2ndproject2.common.BaseResponseStatus.MEMBER_NOT_LOGIN;
-import static com.example.mojal2ndproject2.common.BaseResponseStatus.TITLE_NOT_ENTERED;
-import static com.example.mojal2ndproject2.common.BaseResponseStatus.CATEGORY_NOT_SELECTED;
 
 import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
@@ -101,8 +98,9 @@ public class ExchangePostController {
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
     public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @Valid @RequestBody CreateExchangePostReq req) throws BaseException {
-            CreateExchangePostRes res = exchangePostService.create(req, customUserDetails);
-            return new BaseResponse<>(res);
+        Member member = customUserDetails.getMember();
+        CreateExchangePostRes res = exchangePostService.create(req, member);
+        return new BaseResponse<>(res);
     }
 
     //교환글전체조회

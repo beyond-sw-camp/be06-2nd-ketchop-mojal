@@ -16,4 +16,9 @@ public interface PostMatchingMemberRepository extends JpaRepository<PostMatching
 
     Optional<PostMatchingMember> findByMemberAndSharePost(Member member, SharePost sharePost);
     Optional<PostMatchingMember> findByMemberAndExchangePost(Member member, ExchangePost exchangePost);
+    @Query("SELECT pmm FROM PostMatchingMember pmm JOIN FETCH pmm.sharePost JOIN FETCH pmm.sharePost.category WHERE pmm.member = :member")
+    List<PostMatchingMember> findAllByMemberWithMatchingMemberAndCategory(Member member);
+
+    @Query("SELECT pmm FROM PostMatchingMember pmm JOIN FETCH pmm.exchangePost JOIN FETCH pmm.exchangePost.giveCategory JOIN FETCH pmm.exchangePost.takeCategory WHERE pmm.member = :member")
+    List<PostMatchingMember> findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(Member member);
 }
