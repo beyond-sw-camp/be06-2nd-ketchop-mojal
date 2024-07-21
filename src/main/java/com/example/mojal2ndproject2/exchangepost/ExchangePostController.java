@@ -36,8 +36,8 @@ public class ExchangePostController {
     @Operation( summary = "내가 작성한 교환글 전체 조회")
     @RequestMapping(method = RequestMethod.GET, value = "/users/author/list")
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long requestIdx = customUserDetails.getMember().getIdx();
-        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.authorExchangeList(requestIdx);
+        Member member = customUserDetails.getMember();
+        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.authorExchangeList(member);
         return response;
     }
 

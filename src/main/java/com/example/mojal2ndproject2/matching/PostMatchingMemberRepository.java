@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostMatchingMemberRepository extends JpaRepository<PostMatchingMember, Long> {
-    @Query("SELECT pmm FROM PostMatchingMember pmm JOIN FETCH pmm.member")
-    List<PostMatchingMember> findAllByMember(Member member);
+
+    List<PostMatchingMember> findAllByMemberAndSharePost(Member member, SharePost sharePost);
 
     Optional<PostMatchingMember> findByMemberAndSharePost(Member member, SharePost sharePost);
     Optional<PostMatchingMember> findByMemberAndExchangePost(Member member, ExchangePost exchangePost);

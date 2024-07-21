@@ -177,7 +177,7 @@ public class DataInit {
                     .member(Member.builder().idx(1L).build())
                     .contents("content"+i)
                     .postType("exchange")
-                    .status(false)
+                    .status(true)
                     .modifyTime(LocalDateTime.now())
                     .timeStamp(LocalDateTime.now())
                     .giveBtmCategory("give btm category")
@@ -186,7 +186,11 @@ public class DataInit {
                     .takeBtmCategory("give btm category")
                     .takeCategory(Category.builder().idx(2L).build())
                     .build();
-            exchangePostRepository.save(exchangePost);
+            ExchangePost saved = exchangePostRepository.save(exchangePost);
+            PostMatchingMember postMatchingMember = PostMatchingMember.builder()
+                    .member(Member.builder().idx(2L).build())
+                    .exchangePost(saved).build();
+            postMatchingMemberRepository.save(postMatchingMember);
         }
 
         //member2 교환글 생성
@@ -224,6 +228,7 @@ public class DataInit {
                 exchangePostRepository.save(exchangePost);
             }
         }
+
 
     }
 
