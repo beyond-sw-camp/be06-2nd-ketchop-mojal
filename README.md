@@ -122,6 +122,10 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 
 <br>
 
+# 👍기능테스트
+[기능테스트 영상 링크](https://youtu.be/Vdu336g5WF8)
+<br><br><br>
+
 # 🐸ERD
 <img src="assets/image/toy02_ERD.png" width="80%" /><br><br>
 ---
@@ -573,6 +577,7 @@ findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 �
 ```
 <br>
 </details><br><br>
+
 
 
 
