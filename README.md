@@ -123,7 +123,7 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 <br>
 
 # 🐸ERD
-<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/readme/assets/image/ERD_최최종.png" width="100%" /><br><br>
+<img src="assets/image/toy02_ERD.png" width="80%" /><br><br>
 ---
 
 # 🐳시스템 아키텍처
@@ -434,89 +434,69 @@ public List<ReadExchangePostRes> list() throws BaseException{
 #### 내가 참여한 교환글 전체 조회
 ```java
 public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
-    Member member = Member.builder()
-            .idx(requestIdx)
-            .build();
+    List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberAndSharePost(member, null);
     List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-    // 쿼리 발생
-    List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
 
-    // 참여한 교환글만큼 쿼리 반복
-    for (PostMatchingMember p : postMatchingMemberList ) {
-        if (p.getExchangePost() != null) {
-            ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                    .idx(p.getExchangePost().getIdx())
-                    .title(p.getExchangePost().getTitle())
-                    // 쿼리 발생
-                    .timeStamp(p.getExchangePost().getTimeStamp())
-                    .modifyTime(p.getExchangePost().getModifyTime())
-                    .status(p.getExchangePost().getStatus())
-                    .postType(p.getExchangePost().getPostType())
-                    .memberIdx(p.getMember().getIdx())
-                    // 쿼리 발생
-                    .memberNickname(p.getMember().getNickname())
-                    .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
-                    .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
-                    // 쿼리 발생
-                    .giveCategory(p.getExchangePost().getGiveCategory().getName())
-                    // 쿼리 발생
-                    .takeCategory(p.getExchangePost().getTakeCategory().getName())
-                    .build();
-            exchangePostReadResList.add(exchangePostReadRes);
-        }
-    }
-    return new BaseResponse<>(exchangePostReadResList);
+    for (PostMatchingMember post : posts) {
+                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
+                        .postIdx(post.getExchangePost().getIdx()) 
+                        .title(post.getExchangePost().getTitle())
+                        .memberIdx(post.getExchangePost().getMember().getIdx())
+                        .memberNickname(post.getExchangePost().getMember().getNickname())
+                        .giveCategory(post.getExchangePost().getGiveCategory().getName())
+                        .giveBtmCategory(post.getExchangePost().getGiveBtmCategory())
+                        .takeCategory(post.getExchangePost().getTakeCategory().getName())
+                        .takeBtmCategory(post.getExchangePost().getTakeBtmCategory())
+                        .timeStamp(post.getExchangePost().getTimeStamp())
+                        .modifyTime(post.getExchangePost().getModifyTime())
+                        .status(post.getExchangePost().getStatus())
+                        .postType(post.getExchangePost().getPostType())
+                        .build();
+                exchangePostReadResList.add(exchangePostReadRes);
+            }
+        return new BaseResponse<>(exchangePostReadResList);
 }
 ```
 <br>
 
 #### Before
 #### 메서드 실행 시간
-`` 
+`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.enrolledExchangeList(CustomUserDetails) - 시간 - 83ms ` 
 #### 쿼리 발생 횟수
 교환글 전체조회 시 4N+1 번의 쿼리가 발생한다.
 <img src="assets/image/성능개선/내가참여한게시글전체조회-개선전.PNG" width="80%" />
-### After
-1. 테이블을 JOIN FETCH 사용해서 조회
+### 성능개선 1. 테이블을 JOIN FETCH 사용해서 조회
 ```java
-public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
-
-    List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-    List<ExchangePost> exchangePosts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member);
-
-    for (ExchangePost e : exchangePosts) {
-        ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                .idx(e.getIdx())
-                .title(e.getTitle())
-                .timeStamp(e.getTimeStamp())
-                .modifyTime(e.getModifyTime())
-                .status(e.getStatus())
-                .postType(e.getPostType())
-                .memberIdx(e.getMember().getIdx())
-                .memberNickname(e.getMember().getNickname())
-                .giveBtmCategory(e.getGiveBtmCategory())
-                .takeBtmCategory(e.getTakeBtmCategory())
-                .giveCategory(e.getGiveCategory().getName())
-                .takeCategory(e.getTakeCategory().getName())
-                .build();
-        exchangePostReadResList.add(exchangePostReadRes);
-    }
-    return new BaseResponse<>(exchangePostReadResList);
-}
+//JOIN FETCH 사용 후
+    List<PostMatchingMember> findAllByMemberAndSharePost(Member member, SharePost sharePost);
+```
+```java
+//JOIN FETCH 사용 후
+    //PostMatchingMemberRepository
+    @Query("SELECT pmm FROM PostMatchingMember pmm JOIN FETCH pmm.sharePost JOIN FETCH pmm.sharePost.category WHERE pmm.member = :member")
+    List<PostMatchingMember> findAllByMemberWithMatchingMemberAndCategory(Member member);
+    //ExchangePostService
+    List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member);
 ```
 #### 메서드 실행 시간
-``
+`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.enrolledExchangeList(CustomUserDetails) - 시간 - 52ms`
 #### 쿼리 발생 횟수
 1번의 쿼리 발생<br>
-<img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
-#### 개선 사항
-- 쿼리 발생 횟수 감소
-- 메서드 실행 시간 감소
-  쿼리 조회가 5번에서 2번으로 성능개선된 것을 확인할 수 있다. 
-#### After
 <img src="assets/image/성능개선/내가참여한게시글전체조회-개선후1.PNG" width="80%" />
 <img src="assets/image/성능개선/내가참여한게시글전체조회-개선후2.PNG" width="80%" />
 <img src="assets/image/성능개선/내가참여한게시글전체조회-개선후3.PNG" width="80%" />
+<img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
+#### 개선 사항
+- 쿼리 발생 횟수 감소 : 쿼리 조회가 4N+1번에서 1번으로 성능개선된 것을 확인할 수 있다. 
+- 메서드 실행 시간 감소
+<br>
+#### 성능개선 2.페이징 처리
+findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
+```java
+	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(pageable);
+```
+<br>
 </details>
 
 
@@ -525,74 +505,63 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 
 #### 성능개선 전 코드
 ```java
-public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
-        Member member = Member.builder()
-                .idx(requestIdx)
-                .build();
-        // 쿼리 발생 1,2,3,4번 
+public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member) {
         List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-        for (ExchangePost e : result) { // 작성자의 글 수만큼 반복. 예시로 3번 반복
-            if (e.getMember().getIdx() == requestIdx) {
-                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                        .idx(e.getIdx())
-                        .title(e.getTitle())
-                        .timeStamp(e.getTimeStamp())
-                        .modifyTime(e.getModifyTime())
-                        .status(e.getStatus())
-                        .postType(e.getPostType())
-                        .memberIdx(e.getMember().getIdx())
-                        .memberNickname(e.getMember().getNickname())
-                        .giveBtmCategory(e.getGiveBtmCategory())
-                        .takeBtmCategory(e.getTakeBtmCategory())
-                        .build();
-                exchangePostReadResList.add(exchangePostReadRes);
-            }
+        for (ExchangePost e : result) {
+            ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
+                    .postIdx(e.getIdx())
+                    .title(e.getTitle())
+                    .contents(e.getContents())
+                    .timeStamp(e.getTimeStamp())
+                    .modifyTime(e.getModifyTime())
+                    .status(e.getStatus())
+                    .postType(e.getPostType())
+                    .memberIdx(e.getMember().getIdx())
+                    .memberNickname(e.getMember().getNickname())
+                    .giveBtmCategory(e.getGiveBtmCategory())
+                    .takeBtmCategory(e.getTakeBtmCategory())
+                    .build();
+            exchangePostReadResList.add(exchangePostReadRes);
         }
         return new BaseResponse<>(exchangePostReadResList);
     }
 ```
 
 #### Before
-개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리를 4번 조회한다.
+`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 52ms`
+#### 쿼리 발생 횟수
+개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 4번 발생.
 <img src="assets/image/성능개선/내가작성한교환글전체조회-개선전.PNG" width="80%" /><br>
 
-#### 성능개선 후 코드 
+#### 성능개선 1.테이블을 JOIN FETCH해서 조회
 ```java
-public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
-        Member member = Member.builder()
-                .idx(requestIdx)
-                .build();
-        // 쿼리 발생 1,2,3,4번 
-        List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
-        List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-        for (ExchangePost e : result) { // 작성자의 글 수만큼 반복. 예시로 3번 반복
-            if (e.getMember().getIdx() == requestIdx) {
-                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                        .idx(e.getIdx())
-                        .title(e.getTitle())
-                        .timeStamp(e.getTimeStamp())
-                        .modifyTime(e.getModifyTime())
-                        .status(e.getStatus())
-                        .postType(e.getPostType())
-                        .memberIdx(e.getMember().getIdx())
-                        .memberNickname(e.getMember().getNickname())
-                        .giveBtmCategory(e.getGiveBtmCategory())
-                        .takeBtmCategory(e.getTakeBtmCategory())
-                        .build();
-                exchangePostReadResList.add(exchangePostReadRes);
-            }
-        }
-        return new BaseResponse<>(exchangePostReadResList);
-    }
+//repository
+    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member WHERE ep.member= :member")
+    List<ExchangePost> findAllByMemberWithMemberAndCategory(Member member);
+//service
+    List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
 ```
 <br>
 
-#### After
-개선전 내가 참여한 교환글 전체조회 쿼리 실행시 쿼리를 4번 조회한다.
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후1.PNG" width="80%" />
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후2.PNG" width="80%" />
+#### 메서드 실행 시간
+`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 35ms`
+#### 쿼리 발생 횟수
+개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 1번 발생.<br>
+<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0/%EB%82%B4%EA%B0%80%EC%9E%91%EC%84%B1%EA%B5%90%ED%99%98%EA%B8%80%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A01.png" width="40%"/><br>
+#### 개선 사항
+- 쿼리 발생 횟수 감소 : 쿼리 조회가 4번에서 1번으로 성능개선된 것을 확인할 수 있다. 
+- 메서드 실행 시간 감소
+<br>
+#### 성능개선 2.페이징 처리
+findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
+```java
+	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+	Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
+```
+<br>
 </details><br><br>
+
 
 
 

@@ -36,29 +36,28 @@ public class ExchangePostService {
     private final UserHaveCategoryRepository userHaveCategoryRepository;
 
     /********************내가 작성한 교환글 전체조회*********************/
-    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
-        Member member = Member.builder()
-                .idx(requestIdx)
-                .build();
-        List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMember(member);
+    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member) {
+//                List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
+        List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
+
         for (ExchangePost e : result) {
-            if (e.getMember().getIdx() == requestIdx) {
-                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                        .postIdx(e.getIdx())
-                        .title(e.getTitle())
-                        .contents(e.getContents())
-                        .timeStamp(e.getTimeStamp())
-                        .modifyTime(e.getModifyTime())
-                        .status(e.getStatus())
-                        .postType(e.getPostType())
-                        .memberIdx(e.getMember().getIdx())
-                        .memberNickname(e.getMember().getNickname())
-                        .giveBtmCategory(e.getGiveBtmCategory())
-                        .takeBtmCategory(e.getTakeBtmCategory())
-                        .build();
-                exchangePostReadResList.add(exchangePostReadRes);
-            }
+            ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
+                    .postIdx(e.getIdx())
+                    .title(e.getTitle())
+                    .contents(e.getContents())
+                    .timeStamp(e.getTimeStamp())
+                    .modifyTime(e.getModifyTime())
+                    .status(e.getStatus())
+                    .postType(e.getPostType())
+                    .memberIdx(e.getMember().getIdx())
+                    .memberNickname(e.getMember().getNickname())
+                    .giveCategory(e.getGiveCategory().getName())
+                    .takeCategory(e.getTakeCategory().getName())
+                    .giveBtmCategory(e.getGiveBtmCategory())
+                    .takeBtmCategory(e.getTakeBtmCategory())
+                    .build();
+            exchangePostReadResList.add(exchangePostReadRes);
         }
         return new BaseResponse<>(exchangePostReadResList);
     }
@@ -67,7 +66,7 @@ public class ExchangePostService {
     public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-//        List<PostMatchingMember> postMatchingMemberList = postMatchingMemberRepository.findAllByMember(member);
+//        List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberAndSharePost(member, null);
         List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member);
 
             for (PostMatchingMember post : posts) {
