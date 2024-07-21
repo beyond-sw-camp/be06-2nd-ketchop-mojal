@@ -2,6 +2,7 @@ package com.example.mojal2ndproject2.exchangepost;
 
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.MEMBER_NOT_LOGIN;
 
 import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;

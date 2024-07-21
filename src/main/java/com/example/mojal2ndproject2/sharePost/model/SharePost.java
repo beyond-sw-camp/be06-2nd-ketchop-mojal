@@ -28,7 +28,7 @@ public class SharePost {
     private LocalDateTime modifyTime;
     private Boolean status;
     private String postType;
-    private String deadline;
+    private Integer deadline;
     private Integer capacity;
     private Integer currentEnrollment;
     private String btmCategory;
