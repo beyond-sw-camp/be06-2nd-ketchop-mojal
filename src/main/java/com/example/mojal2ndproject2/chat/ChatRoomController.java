@@ -56,6 +56,7 @@ public class ChatRoomController {
     public void createRoom(@PathVariable String postIdx, @RequestBody RoomCreateReq roomCreateReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws BaseException { //포스트id, 룸id,
         //@PathVariable String postIdx, 뺌?
 
+
         //포스트id를 받아서 작성자랑, 참여자 사이에 채팅방이 있는지 확인 -> chatRoom 테이블에서 확인
         if(!chatRoomService.findChatRoom(roomCreateReq)) {
             //채팅방 있으면 true 반환되는데, 없으면 저장해줘야하니까 ! 붙이기
@@ -63,8 +64,6 @@ public class ChatRoomController {
             //없으면 새로 생성하고 디비에 저장하고, 맵에 수동으로 저장하기
             ChatRoom newChatRoom = chatRoomService.create(roomCreateReq);
 
-//            chatRooms.put(newChatRoom.getIdx(), new ArrayList<>());
-//            chatRooms.get(newChatRoom.getIdx()).add(chatMessage);
         }
         //있으면 넘어가기
     }
