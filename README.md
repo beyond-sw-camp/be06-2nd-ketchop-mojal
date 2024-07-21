@@ -489,6 +489,14 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
 #### 개선 사항
 - 쿼리 발생 횟수 감소 : 쿼리 조회가 4N+1번에서 1번으로 성능개선된 것을 확인할 수 있다. 
 - 메서드 실행 시간 감소
+<br>
+#### 성능개선 2.페이징 처리
+findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
+```java
+	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(pageable);
+```
+<br>
 </details>
 
 
@@ -539,9 +547,19 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member)
 #### 메서드 실행 시간
 `BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 35ms`
 #### 쿼리 발생 횟수
-개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 1번 발생.
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후1.PNG" width="80%" />
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선후2.PNG" width="80%" />
+개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 1번 발생.<br>
+<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0/%EB%82%B4%EA%B0%80%EC%9E%91%EC%84%B1%EA%B5%90%ED%99%98%EA%B8%80%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A01.png" width="40%"/><br>
+#### 개선 사항
+- 쿼리 발생 횟수 감소 : 쿼리 조회가 4번에서 1번으로 성능개선된 것을 확인할 수 있다. 
+- 메서드 실행 시간 감소
+<br>
+#### 성능개선 2.페이징 처리
+findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
+```java
+	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+	Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
+```
+<br>
 </details><br><br>
 
 
