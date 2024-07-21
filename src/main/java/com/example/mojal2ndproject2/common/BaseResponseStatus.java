@@ -25,7 +25,7 @@ public enum BaseResponseStatus {
      * 3000 : MEMBER 에러
      */
     POST_USERS_EXISTS_EMAIL(false,3003,"중복된 이메일입니다."),
-    POST_USERS_UNAUTH_EMAIL(false,3003,"이메일 인증 실패."),
+    POST_USERS_UNAUTH_EMAIL(false,3004,"이메일 인증 실패."),
 
     /**
      * 4000 : 게시글 에러
