@@ -1,7 +1,5 @@
 package com.example.mojal2ndproject2.member.model.dto.request;
 
-import static com.example.mojal2ndproject2.common.BaseResponseStatus.POST_USERS_INVALID_EMAIL;
-
 import com.example.mojal2ndproject2.common.BaseException;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -24,7 +24,7 @@ public class SharePostReadRes {
     private LocalDateTime timeStamp;
     private Boolean status;
     private String postType;
-    private String deadline;
+    private Integer deadline;
     private Integer capacity;
     private Integer currentEnrollment;
     private String category;

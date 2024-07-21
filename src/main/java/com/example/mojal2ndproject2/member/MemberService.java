@@ -1,6 +1,5 @@
 package com.example.mojal2ndproject2.member;
 
-import static com.example.mojal2ndproject2.common.BaseResponseStatus.POST_USERS_EXISTS_EMAIL;
 
 import com.example.mojal2ndproject2.category.Category;
 import com.example.mojal2ndproject2.category.CategoryRepository;
