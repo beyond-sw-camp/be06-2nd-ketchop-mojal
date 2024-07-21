@@ -1,6 +1,5 @@
 package com.example.mojal2ndproject2.chat;
 import com.example.mojal2ndproject2.chat.model.ChatMessage;
-import com.example.mojal2ndproject2.chat.model.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

@@ -22,6 +22,10 @@ import java.util.Optional;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.method.annotation.SessionAttributesHandler;
 
@@ -187,7 +191,10 @@ public class SharePostService {
 
     /**************나눔글 전체조회***************/
     public List<SharePostReadRes> list(Long requestIdx){
-        List<SharePost> posts = sharePostRepository.findAll();
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory(pageable);
+
+//        List<SharePost> posts = sharePostRepository.findAll();
 //        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
         List<SharePostReadRes> results = new ArrayList<>();
         for (SharePost post : posts) {
@@ -196,6 +203,7 @@ public class SharePostService {
             String author = autor.getNickname();
 
                 SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
+                        .postIdx(post.getIdx())
                         .authorIdx(authorIdx)
                         .author(author)
                         .title(post.getTitle())

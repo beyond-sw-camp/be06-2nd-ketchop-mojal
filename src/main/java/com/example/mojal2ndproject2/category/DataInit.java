@@ -1,6 +1,12 @@
 package com.example.mojal2ndproject2.category;
 
+import com.example.mojal2ndproject2.exchangepost.ExchangePostRepository;
+import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
+import com.example.mojal2ndproject2.member.model.Member;
+import com.example.mojal2ndproject2.sharePost.SharePostRepository;
+import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import jakarta.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.C;
@@ -10,8 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataInit {
     private final CategoryRepository categoryRepository;
+    private final SharePostRepository sharePostRepository;
+    private final ExchangePostRepository exchangePostRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void dataInsert() {
 
         Set<String> categories = Set.of(
@@ -25,6 +33,79 @@ public class DataInit {
         for (String c : categories) {
             Category category = Category.builder().name(c).build();
             categoryRepository.save(category);
+        }
+
+        //나눔글 생성
+        for(int i=1;i<=30;i++){
+            SharePost sharePost = SharePost.builder()
+                    .member(Member.builder().idx(1L).build())
+                    .btmCategory("bottom catrgory")
+                    .title("title"+i)
+                    .contents("content"+i)
+                    .category(Category.builder().idx(1L).build())
+                    .currentEnrollment(0)
+                    .capacity(5)
+                    .deadline("10")
+                    .postType("share")
+                    .status(false)
+                    .timeStamp(LocalDateTime.now())
+                    .modifyTime(LocalDateTime.now())
+                    .build();
+            sharePostRepository.save(sharePost);
+        }
+
+        for(int i=31;i<60;i++){
+            SharePost sharePost = SharePost.builder()
+                    .member(Member.builder().idx(2L).build())
+                    .btmCategory("bottom catrgory")
+                    .title("title"+i)
+                    .contents("content"+i)
+                    .category(Category.builder().idx(1L).build())
+                    .currentEnrollment(0)
+                    .capacity(5)
+                    .deadline("10")
+                    .postType("share")
+                    .status(true)
+                    .timeStamp(LocalDateTime.now())
+                    .modifyTime(LocalDateTime.now())
+                    .build();
+            sharePostRepository.save(sharePost);
+        }
+
+
+        //교환글 생성
+        for(int i=1;i<=30;i++){
+            ExchangePost exchangePost = ExchangePost.builder()
+                    .member(Member.builder().idx(1L).build())
+                    .contents("content"+i)
+                    .postType("exchange")
+                    .status(false)
+                    .modifyTime(LocalDateTime.now())
+                    .timeStamp(LocalDateTime.now())
+                    .giveBtmCategory("give btm category")
+                    .giveCategory(Category.builder().idx(1L).build())
+                    .title("title"+i)
+                    .takeBtmCategory("give btm category")
+                    .takeCategory(Category.builder().idx(1L).build())
+                    .build();
+            exchangePostRepository.save(exchangePost);
+        }
+
+        for(int i=1;i<=30;i++){
+            ExchangePost exchangePost = ExchangePost.builder()
+                    .member(Member.builder().idx(2L).build())
+                    .contents("content"+i)
+                    .postType("exchange")
+                    .status(false)
+                    .modifyTime(LocalDateTime.now())
+                    .timeStamp(LocalDateTime.now())
+                    .giveBtmCategory("give btm category")
+                    .giveCategory(Category.builder().idx(1L).build())
+                    .title("title"+i)
+                    .takeBtmCategory("give btm category")
+                    .takeCategory(Category.builder().idx(1L).build())
+                    .build();
+            exchangePostRepository.save(exchangePost);
         }
     }
 

@@ -7,6 +7,7 @@ import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
+import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
@@ -20,6 +21,10 @@ import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,6 +43,7 @@ public class ExchangePostService {
     private final CategoryRepository categoryRepository;
     private final UserHaveCategoryRepository userHaveCategoryRepository;
 
+    /********************내가 작성한 교환글 전체조회*********************/
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Long requestIdx) {
         Member member = Member.builder()
                 .idx(requestIdx)
@@ -64,6 +70,7 @@ public class ExchangePostService {
         return new BaseResponse<>(exchangePostReadResList);
     }
 
+/***************************내가 참여한 교환 게시글 전체조회**********************************/
     public BaseResponse<List<ReadExchangePostRes>> exchangeList(Member member) {
 
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
@@ -87,28 +94,10 @@ public class ExchangePostService {
                         .build();
                 exchangePostReadResList.add(exchangePostReadRes);
             }
-//        for (PostMatchingMember p : postMatchingMemberList ) {
-//            if (p.getExchangePost() != null) {
-//                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-//                        .idx(p.getExchangePost().getIdx())
-//                        .title(p.getExchangePost().getTitle())
-//                        .timeStamp(p.getExchangePost().getTimeStamp())
-//                        .modifyTime(p.getExchangePost().getModifyTime())
-//                        .status(p.getExchangePost().getStatus())
-//                        .postType(p.getExchangePost().getPostType())
-//                        .memberIdx(p.getMember().getIdx())
-//                        .memberNickname(p.getMember().getNickname())
-//                        .giveBtmCategory(p.getExchangePost().getGiveBtmCategory())
-//                        .takeBtmCategory(p.getExchangePost().getTakeBtmCategory())
-//                        .giveCategory(p.getExchangePost().getGiveCategory().getName())
-//                        .takeCategory(p.getExchangePost().getTakeCategory().getName())
-//                        .build();
-//                exchangePostReadResList.add(exchangePostReadRes);
-//            }
-//        }
         return new BaseResponse<>(exchangePostReadResList);
     }
-    //교환게시글 생성
+
+    /*****************************교환게시글 생성*********************************/
     public CreateExchangePostRes create(CreateExchangePostReq req, CustomUserDetails customUserDetails) throws BaseException {
         LocalDateTime createdAt = LocalDateTime.now();
 
@@ -172,11 +161,15 @@ public class ExchangePostService {
 
     //교환게시글 전체조회
     public List<ReadExchangePostRes> list() throws BaseException{
-        List<ExchangePost> result = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+        Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
+
+//        List<ExchangePost> result = exchangePostRepository.findAll();
+//        List<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
 
         List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
 
-        for (ExchangePost post: result) {
+        for (ExchangePost post: posts) {
             ReadExchangePostRes getReadRes = ReadExchangePostRes.builder()
                     .idx(post.getIdx())
                     .title(post.getTitle())

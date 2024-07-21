@@ -34,6 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS(); //소켓 지원하지 않으면 sockJS 사용하도록 하는 설정
     }
 
+    //TODO 0718 인터셉터 추가
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(stompHandler);
