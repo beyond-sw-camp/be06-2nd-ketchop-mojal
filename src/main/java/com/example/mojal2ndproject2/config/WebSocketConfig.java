@@ -28,9 +28,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //소켓연결과 관련된 설정
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") //소켓연결 uri //56030
+        registry.addEndpoint("/ws") //소켓연결 uri
                 .setAllowedOrigins("http://127.0.0.1:5500") //소켓 CORS 설정
-                .setAllowedOrigins("http://127.0.0.1:56030")
+                .setAllowedOriginPatterns("http://127.0.0.1:*") //모든 출처 허용, setAllowedOrigins는 먹히지 않는다
                 .withSockJS(); //소켓 지원하지 않으면 sockJS 사용하도록 하는 설정
     }
 

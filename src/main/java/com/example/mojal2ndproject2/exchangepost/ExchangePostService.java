@@ -114,7 +114,8 @@ public class ExchangePostService {
                 .build();
 
         //회원가입시 선택한 카테고리가 없을때 예외처리
-        UserHaveCategory userHaveCategory = userHaveCategoryRepository.findById(req.getGiveCategoryIdx()).orElseThrow(
+        //원래 코드가 findById = 유저해브카테고리 객체의 idx로 검색하고있어서 수정함, 멤버idx와 카테고리idx 동시 검색
+        UserHaveCategory userHaveCategory = (UserHaveCategory) userHaveCategoryRepository.findByMember(newMember).orElseThrow(
                 () -> new BaseException(CHECK_CATEGORY_MORE_THAN_ONE)
         );
 
