@@ -75,6 +75,7 @@ public class SecurityConfig {
         config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용
         config.addAllowedOriginPattern("http://127.0.0.1:*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다
 
+        config.addAllowedOriginPattern("http://localhost:80"); //test signup에 대한 출처인데 안댐
         config.addAllowedOrigin("http://localhost:3000"); // 허용할 출처
         config.addAllowedOrigin("http://localhost:8080"); // 허용할 출처
         config.addAllowedMethod("*"); // 허용할 메서드 (GET, POST, PUT 등)
