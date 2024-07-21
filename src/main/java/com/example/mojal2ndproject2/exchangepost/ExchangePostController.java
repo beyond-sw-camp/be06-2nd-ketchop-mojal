@@ -99,8 +99,9 @@ public class ExchangePostController {
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
     public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @Valid @RequestBody CreateExchangePostReq req) throws BaseException {
-            CreateExchangePostRes res = exchangePostService.create(req, customUserDetails);
-            return new BaseResponse<>(res);
+        Member member = customUserDetails.getMember();
+        CreateExchangePostRes res = exchangePostService.create(req, member);
+        return new BaseResponse<>(res);
     }
 
     //교환글전체조회

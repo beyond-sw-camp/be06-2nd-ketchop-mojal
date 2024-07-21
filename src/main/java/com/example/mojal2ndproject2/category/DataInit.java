@@ -114,7 +114,7 @@ public class DataInit {
                     .capacity(5)
                     .deadline("10")
                     .postType("share")
-                    .status(true)
+                    .status(false)
                     .timeStamp(LocalDateTime.now())
                     .modifyTime(LocalDateTime.now())
                     .build();
@@ -159,7 +159,7 @@ public class DataInit {
                     .capacity(5)
                     .deadline("10")
                     .postType("share")
-                    .status(true)
+                    .status(false)
                     .timeStamp(LocalDateTime.now())
                     .modifyTime(LocalDateTime.now())
                     .build();

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class ReadExchangePostRes {
-    private Long idx;
+    private Long postIdx;
     private Long memberIdx;
     private String memberNickname;
     private String giveBtmCategory;

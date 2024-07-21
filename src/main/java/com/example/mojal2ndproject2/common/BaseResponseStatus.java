@@ -30,6 +30,7 @@ public enum BaseResponseStatus {
     /**
      * 4000 : 게시글 에러
      */
+
     THIS_POST_NOT_EXIST(false, 4112, "해당 게시글이 존재하지 않습니다"),
     ALREADY_REQUEST(false, 4113, "이미 신청한 게시글입니다."),
     GIVE_CATEGORY_NOT_IN_LIST(false, 4114, "주고싶은 재능의 상위 카테고리가 범위를 벗어났습니다."),
