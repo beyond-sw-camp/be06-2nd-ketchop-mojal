@@ -123,7 +123,7 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 <br>
 
 # 🐸ERD
-<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/readme/assets/image/ERD_최최종.png" width="100%" /><br><br>
+<img src="assets/image/toy02_ERD.png" width="80%" /><br><br>
 ---
 
 # 🐳시스템 아키텍처
