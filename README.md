@@ -465,8 +465,7 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
 #### 쿼리 발생 횟수
 교환글 전체조회 시 4N+1 번의 쿼리가 발생한다.
 <img src="assets/image/성능개선/내가참여한게시글전체조회-개선전.PNG" width="80%" />
-### After
-1. 테이블을 JOIN FETCH 사용해서 조회
+### 성능개선 1. 테이블을 JOIN FETCH 사용해서 조회
 ```java
 //JOIN FETCH 사용 후
     List<PostMatchingMember> findAllByMemberAndSharePost(Member member, SharePost sharePost);
@@ -483,13 +482,13 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
 `BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.enrolledExchangeList(CustomUserDetails) - 시간 - 52ms`
 #### 쿼리 발생 횟수
 1번의 쿼리 발생<br>
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후1.PNG" width="80%" />
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후2.PNG" width="80%" />
+<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후3.PNG" width="80%" />
 <img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
 #### 개선 사항
 - 쿼리 발생 횟수 감소 : 쿼리 조회가 4N+1번에서 1번으로 성능개선된 것을 확인할 수 있다. 
 - 메서드 실행 시간 감소
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후1.PNG" width="80%" />
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후2.PNG" width="80%" />
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후3.PNG" width="80%" />
 </details>
 
 
@@ -522,26 +521,29 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member)
 ```
 
 #### Before
-BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 55ms 
-개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리를 4번 조회한다.
+`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 52ms`
+#### 쿼리 발생 횟수
+개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 4번 발생.
 <img src="assets/image/성능개선/내가작성한교환글전체조회-개선전.PNG" width="80%" /><br>
 
-#### 성능개선 후 코드 
+#### 성능개선 1.테이블을 JOIN FETCH해서 조회
 ```java
 //repository
     @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member WHERE ep.member= :member")
-    List<ExchangePost> findAllByMemberWithMember(Member member);
+    List<ExchangePost> findAllByMemberWithMemberAndCategory(Member member);
 //service
-    List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMember(member);
+    List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
 ```
 <br>
 
-#### After
-BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 54ms
-개선전 내가 참여한 교환글 전체조회 쿼리 실행시 쿼리를 4번 조회한다.
+#### 메서드 실행 시간
+`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 35ms`
+#### 쿼리 발생 횟수
+개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 1번 발생.
 <img src="assets/image/성능개선/내가작성한교환글전체조회-개선후1.PNG" width="80%" />
 <img src="assets/image/성능개선/내가작성한교환글전체조회-개선후2.PNG" width="80%" />
 </details><br><br>
+
 
 
 
