@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,7 +28,7 @@ public class ChatMessageService {
         ChatMessage newChatMessage = ChatMessage.builder()
                 .senderIdx(chatMessage.getSenderIdx())
                 .message(chatMessage.getMessage())
-                .timeStamp(chatMessage.getTimeStamp())
+                .timeStamp(chatMessage.getTimeStamp()) //클라이언트에서 현재시간 처리함
                 .chatRoom(chatRoom)
                 .build();
         chatMessageRepository.save(newChatMessage);

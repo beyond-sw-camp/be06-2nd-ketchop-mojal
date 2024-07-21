@@ -10,4 +10,6 @@ import java.util.Optional;
 
 public interface UserHaveCategoryRepository extends JpaRepository<UserHaveCategory, Long> {
     Optional<UserHaveCategory> findByMemberAndCategory(Member member, Category category);
+
+    Optional<Object> findByMember(Member newMember);
 }

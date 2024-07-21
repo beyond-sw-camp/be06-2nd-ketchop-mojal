@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RoomCreateReq {
     private Long postIdx;
-//    private Long member1Idx;
-//    private Long member2Idx;
+    private Long participants;
 
 }

@@ -2,6 +2,8 @@ package com.example.mojal2ndproject2.chat;
 
 import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
+import com.example.mojal2ndproject2.chat.model.dto.request.RoomCreateReq;
+import com.example.mojal2ndproject2.chat.model.dto.response.MessageGetRes;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
@@ -32,6 +34,7 @@ public class ChatRoomService {
     private final UserHaveCategoryRepository userHaveCategoryRepository;
     private final SharePostRepository sharePostRepository;
 
+
     //내가 참여한 채팅방 리스트 반환
     public List<Long> findMyChatRoomList(Long idx, CustomUserDetails customUserDetails) {
 //        Long loginUserIdx = customUserDetails.getMember().getIdx();
@@ -50,12 +53,12 @@ public class ChatRoomService {
 
 
     //채팅방 있나없나 검사!!
-    public boolean findChatRoom(Long postIdx, ChatMessage chatMessage) {
+    public boolean findChatRoom(RoomCreateReq roomCreateReq) {
 //        Long loginUserIdx = customUserDetails.getMember().getIdx();
         Member member2 = Member.builder()
-                .idx(chatMessage.getSenderIdx())
+                .idx(roomCreateReq.getParticipants())
                 .build();//참여자
-        Optional<ExchangePost> post = exchangePostRepository.findById(postIdx);
+        Optional<ExchangePost> post = exchangePostRepository.findById(roomCreateReq.getPostIdx());
         if(post.isPresent()) {
             Member member1 = Member.builder()
                     .idx(post.get().getMember().getIdx())
@@ -72,44 +75,35 @@ public class ChatRoomService {
             return false;
     }
 
-    //채팅방 생성
-    public ChatRoom create(Long postIdx, Long senderIdx) throws BaseException{
 
-        Optional<Member> m = memberRepository.findById(senderIdx);
-        Optional<SharePost> e = sharePostRepository.findById(postIdx);
+    //채팅방 생성
+    public ChatRoom create(RoomCreateReq roomCreateReq) throws BaseException{
+
+        Optional<Member> m = memberRepository.findById(roomCreateReq.getParticipants());
+        Optional<ExchangePost> e = exchangePostRepository.findById(roomCreateReq.getPostIdx());
 
         if(m.isPresent() && e.isPresent()) {
             //채팅참여자가 선택한 카테고리 안에 교환글의 받을 카테고리가 있는지 -> 있으면 채팅방 만들어짐
-            Optional<UserHaveCategory> uhc2 = userHaveCategoryRepository.findByMemberAndCategory(m.get(),e.get().getCategory());
+            Optional<UserHaveCategory> uhc = userHaveCategoryRepository.findByMemberAndCategory(m.get(), e.get().getTakeCategory());
 
-            if(!uhc2.isPresent()) { //참여자가 선택한 카테고리에 교환 할 카테고리가 없는 이슈
+            if(!uhc.isPresent()) { //참여자가 선택한 카테고리에 교환 할 카테고리가 없는 이슈
                 throw  new BaseException(BaseResponseStatus.CHAT_NOTFIND_CATE);
             }
 
         }
 
-        ExchangePost exchangePost = ExchangePost.builder()
-                .idx(postIdx)
-                .build();
-
-//        Long loginUserIdx = customUserDetails.getMember().getIdx();
-        Member member = Member.builder()
-                .idx(senderIdx)
-                .build();
-
-        Optional<ExchangePost> post = exchangePostRepository.findById(postIdx);
-        if(post.isPresent()){
+        if(e.isPresent()){
 
             Member member1 = Member.builder()
-                    .idx(post.get().getMember().getIdx())
+                    .idx(e.get().getMember().getIdx())
                     .build(); //작성자
 
             Member member2 = Member.builder()
-                    .idx(member.getIdx())
+                    .idx(roomCreateReq.getParticipants())
                     .build(); //참여자
 
             ChatRoom chatRoom = ChatRoom.builder()
-                    .exchangePost(exchangePost)
+                    .exchangePost(e.get())
                     .member1(member1)
                     .member2(member2)
                     .build();
@@ -121,4 +115,32 @@ public class ChatRoomService {
         }
     }
 
+
+    //현재 채팅방의 과거 메세지 가져오는 부분
+    //TODO 0720 순환참조 오류발생하여 수정코드
+    public List<MessageGetRes> findCurrentMessageList(Long roomIdx) {
+        ChatRoom chatRoom = ChatRoom.builder()
+                .idx(roomIdx)
+                .build();
+        Optional<List<ChatMessage>> currentMessages = chatMessageRepository.findAllByChatRoom(chatRoom);
+
+        if (currentMessages.isPresent()) {
+
+            List<MessageGetRes> messageGetResList = new ArrayList<>();
+            //dto 처리
+            for(ChatMessage cm : currentMessages.get()) {
+                MessageGetRes messageGetRes = MessageGetRes.builder()
+                        .idx(cm.getIdx())
+                        .senderIdx(cm.getSenderIdx())
+                        .message(cm.getMessage())
+                        .timeStamp(cm.getTimeStamp())
+                        .build();
+
+                messageGetResList.add(messageGetRes);
+            }
+
+            return messageGetResList;
+        }
+        return new ArrayList<>();
+    }
 }
