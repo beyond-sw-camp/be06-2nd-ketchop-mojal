@@ -6,10 +6,12 @@ import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
+import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.sharePost.model.dto.request.SharePostCreateReq;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
+import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import groovy.transform.ASTTest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/post/share")
+@RequestMapping("/share")
 @RequiredArgsConstructor
 public class SharePostController {
     private final SharePostService sharePostService;
@@ -41,8 +43,8 @@ public class SharePostController {
                                             {
                                               "title" : "java 과외"
                                               "contents" : "java 알려드립니다~~"
-                                              "deadline" : " "
-                                              "capacity" : 5
+                                              "deadline" : 10
+                                              "capacity" : 1
                                               "categoryIdx" : 13
                                               "btmCategory" : "java"
                                             }"""),
@@ -50,15 +52,15 @@ public class SharePostController {
                                             {
                                               "title" : ""
                                               "contents" : "java 알려드립니다~~"
-                                              "deadline" : " "
-                                              "capacity" : 5
+                                              "deadline" : 10
+                                              "capacity" : 2
                                               "categoryIdx" : 13
                                               "btmCategory" : "java"
                                             }"""),
                             }
                     )
             ))
-    @RequestMapping(method = RequestMethod.POST, value = "/users/create")
+    @RequestMapping(method = RequestMethod.POST, value = "/create")
     public BaseResponse<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody SharePostCreateReq request) throws BaseException {
         Long requestIdx = customUserDetails.getMember().getIdx();
         SharePostCreateRes result = sharePostService.create(requestIdx, request);
@@ -66,7 +68,7 @@ public class SharePostController {
     }
 
     @Operation( summary = "나눔글 참여")
-    @RequestMapping(method = RequestMethod.POST, value = "/enrollment")
+    @RequestMapping(method = RequestMethod.POST, value = "/join")
     public BaseResponse<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                            Long idx) throws BaseException {
         Member member = customUserDetails.getMember();
@@ -76,42 +78,42 @@ public class SharePostController {
 
     @Operation( summary = "나눔글 idx조회")
     @RequestMapping(method = RequestMethod.GET, value = "/read")
-    public ResponseEntity<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+    public BaseResponse<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  Long idx) throws BaseException {
         Long requestIdx = customUserDetails.getMember().getIdx();
         SharePostReadRes result = sharePostService.read(requestIdx, idx);
-        return ResponseEntity.ok(result);
+        return new BaseResponse<>(result);
     }
 
     @Operation( summary = "나눔글 전체 조회")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<List<SharePostReadRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public BaseResponse<List<SharePostListRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long requestIdx = customUserDetails.getMember().getIdx();
-        List<SharePostReadRes> result = sharePostService.list(requestIdx);
-        return ResponseEntity.ok(result);
+        List<SharePostListRes> result = sharePostService.list(requestIdx);
+        return new BaseResponse<>(result);
     }
 
     @Operation( summary = "내가 작성한 나눔글 전체 조회")
     @Timer
-    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list") //git conflict - uri 수정
-    public ResponseEntity<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    @RequestMapping(method = RequestMethod.GET, value = "/my/list") //git conflict - uri 수정
+    public BaseResponse<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Long loginUserIdx = customUserDetails.getMember().getIdx();
 
         List<SharePostListRes> response= sharePostService.authorList(loginUserIdx);
-        return ResponseEntity.ok(response);
+        return new BaseResponse<>(response);
 
     }
 
     @Operation( summary = "내가 참여한 나눔글 전체 조회")
     @Timer
-    @RequestMapping(method = RequestMethod.GET, value = "/users/enrolled/list")
-    public ResponseEntity<List<SharePostListRes>> enrolledList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
+    @RequestMapping(method = RequestMethod.GET, value = "/joined/list")
+    public BaseResponse<List<SharePostListRes>> enrolledList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
         //로그인한 유저 정보
         Member member = customUserDetails.getMember();
 
         List<SharePostListRes> response= sharePostService.enrolledList(member);
-        return ResponseEntity.ok(response);
+        return new BaseResponse<>(response);
     }
 }

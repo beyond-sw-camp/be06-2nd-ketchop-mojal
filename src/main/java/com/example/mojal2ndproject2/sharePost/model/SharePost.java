@@ -1,10 +1,9 @@
 package com.example.mojal2ndproject2.sharePost.model;
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,8 @@
 package com.example.mojal2ndproject2.exchangepost;
 
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
+import com.example.mojal2ndproject2.exchangepost.model.dto.response.ExchangePostListRes;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +28,17 @@ public interface ExchangePostRepository extends JpaRepository<ExchangePost, Long
     Slice<ExchangePost> findAllPostWithMemberAndGiveCategoryAndTakeCategory(Pageable pageable);
     @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory WHERE ep.idx = :postIdx")
     Optional<ExchangePost> findPostByIdxWithMemberAndGiveCategoryAAndTakeCategory(Long postIdx);
+
+    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.takeCategory JOIN FETCH ep.giveCategory "
+            + "WHERE ep.takeCategory.name LIKE CONCAT('%', :keyword, '%') "
+            + "OR ep.takeBtmCategory LIKE CONCAT('%', :keyword, '%') "
+            + "OR ep.giveCategory.name LIKE CONCAT('%', :keyword, '%') "
+            + "OR ep.giveBtmCategory LIKE CONCAT('%', :keyword, '%') "
+            + "OR ep.member.nickname LIKE CONCAT('%', :keyword, '%') "
+            + "OR ep.title LIKE CONCAT('%', :keyword, '%') "
+            + "OR ep.contents LIKE CONCAT('%', :keyword, '%')")
+    List<ExchangePost> findAllByKeyword(String keyword);
+
+    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory WHERE ep.giveCategory = :category OR ep.takeCategory = :category")
+    List<ExchangePost> findAllByCategory(Category category);
 }

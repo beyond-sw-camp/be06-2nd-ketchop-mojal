@@ -1,6 +1,6 @@
 package com.example.mojal2ndproject2.sharePost;
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
@@ -14,10 +14,8 @@ import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRe
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostCreateRes;
 import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostReadRes;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
@@ -27,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.method.annotation.SessionAttributesHandler;
 
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.CHECK_CATEGORY_MORE_THAN_ONE;
 
@@ -87,22 +84,8 @@ public class SharePostService {
 //        List<SharePost> posts = sharePostRepository.findAllByMember(member);
         List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
 
-        List<SharePostListRes> sharePostListRes = new ArrayList<>();
-        for (SharePost post : posts) {
-            sharePostListRes.add(SharePostListRes.builder()
-                    .memberIdx(post.getMember().getIdx())
-                    .title(post.getTitle())
-                    .timeStamp(post.getTimeStamp())
-                    .status(post.getStatus())
-                    .postType(post.getPostType())
-                    .deadline(post.getDeadline())
-                    .capacity(post.getCapacity())
-                    .currentEnrollment(post.getCurrentEnrollment())
-                    .category(post.getCategory().getName())
-                    .btmCategory(post.getBtmCategory())
-                    .build());
-        }
-        return sharePostListRes;
+        List<SharePostListRes> responses = makeResponseList(posts);
+        return responses;
     }
 
     /***********내가 참여한 나눔글 전체조회************/
@@ -167,6 +150,8 @@ public class SharePostService {
                     .category(sharePost.getCategory().getName())
                     .btmCategory(sharePost.getBtmCategory())
                     .matchingMembers(members)
+                    .contents(sharePost.getContents())
+                    .postIdx(sharePost.getIdx())
                     .build();
 
             return sharePostReadRes;
@@ -183,6 +168,8 @@ public class SharePostService {
                     .currentEnrollment(sharePost.getCurrentEnrollment())
                     .category(sharePost.getCategory().getName())
                     .btmCategory(sharePost.getBtmCategory())
+                    .contents(sharePost.getContents())
+                    .postIdx(sharePost.getIdx())
                     .build();
 
             return sharePostReadRes;
@@ -190,38 +177,32 @@ public class SharePostService {
     }
 
     /**************나눔글 전체조회***************/
-    public List<SharePostReadRes> list(Long requestIdx){
+    public List<SharePostListRes> list(Long requestIdx){
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
         Slice<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory(pageable);
 
 //        List<SharePost> posts = sharePostRepository.findAll();
 //        List<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory();
-        List<SharePostReadRes> results = new ArrayList<>();
+        List<SharePostListRes> responses = new ArrayList<>();
         for (SharePost post : posts) {
-            Member autor = post.getMember(); //여기서 조인?
-            Long authorIdx = autor.getIdx();
-            String author = autor.getNickname();
-
-                SharePostReadRes sharePostReadRes = SharePostReadRes.builder()
-                        .postIdx(post.getIdx())
-                        .authorIdx(authorIdx)
-                        .author(author)
-                        .title(post.getTitle())
-                        .contents(post.getContents())
-                        .timeStamp(post.getTimeStamp())
-                        .status(post.getStatus())
-                        .postType(post.getPostType())
-                        .deadline(post.getDeadline())
-                        .capacity(post.getCapacity())
-                        .currentEnrollment(post.getCurrentEnrollment())
-                        .category(post.getCategory().getName())
-                        .btmCategory(post.getBtmCategory())
-                        .build();
-
-                results.add(sharePostReadRes);
+            responses.add(
+                    SharePostListRes.builder()
+                            .title(post.getTitle())
+                            .timeStamp(post.getTimeStamp())
+                            .status(post.getStatus())
+                            .postType(post.getPostType())
+                            .postIdx(post.getIdx())
+                            .category(post.getCategory().getName())
+                            .btmCategory(post.getBtmCategory())
+                            .currentEnrollment(post.getCurrentEnrollment())
+                            .capacity(post.getCapacity())
+                            .deadline(post.getDeadline())
+                            .memberIdx(post.getMember().getIdx())
+                            .build()
+            );
         }
 
-        return results;
+        return responses;
     }
 
     /****************내가 나눔글에 참여하기******************/
@@ -295,5 +276,39 @@ public class SharePostService {
         }
         response = "나눔글 참여 성공하였습니다";
       return new BaseResponse<>(response);
+    }
+
+    public List<SharePostListRes> searchByCategory(Long categoryIdx) {
+        List<SharePost> posts = sharePostRepository.findAllByCategory(Category.builder().idx(categoryIdx).build());
+        List<SharePostListRes> responses = makeResponseList(posts);
+        return responses;
+    }
+
+    public List<SharePostListRes> searchByKeyword(String keyword) {
+        List<SharePost> posts = sharePostRepository.findAllByKeyword(keyword);
+        List<SharePostListRes> responses = makeResponseList(posts);
+        return responses;
+    }
+
+    private List<SharePostListRes> makeResponseList(List<SharePost> posts){
+        List<SharePostListRes> responses = new ArrayList<>();
+        for (SharePost post : posts) {
+            responses.add(
+                    SharePostListRes.builder()
+                            .title(post.getTitle())
+                            .timeStamp(post.getTimeStamp())
+                            .status(post.getStatus())
+                            .postType(post.getPostType())
+                            .postIdx(post.getIdx())
+                            .category(post.getCategory().getName())
+                            .btmCategory(post.getBtmCategory())
+                            .currentEnrollment(post.getCurrentEnrollment())
+                            .capacity(post.getCapacity())
+                            .deadline(post.getDeadline())
+                            .memberIdx(post.getMember().getIdx())
+                            .build()
+            );
+        }
+        return responses;
     }
 }

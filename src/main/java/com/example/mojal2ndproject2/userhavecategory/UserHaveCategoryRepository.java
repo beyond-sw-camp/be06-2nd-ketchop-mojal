@@ -1,6 +1,6 @@
 package com.example.mojal2ndproject2.userhavecategory;
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import org.springframework.data.jpa.repository.JpaRepository;

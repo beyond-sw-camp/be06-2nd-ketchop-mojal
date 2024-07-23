@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.category;
 
-import com.example.mojal2ndproject2.category.dto.response.GetCategoriesRes;
+import com.example.mojal2ndproject2.category.model.dto.response.GetCategoriesRes;
+import com.example.mojal2ndproject2.common.BaseResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
