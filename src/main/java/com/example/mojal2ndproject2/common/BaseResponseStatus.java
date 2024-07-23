@@ -12,13 +12,24 @@ public enum BaseResponseStatus {
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
 
+
     /**
-     * 2200 : Login에러
+     * 2200 : Login 에러
      */
     MEMBER_NOT_LOGIN(false,2204,"로그인해주세요."),
 
-    /**2100 : Login에러**/
+
+    /**
+     * 2100 : Login 에러
+     */
     CHECK_CATEGORY_MORE_THAN_ONE(false,2101,"내 재능을 하나 이상 체크 해 주세요."),
+
+
+    /**
+     * 2800 : 마이페이지 에러
+     */
+    MYINFO_NOT_FOUND(false, 2801,"내 정보가 없어 조회 할 수 없습니다."),
+    MYINFO_EMPTY_LOGINUSER(false,2802,"로그인 정보가 없습니다."),
 
 
     /**
@@ -27,10 +38,10 @@ public enum BaseResponseStatus {
     POST_USERS_EXISTS_EMAIL(false,3003,"중복된 이메일입니다."),
     POST_USERS_UNAUTH_EMAIL(false,3004,"이메일 인증 실패."),
 
+
     /**
      * 4000 : 게시글 에러
      */
-
     THIS_POST_NOT_EXIST(false, 4112, "해당 게시글이 존재하지 않습니다"),
     ALREADY_REQUEST(false, 4113, "이미 신청한 게시글입니다."),
     GIVE_CATEGORY_NOT_IN_LIST(false, 4114, "주고싶은 재능의 상위 카테고리가 범위를 벗어났습니다."),

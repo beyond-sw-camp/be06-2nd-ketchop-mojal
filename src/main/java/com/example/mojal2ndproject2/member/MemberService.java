@@ -1,7 +1,7 @@
 package com.example.mojal2ndproject2.member;
 
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.category.CategoryRepository;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
@@ -9,17 +9,18 @@ import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
-import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
+import com.example.mojal2ndproject2.member.model.dto.response.MyInfoReadRes;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -69,5 +70,22 @@ public class MemberService {
             userHaveCategoryRepository.save(userHaveCategory); //Todo byul : 세이브가 잘 안된 경우도 예외처리?
         }
         return request.getCategories();
+    }
+
+    public MyInfoReadRes myInfoRead(Member user) throws BaseException{
+
+        Optional<Member> InMember = memberRepository.findById(user.getIdx());
+
+        if(InMember.isPresent()){
+            MyInfoReadRes myInfoReadRes = MyInfoReadRes.builder()
+                    .idx(InMember.get().getIdx())
+                    .email(InMember.get().getEmail())
+                    .nickName(InMember.get().getNickname())
+                    .build();
+
+            return myInfoReadRes;
+        }
+        //내 정보 조회에 실패할 때 (디비에 없다던지 말이 안되긴 하는데)
+        throw new BaseException(MYINFO_NOT_FOUND);
     }
 }

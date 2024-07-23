@@ -1,12 +1,11 @@
 package com.example.mojal2ndproject2.chat;
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
 import com.example.mojal2ndproject2.chat.model.dto.request.RoomCreateReq;
 import com.example.mojal2ndproject2.chat.model.dto.response.MessageGetRes;
 import com.example.mojal2ndproject2.common.BaseException;
-import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.exchangepost.ExchangePostRepository;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
@@ -14,7 +13,6 @@ import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.SharePostRepository;
-import com.example.mojal2ndproject2.sharePost.model.SharePost;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

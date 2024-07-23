@@ -1,4 +1,4 @@
-package com.example.mojal2ndproject2.category;
+package com.example.mojal2ndproject2.category.model;
 
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;

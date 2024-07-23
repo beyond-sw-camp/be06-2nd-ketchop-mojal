@@ -1,17 +1,20 @@
 package com.example.mojal2ndproject2.exchangepost;
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.category.CategoryRepository;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
+import com.example.mojal2ndproject2.exchangepost.model.dto.response.ExchangePostListRes;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
 import com.example.mojal2ndproject2.member.model.Member;
+import com.example.mojal2ndproject2.sharePost.model.SharePost;
+import com.example.mojal2ndproject2.sharePost.model.dto.response.SharePostListRes;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
 import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
@@ -190,4 +193,49 @@ public class ExchangePostService {
         return getExchangePostRes;
     }
 
+    public List<ExchangePostListRes> searchByKeyword(String keyword) {
+        List<ExchangePost> posts = exchangePostRepository.findAllByKeyword(keyword);
+        List<ExchangePostListRes> responses = new ArrayList<>();
+        for (ExchangePost post : posts) {
+            responses.add(
+                    ExchangePostListRes.builder()
+                            .postIdx(post.getIdx())
+                            .postType(post.getPostType())
+                            .memberIdx(post.getMember().getIdx())
+                            .title(post.getTitle())
+                            .status(post.getStatus())
+                            .timeStamp(post.getTimeStamp())
+                            .modifyTime(post.getModifyTime())
+                            .giveCategory(post.getGiveCategory().getName())
+                            .giveBtmCategory(post.getGiveBtmCategory())
+                            .takeCategory(post.getTakeCategory().getName())
+                            .takeBtmCategory(post.getTakeBtmCategory())
+                            .build()
+            );
+        }
+        return responses;
+    }
+
+    public List<ExchangePostListRes> searchByCategory(Long idx) {
+        List<ExchangePost> posts = exchangePostRepository.findAllByCategory(Category.builder().idx(idx).build());
+        List<ExchangePostListRes> responses = new ArrayList<>();
+        for (ExchangePost post : posts) {
+            responses.add(
+                    ExchangePostListRes.builder()
+                            .postIdx(post.getIdx())
+                            .postType(post.getPostType())
+                            .memberIdx(post.getMember().getIdx())
+                            .title(post.getTitle())
+                            .status(post.getStatus())
+                            .timeStamp(post.getTimeStamp())
+                            .modifyTime(post.getModifyTime())
+                            .giveCategory(post.getGiveCategory().getName())
+                            .giveBtmCategory(post.getGiveBtmCategory())
+                            .takeCategory(post.getTakeCategory().getName())
+                            .takeBtmCategory(post.getTakeBtmCategory())
+                            .build()
+            );
+        }
+        return responses;
+    }
 }
