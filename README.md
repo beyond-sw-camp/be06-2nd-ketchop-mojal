@@ -3,13 +3,13 @@
 
 <div align=center>
 	<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/mojalLogo.png" width="30%"/>
-	
 	<h3>"너 뭐 잘해?"</h3>
 	<h4>
  		우리의 mojal 서비스에서는 각자의 재능을 교환하거나 나눔으로써 공유의 장을 생성할 수 있고, <br>
 		교육적인 부분을 포함한 여러 방면으로 본인의 역량을 발휘할 수 있는 경험을 제공합니다.
 	</h4>
 </div>
+
 <br><br><br>
 
 
