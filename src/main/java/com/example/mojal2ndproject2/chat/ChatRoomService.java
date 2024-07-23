@@ -131,8 +131,9 @@ public class ChatRoomService {
 
         for(ChatMessage cm : currentMessages) {
             MessageGetRes messageGetRes = MessageGetRes.builder()
-                .idx(cm.getIdx())
-                    .senderIdx(cm.getSenderIdx())
+                    .idx(cm.getIdx())
+//                    .senderIdx(cm.getSenderIdx())
+                    .senderIdx(cm.getMember().getIdx())
                     .message(cm.getMessage())
                     .timeStamp(cm.getTimeStamp())
                     .build();

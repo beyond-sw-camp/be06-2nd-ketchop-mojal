@@ -1,7 +1,9 @@
 package com.example.mojal2ndproject2.chat.model;
 
+import com.example.mojal2ndproject2.member.model.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,4 +33,7 @@ public class ChatMessage {
     @JoinColumn(name = "chat_room_idx")
     @JsonBackReference //순환 참조를 방지하기 위해 Jackson 애노테이션을 사용
     private ChatRoom chatRoom;
+    @ManyToOne
+    @JoinColumn(name = "member_idx")
+    private Member member;
 }

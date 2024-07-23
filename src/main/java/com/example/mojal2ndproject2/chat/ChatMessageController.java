@@ -26,7 +26,7 @@ public class ChatMessageController {
         //@DestinationVariable Long roomIdx : url에서 roomIdx를 추출하여 매칭시켜주는 어노테이션
         //@Payload ChatMessage chatMessage: 메시지 본문을 ChatMessage 객체로 변환하여 처리
         log.info("[SENDER - {}] messages : {}, timestamp : {}",
-                chatMessage.getSenderIdx(),
+                chatMessage.getMember().getNickname(),
                 chatMessage.getMessage(),
                 chatMessage.getTimeStamp()); //로그 확인용
 
@@ -40,8 +40,9 @@ public class ChatMessageController {
     @SendTo("/topic/{currentRoomIdx}")
     public ChatMessage addUser(@DestinationVariable Long currentRoomIdx, @Payload ChatMessage chatMessage,
                                SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderIdx());
-        log.info("[ADDUSER - {}] ", chatMessage.getSenderIdx());
+//        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderIdx());//sendermessage?
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getMember().getIdx());
+        log.info("[ADDUSER - {}] ", chatMessage.getMember().getNickname());
         return chatMessage;
     }
 }

@@ -26,7 +26,8 @@ public class ChatMessageService {
                 .build();
 
         ChatMessage newChatMessage = ChatMessage.builder()
-                .senderIdx(chatMessage.getSenderIdx())
+                .member(chatMessage.getMember())
+//                .senderIdx(chatMessage.getSenderIdx())
                 .message(chatMessage.getMessage())
                 .timeStamp(chatMessage.getTimeStamp()) //클라이언트에서 현재시간 처리함
                 .chatRoom(chatRoom)
