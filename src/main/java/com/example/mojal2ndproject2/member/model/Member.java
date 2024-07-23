@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.member.model;
 
+import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
@@ -59,5 +60,7 @@ public class Member {
     @OneToMany(mappedBy = "member2", fetch = FetchType.LAZY)
 //    @OneToMany(mappedBy = "member2")
     private List<ChatRoom> chatRooms2 = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
 }
