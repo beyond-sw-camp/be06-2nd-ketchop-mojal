@@ -27,7 +27,7 @@ public class DataInit {
     private final UserHaveCategoryRepository userHaveCategoryRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void dataInsert() {
 
         Set<String> categories = Set.of(
