@@ -345,7 +345,7 @@ public List<SharePostListRes> authorList(Long loginUserIdx) {
 1번의 쿼리 발생<br>
 <img src="assets/image/성능개선/나눔글전체조회-개선후.png" width="30%" />
 #### 개선 사항
-- 메서드 실행 시간 감소.
+- 메서드 실행 시간이 73ms -> 56ms로 감소.
 - 개선 전 3번 발생하던 쿼리가 개선 후 1번으로 감소.
 ### 성능개선 2. 페이징 처리
   findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
@@ -416,7 +416,7 @@ public List<ReadExchangePostRes> list() throws BaseException{
 1번의 쿼리 발생<br>
 <img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
 #### 개선 사항
-- 메서드 실행 시간이 ms -> ms로 감소.
+- 메서드 실행 시간이 79ms -> 62ms로 감소.
 - 개선 전 6번 발생하던 쿼리가 개선 후 1번으로 감소.
 ### 성능개선 2. 페이징 처리 
   findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
@@ -493,7 +493,7 @@ public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
 <img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
 #### 개선 사항
 - 쿼리 발생 횟수 감소 : 쿼리 조회가 4N+1번에서 1번으로 성능개선된 것을 확인할 수 있다. 
-- 메서드 실행 시간 감소
+- 메서드 실행 시간이 83ms -> 52ms로 감소.
 <br>
 #### 성능개선 2.페이징 처리
 findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
@@ -556,7 +556,7 @@ public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member)
 <img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0/%EB%82%B4%EA%B0%80%EC%9E%91%EC%84%B1%EA%B5%90%ED%99%98%EA%B8%80%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A01.png" width="40%"/><br>
 #### 개선 사항
 - 쿼리 발생 횟수 감소 : 쿼리 조회가 4번에서 1번으로 성능개선된 것을 확인할 수 있다. 
-- 메서드 실행 시간 감소
+- 메서드 실행 시간이 52ms -> 35ms로로 감소
 <br>
 
 #### 성능개선 2.페이징 처리
