@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.category;
 
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.exchangepost.ExchangePostRepository;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
@@ -14,7 +15,6 @@ import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

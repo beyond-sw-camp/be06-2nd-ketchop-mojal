@@ -1,7 +1,7 @@
 package com.example.mojal2ndproject2.member;
 
 
-import com.example.mojal2ndproject2.category.Category;
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.category.CategoryRepository;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
@@ -9,7 +9,6 @@ import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
-import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MyInfoReadRes;
 import com.example.mojal2ndproject2.userhavecategory.UserHaveCategoryRepository;
@@ -17,7 +16,6 @@ import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

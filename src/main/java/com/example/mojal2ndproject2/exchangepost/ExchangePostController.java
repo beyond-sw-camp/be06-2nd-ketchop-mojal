@@ -27,14 +27,14 @@ import java.util.List;
 @ControllerAdvice
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post/exchange")
+@RequestMapping("/exchange")
 public class ExchangePostController {
     private final ExchangePostService exchangePostService;
 
     // 내가 작성한 교환글 전체 조회
     @Timer
     @Operation( summary = "내가 작성한 교환글 전체 조회")
-    @RequestMapping(method = RequestMethod.GET, value = "/users/author/list")
+    @RequestMapping(method = RequestMethod.GET, value = "/my/list")
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
         BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.authorExchangeList(member);
@@ -45,7 +45,7 @@ public class ExchangePostController {
     // 내가 참여한 교환글 전체 조회
     @Timer
     @Operation( summary = "내가 참여한 교환글 전체 조회")
-    @RequestMapping(method = RequestMethod.GET, value = "/users/list")
+    @RequestMapping(method = RequestMethod.GET, value = "/joined/list")
     public BaseResponse<List<ReadExchangePostRes>> enrolledExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
         BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.exchangeList(member);
@@ -60,9 +60,9 @@ public class ExchangePostController {
                             examples = {
                                     @ExampleObject(name = "Valid example", value = """
                                             {
-                                              "giveCategoryIdx": 13,
+                                              "giveCategoryIdx": 1,
                                               "giveBtmCategory": "java",
-                                              "takeCategoryIdx": 13,
+                                              "takeCategoryIdx": 2,
                                               "takeBtmCategory": "python",
                                               "title": "Mytitle",
                                               "contents": "java 알려드릴게요 python 알려주실분!"
@@ -71,33 +71,15 @@ public class ExchangePostController {
                                             {
                                               "giveCategoryIdx": null,
                                               "giveBtmCategory": "",
-                                              "takeCategoryIdx": 13,
+                                              "takeCategoryIdx": 2,
                                               "takeBtmCategory": "python",
                                               "title": "Mytitle",
                                               "contents": "java 알려드릴게요 python 알려주실분!"
-                                            }"""),
-                                    @ExampleObject(name = "Valid example3 - nonTitle", value = """
-                                            {
-                                              "giveCategoryIdx": 13,
-                                              "giveBtmCategory": "java",
-                                              "takeCategoryIdx": 13,
-                                              "takeBtmCategory": "python",
-                                              "title": "",
-                                              "contents": "java 알려드릴게요 python 알려주실분!"
-                                            }"""),
-                                    @ExampleObject(name = "Valid example4 - nonContent", value = """
-                                            {
-                                              "giveCategoryIdx": 13,
-                                              "giveBtmCategory": "java",
-                                              "takeCategoryIdx": 13,
-                                              "takeBtmCategory": "python",
-                                              "title": "Mytitle",
-                                              "contents": ""
-                                            }"""),
+                                            }""")
                             }
                     )
             ))
-    @RequestMapping(method = RequestMethod.POST, value = "/users/create")
+    @RequestMapping(method = RequestMethod.POST, value = "/create")
     public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @Valid @RequestBody CreateExchangePostReq req) throws BaseException {
         Member member = customUserDetails.getMember();
         CreateExchangePostRes res = exchangePostService.create(req, member);

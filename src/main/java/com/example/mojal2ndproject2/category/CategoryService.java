@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.category;
 
-import com.example.mojal2ndproject2.category.dto.response.GetCategoriesRes;
+import com.example.mojal2ndproject2.category.model.Category;
+import com.example.mojal2ndproject2.category.model.dto.response.GetCategoriesRes;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

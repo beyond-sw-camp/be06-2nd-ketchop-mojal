@@ -1,4 +1,4 @@
-package com.example.mojal2ndproject2.category.dto.response;
+package com.example.mojal2ndproject2.category.model.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
