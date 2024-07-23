@@ -1,10 +1,24 @@
 # be06-2nd-ketchop-mojal
 <br><br>
 
+
+
 <div align=center>
 	<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/mojalLogo.png" width="30%"/>
+	<h3>"너 뭐 잘해?"</h3>
+	<h4>우리의 mojal 서비스에서는 각자의 재능을 교환하거나 나눔으로써 공유의 장을 생성할 수 있고, 교육적인 부분을 포함한 여러 방면으로 본인의 역량을 발휘할 수 있는 경험을 제공합니다.</h4>
+</div>
+<br><br><br>
+
+
+
+<div align=center>
+	<h2>🧑‍🔧 Team Member 🧑‍🔧</h2>
 	<h4>👽한별, 🐹구은주, 🐨최정완, 🤖안준홍</h4>
-</div><br>
+</div>
+<br><br><br>
+
+
 
 <div align=center>
 	<h2>📚 Tech Stack 📚</h2>
@@ -31,7 +45,10 @@
 	<img src="https://img.shields.io/badge/Mybatis-000000?style=flat&logo=Fluentd&logoColor=white" />
 	-->
 </div>
-<br>
+<br><br><br>
+
+
+
 <div align=center>
 	<h2>🛠 Tools 🛠</h2>
 </div>
@@ -43,8 +60,10 @@
 	<img src="https://img.shields.io/badge/apache-%23D42029.svg?style=flat&logo=apache&logoColor=white" />
 	-->
 </div>
-<br>
-<br>
+<br><br><br>
+
+
+
 <!--
 # 📌재능교환/나눔 서비스 기획서
 
@@ -120,25 +139,37 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 <summary> <h3>2. 요구사항 정의서</h3> </summary>
 -->
 
-<br>
+
 
 # 👍기능테스트
-[직접 테스트해보기 -> Swagger-ui](http://43.203.218.195:8080/swagger-ui/index.html)<br><br>
+[직접 테스트해보기 -> Swagger-ui](http://43.203.218.195:8080/swagger-ui/index.html)
+<br><br>
 [기능테스트 영상 보기 -> YouTube](https://youtu.be/Vdu336g5WF8)
 <br><br><br>
 
+
+
 # 🐸ERD
-<img src="assets/image/toy02_ERD.png" width="80%" /><br><br>
----
+<img src="assets/image/toy02_ERD.png" width="80%" />
+<br><br>
+
+
 
 # 🐳시스템 아키텍처
-<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90">시스템 아키텍쳐</a><br><br>
+<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90">시스템 아키텍쳐</a>
+<br><br><br>
 # 소프트웨어 아키텍처
-<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%86%8C%ED%94%84%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90">소프트웨어 아키텍쳐</a><br><br>
+<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%86%8C%ED%94%84%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90">소프트웨어 아키텍쳐</a>
+<br><br><br>
 # 시퀀스 다이어그램
-<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%8B%9C%ED%80%80%EC%8A%A4-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8">시퀀스 다이어그램</a><br><br>
+<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%8B%9C%ED%80%80%EC%8A%A4-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8">시퀀스 다이어그램</a>
+<br><br><br>
 # 코드 컨벤션
-<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%BD%94%EB%93%9C%EC%BB%A8%EB%B2%A4%EC%85%98">코드 컨벤션</a><br><br>
+<a href="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%BD%94%EB%93%9C%EC%BB%A8%EB%B2%A4%EC%85%98">코드 컨벤션</a>
+<br><br><br>
+
+
+
 <!--
 # 💻SQL개발
 <details>
