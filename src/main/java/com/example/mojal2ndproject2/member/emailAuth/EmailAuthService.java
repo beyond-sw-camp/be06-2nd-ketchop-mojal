@@ -31,6 +31,7 @@ public class EmailAuthService {
 
         String uuid = UUID.randomUUID().toString();
 
+//        message.setText("http://43.203.218.195:8080/email/verify?email="+email+"&uuid="+uuid);
         message.setText("http://localhost:8080/email/verify?email="+email+"&uuid="+uuid);
 
         emailSender.send(message);

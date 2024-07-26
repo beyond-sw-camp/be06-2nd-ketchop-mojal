@@ -80,7 +80,13 @@ public class SharePostController {
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public BaseResponse<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  Long idx) throws BaseException {
-        Long requestIdx = customUserDetails.getMember().getIdx();
+        //Todo: customUserDetails가 null일경우, 아닐경우 인자를 다르게 넣어야함
+        //이거 확인 안하면 getMember에서 오류남
+        //null인지 아닌지에 따라서 작성자인지 아닌지 정보까지 같이 넘기기
+        Long requestIdx=null;
+        if(customUserDetails!=null){
+            requestIdx = customUserDetails.getMember().getIdx();
+        }
         SharePostReadRes result = sharePostService.read(requestIdx, idx);
         return new BaseResponse<>(result);
     }
@@ -88,9 +94,8 @@ public class SharePostController {
     @Operation( summary = "나눔글 전체 조회")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public BaseResponse<List<SharePostListRes>> list(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long requestIdx = customUserDetails.getMember().getIdx();
-        List<SharePostListRes> result = sharePostService.list(requestIdx);
+    public BaseResponse<List<SharePostListRes>> list() {
+        List<SharePostListRes> result = sharePostService.list();
         return new BaseResponse<>(result);
     }
 
