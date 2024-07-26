@@ -62,6 +62,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtFilter, LoginFilter.class);
 
         LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil);
+        loginFilter.setFilterProcessesUrl("/member/login");
         http.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.sessionManagement((session) -> {
@@ -81,6 +82,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용
+        config.addAllowedOrigin("http://127.0.0.1:5501"); //채팅 허용
         config.addAllowedOriginPattern("http://127.0.0.1:*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다
 
         config.addAllowedOrigin("http://localhost");

@@ -6,6 +6,7 @@ import com.example.mojal2ndproject2.member.emailAuth.EmailAuthService;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
+import com.example.mojal2ndproject2.member.model.dto.request.MemberLoginReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
@@ -13,11 +14,17 @@ import com.example.mojal2ndproject2.member.model.dto.response.MyInfoReadRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +38,35 @@ import static com.example.mojal2ndproject2.common.BaseResponseStatus.MYINFO_EMPT
 public class MemberController {
     private final MemberService memberService;
     private final EmailAuthService emailAuthService;
+
+    @Operation(summary = "User login",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {
+                                    @ExampleObject(name = "Valid example", value = """
+                               {
+                                 "email": "member1@email.com",
+                                 "password": "Qwer1234!"
+                               }"""),
+                            }
+                    )
+            ))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully logged in", content = @Content(schema = @Schema(implementation = AuthResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @PostMapping("/login")
+    public void login(@RequestBody MemberLoginReq memberLoginReq) {
+        // This method won't be called because Spring Security handles /login
+    }
+
+    @Getter
+    @Setter
+    class AuthResponse {
+        private String token;
+        // getters and setters
+    }
 
     @Operation(
             summary = "회원가입",

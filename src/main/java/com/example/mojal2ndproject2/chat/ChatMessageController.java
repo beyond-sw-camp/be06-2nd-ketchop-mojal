@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.chat;
 import com.example.mojal2ndproject2.chat.model.ChatMessage;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -11,8 +12,11 @@ import org.springframework.stereotype.Controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class ChatMessageController {
@@ -20,6 +24,8 @@ public class ChatMessageController {
 
     //config 파일에서 setApplicationDestinationPrefixes()를 통해 prefix를 "/app"으로 설정 해주었기 때문에,
     //경로가 한번 더 수정되어 “/app/chat.sendMessage/{roomId}”로 바뀐다.
+    @PostMapping("/chat.sendMessage/{currentRoomIdx}")
+    @Operation(summary = "스웨거로 테스트 x")
     @MessageMapping("/chat.sendMessage/{currentRoomIdx}") //마지막 {}부분을 나는 밑밑에 매개변수와 맞춰야 하는줄 알았는데 클라이언트의 설정과 맞아야 한다..
     @SendTo("/topic/{currentRoomIdx}") //메시지를 해당 채팅방(예: /topic/1)을 구독하는 모든 클라이언트에게 전송한다
     public ChatMessage sendMessage(@DestinationVariable Long currentRoomIdx, @Payload ChatMessage chatMessage) {
@@ -37,7 +43,9 @@ public class ChatMessageController {
 
     //topic이라서, 1:n라서, 여러명 들어올 수 있으니까 아래 메소드가 필요한것 같다..?
     @MessageMapping("/chat.addUser/{currentRoomIdx}")
+    @Operation(summary = "스웨거로 테스트 x")
     @SendTo("/topic/{currentRoomIdx}")
+    @PostMapping("/chat.addUser/{currentRoomIdx}")
     public ChatMessage addUser(@DestinationVariable Long currentRoomIdx, @Payload ChatMessage chatMessage,
                                SimpMessageHeaderAccessor headerAccessor) {
 //        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderIdx());//sendermessage?

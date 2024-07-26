@@ -177,7 +177,7 @@ public class SharePostService {
     }
 
     /**************나눔글 전체조회***************/
-    public List<SharePostListRes> list(Long requestIdx){
+    public List<SharePostListRes> list(){
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
         Slice<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory(pageable);
 
