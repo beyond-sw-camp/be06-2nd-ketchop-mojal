@@ -38,12 +38,14 @@
 <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white" />
 <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=Spring Security&logoColor=white" />
 <img src="https://img.shields.io/badge/Spring data jpa-6DB33F?style=flat&logo=Spring Boot&logoColor=white" />
+<br>
+<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Conda-Forge&logoColor=white" />
 <img src="https://img.shields.io/badge/JWT-d63aff?style=flat&logo=jsonwebtokens&logoColor=white" />
 <img src="https://img.shields.io/badge/OAuth2-151594?style=flat&logo=spring&logoColor=white" />
 <img src="https://img.shields.io/badge/WebSocket-ffea3f?style=flat&logo=socketdotio&logoColor=white" />
+<br>
 <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=flat&logo=Amazon RDS&logoColor=white" />
         <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=flat&logo=Amazon EC2&logoColor=white" />
-<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Conda-Forge&logoColor=white" />
 	<img src="https://img.shields.io/badge/MariaDB-003545?style=flat&logo=MariaDB&logoColor=white" />
 
 [//]: # (	<img src="https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=flat&logo=Thymeleaf&logoColor=white" />)
