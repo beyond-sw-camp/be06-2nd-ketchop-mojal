@@ -2,7 +2,7 @@
 <br><br>
 
 <div align=center>
-	<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/mojalLogo.png" width="30%"/>
+<img src="assets/image/mojalLogo.png" alt="모잘로고" width="30%">
 	<h3>"너 뭐 잘해?"</h3>
 	<h4>
  		우리의 mojal 서비스에서는 각자의 재능을 교환하거나 나눔으로써 공유의 장을 생성할 수 있고, <br>
@@ -25,25 +25,35 @@
 	<p>✨ Platforms & Languages ✨</p>
 </div>
 <div align="center">
-	<!--
-	<img src="https://img.shields.io/badge/vuejs-%2335495e.svg?style=flat&logo=vuedotjs&logoColor=%234FC08D" />
-	<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />
-	<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
-	<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" />
-	-->
-	<br>
-	<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white" />
-        <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Conda-Forge&logoColor=white" />
-	<!-- 
-	<img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white" />
-	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
-	-->
-	<br>
+
+[//]: # (<img src="https://img.shields.io/badge/vuejs-%2335495e.svg?style=flat&logo=vuedotjs&logoColor=%234FC08D" />)
+
+[//]: # (	<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />)
+
+[//]: # (	<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />)
+
+[//]: # (	<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" />)
+
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=Spring&logoColor=white" />
+<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white" />
+<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=Spring Security&logoColor=white" />
+<img src="https://img.shields.io/badge/Spring data jpa-6DB33F?style=flat&logo=Spring Boot&logoColor=white" />
+<img src="https://img.shields.io/badge/JWT-d63aff?style=flat&logo=jsonwebtokens&logoColor=white" />
+<img src="https://img.shields.io/badge/OAuth2-151594?style=flat&logo=spring&logoColor=white" />
+<img src="https://img.shields.io/badge/WebSocket-ffea3f?style=flat&logo=socketdotio&logoColor=white" />
+<img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=flat&logo=Amazon RDS&logoColor=white" />
+        <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=flat&logo=Amazon EC2&logoColor=white" />
+<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Conda-Forge&logoColor=white" />
 	<img src="https://img.shields.io/badge/MariaDB-003545?style=flat&logo=MariaDB&logoColor=white" />
-	<!--
-	<img src="https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=flat&logo=Thymeleaf&logoColor=white" />
-	<img src="https://img.shields.io/badge/Mybatis-000000?style=flat&logo=Fluentd&logoColor=white" />
-	-->
+
+[//]: # (	<img src="https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=flat&logo=Thymeleaf&logoColor=white" />)
+
+[//]: # (	<img src="https://img.shields.io/badge/Mybatis-000000?style=flat&logo=Fluentd&logoColor=white" />)
+
+[//]: # (	<img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white" />)
+
+[//]: # (	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />)
+	
 </div>
 <br><br><br>
 
@@ -55,6 +65,8 @@
 <div align=center>
 	<img src="https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=flat&logo=intellij-idea&logoColor=white" />
 	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
+<img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white" />
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white" />
 	<!--
 	<img src="https://img.shields.io/badge/Eclipse%20IDE-2C2255?style=flat&logo=EclipseIDE&logoColor=white" />
 	<img src="https://img.shields.io/badge/apache-%23D42029.svg?style=flat&logo=apache&logoColor=white" />
@@ -321,306 +333,7 @@ ketchop팀에서는 서비스의 연속성이 있고 데이터 유실이 거의 
 
 # 성능개선
  
-<details>
-<summary> <b> 나눔글 전체조회 </b> </summary><br>
-	
-### 나눔글 전체조회
-```java
-public List<SharePostListRes> authorList(Long loginUserIdx) {
-    Member member = Member.builder()
-            .idx(loginUserIdx)
-            .build();
-    //쿼리 발생
-    List<SharePost> posts = sharePostRepository.findAllByMember(member);
+[성능개선](https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/wiki/%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0)
 
-    List<SharePostListRes> sharePostListRes = new ArrayList<>();
-    for (SharePost post : posts) {
-        sharePostListRes.add(SharePostListRes.builder()
-                //쿼리 발생
-                .writerIdx(post.getMember().getIdx())
-                .title(post.getTitle())
-                .timeStamp(post.getTimeStamp())
-                .status(post.getStatus())
-                .postType(post.getPostType())
-                .deadline(post.getDeadline())
-                .capacity(post.getCapacity())
-                .currentEnrollment(post.getCurrentEnrollment())
-                //쿼리 발생
-                .category(post.getCategory().getName())
-                .btmCategory(post.getBtmCategory())
-                .build());
-    }
-    return sharePostListRes;
-}
-```
 <br>
-
-### Before
-#### 메서드 실행 시간
-`ResponseEntity com.example.mojal2ndproject2.sharePost.SharePostController.list(CustomUserDetails) - 시간 - 73ms` 
-#### 쿼리 발생 횟수
-나눔글 전체조회 시 3번의 쿼리가 발생한다.
-<img src="assets/image/성능개선/나눔글전체조회-개선전.png" width="80%" /><br>
-### 성능개선 1. 테이블을 JOIN FETCH해서 조회
-```java
-// JOIN FETCH 사용 전
-        List<SharePost> posts = sharePostRepository.findAllByMember(member);
-```
-```java
-// JOIN FETCH 사용 
-        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
-```
-#### 메서드 실행 시간
-`ResponseEntity com.example.mojal2ndproject2.sharePost.SharePostController.list(CustomUserDetails) - 시간 - 56ms`
-#### 쿼리 발생 횟수
-1번의 쿼리 발생<br>
-<img src="assets/image/성능개선/나눔글전체조회-개선후.png" width="30%" />
-#### 개선 사항
-- 메서드 실행 시간이 73ms -> 56ms로 감소.
-- 개선 전 3번 발생하던 쿼리가 개선 후 1번으로 감소.
-### 성능개선 2. 페이징 처리
-  findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
-  ```java
-  //SharePostRepository
-  	@Query("SELECT sp FROM SharePost sp JOIN FETCH sp.member JOIN FETCH sp.category")
-        Slice<SharePost> findAllPostWithMemberAndCategory(Pageable pageable);
-  ```
-  ```java
-  //SharePostService
-  	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
-        Slice<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory(pageable);
-  ```
-</details>
-
-<details>
-<summary> <b> 교환글 전체조회 </b> </summary><br>
-
-### 교환글 전체조회
-```java
-public List<ReadExchangePostRes> list() throws BaseException{
-    //쿼리 발생
-    List<ExchangePost> result = exchangePostRepository.findAll();
-
-    List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
-
-    for (ExchangePost post: result) {
-        ReadExchangePostRes getReadRes = ReadExchangePostRes.builder()
-                .idx(post.getIdx())
-                .title(post.getTitle())
-                .contents(post.getContents())
-                .postType(post.getPostType())
-                .giveCategory(post.getGiveCategory().getName())//쿼리 발생
-                .takeCategory(post.getTakeCategory().getName())//쿼리 발생
-                .giveBtmCategory(post.getGiveBtmCategory())
-                .takeBtmCategory(post.getTakeBtmCategory())
-                .timeStamp(post.getTimeStamp())
-                .modifyTime(post.getModifyTime())
-                .memberIdx(post.getMember().getIdx())//쿼리 발생
-                .status(post.getStatus())
-                .build();
-        getExchangePostReadList.add(getReadRes);
-    }
-
-    return getExchangePostReadList;
-}
-```
 <br>
-
-### Before
-#### 메서드 실행 시간
-`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.list() - 시간 - 79ms`
-#### 쿼리 발생 횟수
-교환글 전체 조회 시 6번의 쿼리 발생
-<img src="assets/image/성능개선/교환게시글전체조회-개선전.PNG" width="80%" /><br>
-### 성능개선 1. 테이블을 JOIN FETCH 사용해서 조회 
-```java
-//JOIN FETCH 사용 전
-        List<SharePost> posts = sharePostRepository.findAllByMember(member);
-```
-```java
-//JOIN FETCH 사용
-        List<SharePost> posts = sharePostRepository.findAllByMemberWithMemberAndCategory(member);
-```
-#### 메서드 실행 시간
-`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.list() - 시간 - 62ms`
-#### 쿼리 발생 횟수
-1번의 쿼리 발생<br>
-<img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
-#### 개선 사항
-- 메서드 실행 시간이 79ms -> 62ms로 감소.
-- 개선 전 6번 발생하던 쿼리가 개선 후 1번으로 감소.
-### 성능개선 2. 페이징 처리 
-  findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
-  ```java
-  //SharePostRepository
-  	@Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory")
-  	Slice<ExchangePost> findAllPostWithMemberAndGiveCategoryAndTakeCategory(Pageable pageable);
-  ```
-  ```java
-  //SharePostService
-  	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
-        Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
-  ```
-</details>
-
-
-<details>
-<summary> <b> 내가 참여한 교환글 전체조회 </b> </summary>
-
-#### 내가 참여한 교환글 전체 조회
-```java
-public BaseResponse<List<ReadExchangePostRes>> exchangeList(Long requestIdx) {
-    List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberAndSharePost(member, null);
-    List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-
-    for (PostMatchingMember post : posts) {
-                ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                        .postIdx(post.getExchangePost().getIdx()) 
-                        .title(post.getExchangePost().getTitle())
-                        .memberIdx(post.getExchangePost().getMember().getIdx())
-                        .memberNickname(post.getExchangePost().getMember().getNickname())
-                        .giveCategory(post.getExchangePost().getGiveCategory().getName())
-                        .giveBtmCategory(post.getExchangePost().getGiveBtmCategory())
-                        .takeCategory(post.getExchangePost().getTakeCategory().getName())
-                        .takeBtmCategory(post.getExchangePost().getTakeBtmCategory())
-                        .timeStamp(post.getExchangePost().getTimeStamp())
-                        .modifyTime(post.getExchangePost().getModifyTime())
-                        .status(post.getExchangePost().getStatus())
-                        .postType(post.getExchangePost().getPostType())
-                        .build();
-                exchangePostReadResList.add(exchangePostReadRes);
-            }
-        return new BaseResponse<>(exchangePostReadResList);
-}
-```
-<br>
-
-#### Before
-#### 메서드 실행 시간
-`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.enrolledExchangeList(CustomUserDetails) - 시간 - 83ms ` 
-#### 쿼리 발생 횟수
-교환글 전체조회 시 4N+1 번의 쿼리가 발생한다.
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선전.PNG" width="80%" />
-### 성능개선 1. 테이블을 JOIN FETCH 사용해서 조회
-```java
-//JOIN FETCH 사용 후
-    List<PostMatchingMember> findAllByMemberAndSharePost(Member member, SharePost sharePost);
-```
-```java
-//JOIN FETCH 사용 후
-    //PostMatchingMemberRepository
-    @Query("SELECT pmm FROM PostMatchingMember pmm JOIN FETCH pmm.sharePost JOIN FETCH pmm.sharePost.category WHERE pmm.member = :member")
-    List<PostMatchingMember> findAllByMemberWithMatchingMemberAndCategory(Member member);
-    //ExchangePostService
-    List<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(member);
-```
-#### 메서드 실행 시간
-`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.enrolledExchangeList(CustomUserDetails) - 시간 - 52ms`
-#### 쿼리 발생 횟수
-1번의 쿼리 발생<br>
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후1.PNG" width="80%" />
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후2.PNG" width="80%" />
-<img src="assets/image/성능개선/내가참여한게시글전체조회-개선후3.PNG" width="80%" />
-<img src="assets/image/성능개선/교환게시글전체조회-개선후.PNG" width="80%" />
-#### 개선 사항
-- 쿼리 발생 횟수 감소 : 쿼리 조회가 4N+1번에서 1번으로 성능개선된 것을 확인할 수 있다. 
-- 메서드 실행 시간이 83ms -> 52ms로 감소.
-<br>
-#### 성능개선 2.페이징 처리
-findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
-```java
-	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
-        Slice<PostMatchingMember> posts = postMatchingMemberRepository.findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(pageable);
-```
-<br>
-</details>
-
-
-<details>
-<summary> <b> 내가 작성한 교환글 전체조회 </b></summary><br>
-
-#### 성능개선 전 코드
-```java
-public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member) {
-        List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
-        List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
-        for (ExchangePost e : result) {
-            ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
-                    .postIdx(e.getIdx())
-                    .title(e.getTitle())
-                    .contents(e.getContents())
-                    .timeStamp(e.getTimeStamp())
-                    .modifyTime(e.getModifyTime())
-                    .status(e.getStatus())
-                    .postType(e.getPostType())
-                    .memberIdx(e.getMember().getIdx())
-                    .memberNickname(e.getMember().getNickname())
-                    .giveBtmCategory(e.getGiveBtmCategory())
-                    .takeBtmCategory(e.getTakeBtmCategory())
-                    .build();
-            exchangePostReadResList.add(exchangePostReadRes);
-        }
-        return new BaseResponse<>(exchangePostReadResList);
-    }
-```
-
-#### Before
-`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 52ms`
-#### 쿼리 발생 횟수
-개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 4번 발생.
-<img src="assets/image/성능개선/내가작성한교환글전체조회-개선전.PNG" width="80%" /><br>
-
-#### 성능개선 1.테이블을 JOIN FETCH해서 조회
-```java
-//repository
-    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member WHERE ep.member= :member")
-    List<ExchangePost> findAllByMemberWithMemberAndCategory(Member member);
-//service
-    List<ExchangePost> result = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
-```
-<br>
-
-#### 메서드 실행 시간
-`BaseResponse com.example.mojal2ndproject2.exchangepost.ExchangePostController.authorExchangeList(CustomUserDetails) - 시간 - 35ms`
-#### 쿼리 발생 횟수
-개선전 내가 작성한 교환글 전체조회 쿼리 실행시 쿼리 1번 발생.<br>
-<img src="https://github.com/beyond-sw-camp/be06-2nd-ketchop-mojal/blob/dev/assets/image/%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0/%EB%82%B4%EA%B0%80%EC%9E%91%EC%84%B1%EA%B5%90%ED%99%98%EA%B8%80%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A01.png" width="40%"/><br>
-#### 개선 사항
-- 쿼리 발생 횟수 감소 : 쿼리 조회가 4번에서 1번으로 성능개선된 것을 확인할 수 있다. 
-- 메서드 실행 시간이 52ms -> 35ms로로 감소
-<br>
-
-#### 성능개선 2.페이징 처리
-findAll같이 모든 글을 한번에 조회할 경우 성능이 저하될 수 있다. 따라서 페이징 처리를 통해 성능을 최적화하였다.
-```java
-	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
-	Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
-```
-<br>
-</details>
-
-<details>
-<summary> <b> 채팅 메세지 조회 </b></summary><br>
-
-#### 성능개선 1.페이징 처리
-```java
-	Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
-        Slice<ChatMessage> currentMessages = chatMessageRepository.findAllByChatRoom(ChatRoom.builder().idx(roomIdx).build(), pageable);
-```
-<br>
-</details><br><br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
