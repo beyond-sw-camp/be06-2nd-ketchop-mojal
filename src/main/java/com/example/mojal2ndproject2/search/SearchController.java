@@ -21,7 +21,7 @@ public class SearchController {
     private final SharePostService sharePostService;
     private final ExchangePostService exchangePostService;
 
-    @Operation(summary = "키워드 검색")
+    @Operation(summary = "키워드 검색", description = "찾을 키워드가 포함된 글을 검색합니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/keyword")
     public BaseResponse<SearchRes> searchByKeyword(String keyword) {
         List<SharePostListRes> sharePosts = sharePostService.searchByKeyword(keyword);
@@ -31,7 +31,7 @@ public class SearchController {
         return new BaseResponse<>(searchRes);
     }
 
-    @Operation(summary = "카테고리 검색")
+    @Operation(summary = "카테고리 검색", description = "찾을 카테고리가 포함된 글을 검색합니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/category")
     public BaseResponse<SearchRes> search(Long idx){
         List<SharePostListRes> sharePosts = sharePostService.searchByCategory(idx);

@@ -30,7 +30,10 @@ public class MatchingController {
     //TODO ej 여기로 나눔글 선착순신청 이동?
 
     //교환글 채팅 안에서 교환하기 버튼 클릭시
-    @Operation( summary = "교환 상대 확정")
+    @Operation( summary = "교환 상대 확정",
+            description = "교환글의 채팅방에서 작성자와 참여자가 1:1로 대화를 나눕니다. " +
+                    "교환하기 버튼은 글 작성자만이 누를 수 있습니다. " +
+                    "서로 동의하에 작성자가 교환하기 버튼을 클릭하면, 현재 버튼을 누른 회원이 작성자가 맞는지 확인하고 채팅방의 idx를 이용하여 교환매칭이 이루어집니다. ")
 //    @RequestMapping(method = RequestMethod.GET, value = "/exchange")
     @PostMapping("/exchange")
     public BaseResponse<MatchingMemberRes> checkExchange(@AuthenticationPrincipal CustomUserDetails customUserDetails , @RequestBody MatchingConfirmedReq confirmedReq) throws BaseException {

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailAuthController {
     private final EmailAuthService emailAuthService;
 
-    @Operation( summary = "이메일 인증")
+    @Operation( summary = "이메일 인증 (스웨거로 테스트 x, 회원가입 후 실제 메일함을 확인 해 주세요.)",
+            description = "회원가입 시 등록한 이메일로 온 인증 url을 클릭하면, 이메일 인증이 완료되어 고유 uuid 생성 후 db에 저장됩니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public BaseResponse<BaseResponseStatus> verify(String email, String uuid){
         BaseResponse<BaseResponseStatus> result = emailAuthService.verify(email, uuid);

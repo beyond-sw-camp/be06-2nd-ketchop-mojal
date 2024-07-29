@@ -33,7 +33,8 @@ public class ExchangePostController {
 
     // 내가 작성한 교환글 전체 조회
     @Timer
-    @Operation( summary = "내가 작성한 교환글 전체 조회")
+    @Operation( summary = "내가 작성한 교환글 전체 조회",
+            description = "로그인 한 회원이 작성한 교환글 전체를 리스트로 조회합니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/my/list")
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
@@ -44,7 +45,8 @@ public class ExchangePostController {
 
     // 내가 참여한 교환글 전체 조회
     @Timer
-    @Operation( summary = "내가 참여한 교환글 전체 조회")
+    @Operation( summary = "내가 참여한 교환글 전체 조회",
+            description = "로그인 한 회원이 교환에 성공하여 교환 매칭된 교환글 전체를 리스트로 조회합니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/joined/list")
     public BaseResponse<List<ReadExchangePostRes>> enrolledExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Member member = customUserDetails.getMember();
@@ -54,6 +56,9 @@ public class ExchangePostController {
 
     //교환글생성
     @Operation(summary = "교환글 작성",
+            description = "회원은 교환글을 작성할 수 있습니다." +
+                    "교환글은 작성자가 줄 카테고리(giveCategoryIdx)와, 받을 카테고리(takeCategoryIdx) 둘 다 명시해야 합니다. " +
+                    "줄 카테고리는 작성자가 선택했던 내 재능 카테고리 안에 포함되어있어야 합니다",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = "application/json",
@@ -88,7 +93,8 @@ public class ExchangePostController {
 
     //교환글전체조회
     @Timer
-    @Operation( summary = "전체 교환글 조회")
+    @Operation( summary = "교환글 전체 조회",
+            description = "등록된 교환글 전체를 리스트로 조회합니다.")
     @RequestMapping(method = RequestMethod.GET,value = "/list")
     public BaseResponse<List<ReadExchangePostRes>> list() throws BaseException{
         List<ReadExchangePostRes> res = exchangePostService.list();
@@ -96,7 +102,8 @@ public class ExchangePostController {
     }
 
     //교환글해당글조회
-    @Operation( summary = "교환글 idx로 조회")
+    @Operation( summary = "교환글 상세 조회",
+            description = "각 교환글의 idx로 교환글 하나의 상세 내용을 조회합니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public BaseResponse<ReadExchangePostRes> read(@RequestParam Long idx) throws BaseException {
         ReadExchangePostRes res = exchangePostService.read(idx);

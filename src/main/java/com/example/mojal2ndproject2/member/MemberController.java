@@ -39,7 +39,8 @@ public class MemberController {
     private final MemberService memberService;
     private final EmailAuthService emailAuthService;
 
-    @Operation(summary = "User login",
+    @Operation(summary = "로그인",
+            description = "가입한 이메일과 비밀번호로 로그인하여 회원 인증 후, 인가된 토큰을 얻을 수 있습니다.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = "application/json",
@@ -70,6 +71,7 @@ public class MemberController {
 
     @Operation(
             summary = "회원가입",
+            description = "회원 정보를 DB에 저장하고 등록된 이메일로 인증 url을 발송합니다.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = "application/json",
@@ -104,7 +106,9 @@ public class MemberController {
         return result;
     }
 
-    @Operation( summary = "내 재능 카테고리 추가")
+    @Operation( summary = "내 재능 카테고리 추가",
+            description = "회원가입 후 첫 로그인 시, 본인의 재능을 5개 이하로 추가해야 합니다. " +
+                    "재능으로 내세우고 싶은 카테고리를 바꾸고 싶다면 언제든지 수정도 가능합니다. ")
     @RequestMapping(method = RequestMethod.POST, value = "/add/category")
     public BaseResponse<List<Long>> addCategory(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                           @RequestBody MemberAddCategoryReq request){
@@ -114,7 +118,8 @@ public class MemberController {
         return result;
     }
 
-    @Operation( summary = "내 정보 조회")
+    @Operation( summary = "내 정보 조회",
+            description = "가입된 내 회원 정보를 조회합니다. 로그인 되어 있으면 바로 조회 할 수 있습니다.")
     @RequestMapping(method = RequestMethod.POST, value = "/myInfo/read")
     public BaseResponse<MyInfoReadRes> myInfoRead(@AuthenticationPrincipal CustomUserDetails customUserDetails) throws BaseException{
         if(customUserDetails==null){ //로그인하지 않은 사용자가 내 정보 조회를 시도할 때
