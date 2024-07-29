@@ -35,6 +35,8 @@ public class SharePostController {
     private final SharePostService sharePostService;
 
     @Operation(summary = "나눔글 작성",
+            description = "회원은 나눔글을 작성할 수 있습니다. " +
+                    "나눔글은 마감기한(deadline)과 모집인원(capacity)을 꼭 명시해야하며, 나눔 할 카테고리(categoryIdx)는 본인이 선택했던 내 재능 카테고리 안에 있어야 합니다. ",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = "application/json",
@@ -67,7 +69,11 @@ public class SharePostController {
         return new BaseResponse<>(result);
     }
 
-    @Operation( summary = "나눔글 참여")
+    @Operation( summary = "나눔글 참여",
+            description = "회원은 재능 나눔에 참여할 수 있습니다. " +
+                    "나눔글의 모집인원이 다 차지 않았을 때 참여한다면, 선착순으로 나눔 참여에 성공합니다. " +
+                    "모집인원이 다 찼다면 선착순 나눔 참여에 실패합니다. " +
+                    "글 작성자는 본인 글에는 나눔 참여 할 수 없습니다. " )
     @RequestMapping(method = RequestMethod.POST, value = "/join")
     public BaseResponse<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                            Long idx) throws BaseException {
@@ -76,7 +82,8 @@ public class SharePostController {
         return result;
     }
 
-    @Operation( summary = "나눔글 idx조회")
+    @Operation( summary = "나눔글 상세 조회",
+            description = "각 나눔글의 idx로 나눔글 하나의 상세 내용을 조회합니다. ")
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public BaseResponse<SharePostReadRes> read(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  Long idx) throws BaseException {
@@ -91,7 +98,8 @@ public class SharePostController {
         return new BaseResponse<>(result);
     }
 
-    @Operation( summary = "나눔글 전체 조회")
+    @Operation( summary = "나눔글 전체 조회",
+            description = "등록된 나눔글 전체를 리스트로 조회합니다. ")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     public BaseResponse<List<SharePostListRes>> list() {
@@ -99,7 +107,8 @@ public class SharePostController {
         return new BaseResponse<>(result);
     }
 
-    @Operation( summary = "내가 작성한 나눔글 전체 조회")
+    @Operation( summary = "내가 작성한 나눔글 전체 조회",
+            description = "로그인 한 회원이 작성한 나눔글 전체를 리스트로 조회합니다. ")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/my/list") //git conflict - uri 수정
     public BaseResponse<List<SharePostListRes>> authorList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
@@ -111,7 +120,8 @@ public class SharePostController {
 
     }
 
-    @Operation( summary = "내가 참여한 나눔글 전체 조회")
+    @Operation( summary = "내가 참여한 나눔글 전체 조회",
+            description = "로그인 한 회원이 선착순에 성공하여 나눔 참여한 나눔글 전체를 리스트로 조회합니다. ")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/joined/list")
     public BaseResponse<List<SharePostListRes>> enrolledList(@AuthenticationPrincipal CustomUserDetails customUserDetails) { //토큰보내기
