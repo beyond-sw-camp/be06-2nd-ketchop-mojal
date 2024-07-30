@@ -5,6 +5,7 @@ import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,10 +23,20 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader("Authorization");
+//        String authorization = request.getHeader("Authorization");
 
-        if(authorization == null || !authorization.startsWith("Bearer ")) {
-            System.out.println("Bearer 토큰이 없음");
+        String authorization = null;
+        if(request.getCookies() != null){
+            for (Cookie cookie : request.getCookies()) {
+                if(cookie.getName().equals("ATOKEN")){
+                    authorization=cookie.getValue();
+                }
+            }
+        }
+
+//        if(authorization == null || !authorization.startsWith("Bearer ")) {
+        if(authorization == null) {
+            System.out.println("토큰이 없음");
             filterChain.doFilter(request, response);
             return;
         }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -57,8 +58,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String token = jwtUtil.createToken(email, idx, role);
 
         PrintWriter out = response.getWriter();
-        out.println("{\"isSuccess\": true, \"accessToken\":\""+token+"\"}");
-        response.addHeader("Authorization", "Bearer " + token);
+//        out.println("{\"isSuccess\": true, \"accessToken\":\""+token+"\"}");
+//        response.addHeader("Authorization", "Bearer " + token);
+        Cookie cookie = new Cookie("ATOKEN", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+//        cookie.setMaxAge(7*24*60*60);
+        response.addCookie(cookie);
     }
 
     @Override
