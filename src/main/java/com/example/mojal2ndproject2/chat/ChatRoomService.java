@@ -5,6 +5,7 @@ import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
 import com.example.mojal2ndproject2.chat.model.dto.request.RoomCreateReq;
 import com.example.mojal2ndproject2.chat.model.dto.response.MessageGetRes;
+import com.example.mojal2ndproject2.chat.model.dto.response.RoomGetRes;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.exchangepost.ExchangePostRepository;
@@ -39,24 +40,40 @@ public class ChatRoomService {
     private final SharePostRepository sharePostRepository;
 
 
-    //내가 참여한 채팅방 리스트 반환
-    public List<Long> findMyChatRoomList(Long idx, CustomUserDetails customUserDetails) {
+    //로그인한 유저가 참여한 채팅방 리스트 반환
+    public List<RoomGetRes> findMyChatRoomList(Long idx, CustomUserDetails customUserDetails) {
 //        Long loginUserIdx = customUserDetails.getMember().getIdx();
-        Member chatUser = Member.builder()
-                .idx(idx)
-                .build();// 채팅참여자
-        List<ChatRoom> chatRooms = chatRoomRepository.findAllByMember1OrMember2(chatUser, chatUser);
 
-        List<Long> myChatRoomIds = new ArrayList<>();
-        for(ChatRoom r : chatRooms) {
-            myChatRoomIds.add(r.getIdx());
+        Member loginUser = Member.builder()
+                .idx(idx)
+                .build();// 로그인한 유저
+
+        //로그인 한 유저가 작성자이거나 참여자일때 생성된 채팅방 모두 검색
+        List<ChatRoom> chatRooms = chatRoomRepository.findAllByMember1OrMember2(loginUser, loginUser);
+
+        //반환할 리스트 생성
+        List<RoomGetRes> myChatRoomsList = new ArrayList<>();
+
+        for(ChatRoom cr : chatRooms) {
+            RoomGetRes roomGetRes = RoomGetRes.builder()
+                    .roomIdx(cr.getIdx())
+                    .postWriterNickname(cr.getMember1().getNickname())
+                    .participantNickname(cr.getMember2().getNickname())
+                    .title(cr.getExchangePost().getTitle())
+                    .giveBtmCategory(cr.getExchangePost().getGiveBtmCategory())
+                    .takeBtmCategory(cr.getExchangePost().getTakeBtmCategory())
+                    .status(cr.getExchangePost().getStatus())
+                    .lastMessageTimeStamp("최근 메시지 시간")
+                    .build();
+
+            myChatRoomsList.add(roomGetRes);
         }
 
-        return myChatRoomIds;
+        return myChatRoomsList;
     }
 
 
-    //채팅방 있나없나 검사!!
+    //채팅방 유무 검사
     public boolean findChatRoom(RoomCreateReq roomCreateReq) {
 //        Long loginUserIdx = customUserDetails.getMember().getIdx();
         Member member2 = Member.builder()
@@ -120,7 +137,7 @@ public class ChatRoomService {
 
 
     //현재 채팅방의 과거 메세지 가져오는 부분
-    //TODO 0720 순환참조 오류발생하여 수정코드
+    //순환참조 오류발생하여 수정코드
     public List<MessageGetRes> findCurrentMessageList(Long roomIdx) {
 
 //        List<ChatMessage> currentMessages = chatMessageRepository.findAllByChatRoom(ChatRoom.builder().idx(roomIdx).build());

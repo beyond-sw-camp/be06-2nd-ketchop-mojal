@@ -22,18 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatMessageController {
     private final ChatMessageService chatMessageService;
 
-    //config 파일에서 setApplicationDestinationPrefixes()를 통해 prefix를 "/app"으로 설정 해주었기 때문에,
-    //경로가 한번 더 수정되어 “/app/chat.sendMessage/{roomId}”로 바뀐다.
+    //config 파일에서 setApplicationDestinationPrefixes()를 통해 prefix를 "/app"으로 설정 해주었기 때문에, 경로가 한번 더 수정되어 “/app/chat.sendMessage/{roomId}”로 바뀐다.
     @PostMapping("/chat.sendMessage/{currentRoomIdx}")
     @Operation(summary = "메시지 전송 (스웨거로 테스트 x)",
-            description = "현재 채팅방 idx(currentRoomIdx)로 메시지를 전송합니다.")
-    @MessageMapping("/chat.sendMessage/{currentRoomIdx}") //마지막 {}부분클라이언트의 설정과 맞아야 함
+            description = "클라이언트가 현재 채팅방(currentRoomIdx)에 메시지를 보낼 때, 해당 메시지를 저장하고, 채팅방을 구독하는 모든 클라이언트에게 실시간으로 메시지를 전송합니다.")
+    @MessageMapping("/chat.sendMessage/{currentRoomIdx}") //마지막 {}부분 클라이언트의 설정과 맞아야 함
     @SendTo("/topic/{currentRoomIdx}") //메시지를 해당 채팅방(예: /topic/1)을 구독하는 모든 클라이언트에게 전송한다
     public ChatMessage sendMessage(@DestinationVariable Long currentRoomIdx, @Payload ChatMessage chatMessage) {
         //@DestinationVariable Long roomIdx : url에서 roomIdx를 추출하여 매칭시켜주는 어노테이션
         //@Payload ChatMessage chatMessage: 메시지 본문을 ChatMessage 객체로 변환하여 처리
+
         log.info("[SENDER - {}] messages : {}, timestamp : {}",
-                chatMessage.getMember().getNickname(),
+                chatMessage.getSenderIdx(),
                 chatMessage.getMessage(),
                 chatMessage.getTimeStamp()); //로그 확인용
 
