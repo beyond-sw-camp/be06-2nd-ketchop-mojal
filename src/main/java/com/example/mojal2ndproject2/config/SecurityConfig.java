@@ -20,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -81,16 +83,18 @@ public class SecurityConfig {
     public CorsFilter corsFilter() { //cors error 방지
         CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용
-        config.addAllowedOrigin("http://127.0.0.1:5501"); //채팅 허용
-        config.addAllowedOriginPattern("http://127.0.0.1:*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다
+        config.addAllowedOrigin("http://localhost:5500"); //채팅 허용
+        config.addAllowedOrigin("http://localhost:5501"); //채팅 허용
+        config.addAllowedOriginPattern("*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다
 
         config.addAllowedOrigin("http://localhost");
         config.addAllowedOrigin("http://localhost:3000"); // 허용할 출처
         config.addAllowedOrigin("http://localhost:8080"); // 허용할 출처
+        config.addAllowedOrigin("http://localhost:8082"); // 허용할 출처
         config.addAllowedMethod("*"); // 허용할 메서드 (GET, POST, PUT 등)
         config.addAllowedHeader("*"); // 허용할 헤더
         config.setAllowCredentials(true); // 자격 증명 허용
+//        config.setAllowedOrigins(Arrays.asList("http://localhost:5500")); //0805추가
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

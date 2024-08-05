@@ -60,12 +60,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         PrintWriter out = response.getWriter();
 //        out.println("{\"isSuccess\": true, \"accessToken\":\""+token+"\"}");
 //        response.addHeader("Authorization", "Bearer " + token);
+
         Cookie cookie = new Cookie("ATOKEN", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         cookie.setPath("/");
+//        cookie.setSameSite("None"); // 다른 도메인 간 요청을 허용하기 위해 "None"으로 설정 / 안먹힘
 //        cookie.setMaxAge(7*24*60*60);
         response.addCookie(cookie);
+
     }
 
     @Override

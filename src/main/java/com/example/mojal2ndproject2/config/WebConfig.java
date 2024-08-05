@@ -13,8 +13,12 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://127.0.0.1:5500", "http://127.0.0.1:*") // 프론트엔드가 호스팅되는 도메인
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+                        .allowedOrigins("http://localhost:5500")
+                        .allowedOrigins("http://localhost:5501") // 프론트엔드가 호스팅되는 도메인
+                        .allowedOriginPatterns("*") //혹시 몰라 추가
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // 자격 증명(쿠키 등)을 허용
             }
         };
     }
