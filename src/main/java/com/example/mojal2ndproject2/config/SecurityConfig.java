@@ -81,9 +81,12 @@ public class SecurityConfig {
     public CorsFilter corsFilter() { //cors error 방지
         CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용
-        config.addAllowedOrigin("http://127.0.0.1:5501"); //채팅 허용
-        config.addAllowedOriginPattern("http://127.0.0.1:*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다
+//        config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용
+//        config.addAllowedOrigin("http://127.0.0.1:5501"); //채팅 허용
+//        config.addAllowedOriginPattern("http://127.0.0.1:*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다?
+        config.addAllowedOrigin("http://localhost:5500"); //0805추가
+        config.addAllowedOrigin("http://localhost:5501"); //0805추가
+        config.addAllowedOriginPattern("*"); //0805추가
 
         config.addAllowedOrigin("http://localhost");
         config.addAllowedOrigin("http://localhost:3000"); // 허용할 출처
