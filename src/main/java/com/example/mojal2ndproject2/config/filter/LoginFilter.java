@@ -57,12 +57,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = jwtUtil.createToken(email, idx, role);
 
-        PrintWriter out = response.getWriter();
+//        PrintWriter out = response.getWriter(); //바디에 담기는 부분
 //        out.println("{\"isSuccess\": true, \"accessToken\":\""+token+"\"}");
 //        response.addHeader("Authorization", "Bearer " + token);
         Cookie cookie = new Cookie("ATOKEN", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         cookie.setPath("/");
 //        cookie.setMaxAge(7*24*60*60);
         response.addCookie(cookie);
