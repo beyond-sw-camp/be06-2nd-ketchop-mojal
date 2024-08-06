@@ -31,11 +31,13 @@ public class MemberService {
     private final UserHaveCategoryRepository userHaveCategoryRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public BaseResponse<MemberSignupRes> signup(MemberSignupReq request) throws BaseException{
+    public BaseResponse<MemberSignupRes> signup(MemberSignupReq request, String imageUrl) throws BaseException{
         if(memberRepository.existsByEmail(request.getEmail())){
 //            return new BaseResponse<>(POST_USERS_EXISTS_EMAIL);
             throw new BaseException(BaseResponseStatus.POST_USERS_EXISTS_EMAIL);
         }
+
+
 
         Member member = Member.builder()
                 .nickname(request.getNickname())
@@ -44,6 +46,7 @@ public class MemberService {
                 .emailAuth(false)
                 .role("ROLE_USER")
                 .signupDate(LocalDateTime.now())
+                .profileImageUrl(imageUrl)
                 .build();
 
         Member savedMember = memberRepository.save(member);

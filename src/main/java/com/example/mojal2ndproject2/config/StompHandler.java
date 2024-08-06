@@ -28,6 +28,8 @@ public class StompHandler implements ChannelInterceptor { //TODO 0718추가
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         //메시지의 STOMP 명령이 CONNECT 인지 확인합니다. 클라이언트가 서버와의 연결을 설정하려고 할 때 사용되는 명령입니다.
         if(accessor.getCommand() == StompCommand.CONNECT) {
+            //쿠키에서 토큰 찾아서 저장
+            //String token = fkdjgnfkdjgnkfjgnkdfjngfkjgfkdngdfg
             //STOMP 메시지의 네이티브 헤더에서 "token"이라는 이름의 첫 번째 값을 가져와, 이 토큰의 유효성을 검증합니다. 유효하지 않으면 true를 반환합니다.
             if(!jwtUtil.isExpired(accessor.getFirstNativeHeader("tokk")))
                 //토큰이 유효하지 않은 경우 AccessDeniedException 예외를 발생시키고, 이를 잡아서 스택 트레이스를 출력합니다.

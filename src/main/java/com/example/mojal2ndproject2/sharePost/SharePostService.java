@@ -4,6 +4,8 @@ import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
+import com.example.mojal2ndproject2.image.SharePostImages;
+import com.example.mojal2ndproject2.image.SharePostImagesRepository;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.MemberRepository;
@@ -35,9 +37,10 @@ public class SharePostService {
     private final MemberRepository memberRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
     private final UserHaveCategoryRepository userHaveCategoryRepository;
+    private final SharePostImagesRepository sharePostImagesRepository;
 
     /*******나눔글 생성***********/
-  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request) throws BaseException{
+  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request, List<String> images) throws BaseException{
 
       //회원가입시 선택한 카테고리가 없을때 예외처리
       UserHaveCategory userHaveCategory = userHaveCategoryRepository.findByMemberAndCategory(Member.builder().idx(requestIdx).build(), Category.builder().idx(request.getCategoryIdx()).build()).orElseThrow(
@@ -65,6 +68,12 @@ public class SharePostService {
                 .build();
 
         SharePost result = sharePostRepository.save(sharePost);
+
+      for (String image : images) {
+          sharePostImagesRepository.save(SharePostImages.builder()
+                  .url(image)
+                  .sharePost(result).build());
+      }
 
         SharePostCreateRes sharePostCreateRes = SharePostCreateRes.builder()
                 .idx(result.getIdx())
