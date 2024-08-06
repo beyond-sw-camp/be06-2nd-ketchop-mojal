@@ -22,7 +22,7 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    private Long senderIdx; //메시지 보내는 사람
+    private Long senderIdx; //메시지 보내는 사람. 일단 사용하지 않고 냄둠
     private String message;
     private String timeStamp;
 
@@ -37,5 +37,5 @@ public class ChatMessage {
 
     @ManyToOne
     @JoinColumn(name = "member_idx")
-    private Member member;
+    private Member member; //메시지 보내는 사람
 }

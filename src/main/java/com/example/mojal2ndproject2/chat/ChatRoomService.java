@@ -149,8 +149,8 @@ public class ChatRoomService {
         for(ChatMessage cm : currentMessages) {
             MessageGetRes messageGetRes = MessageGetRes.builder()
                     .idx(cm.getIdx())
-//                    .senderIdx(cm.getSenderIdx())
-                    .senderIdx(cm.getMember().getIdx())
+                    .senderIdx(cm.getSenderIdx())
+//                    .senderIdx(cm.getMember().getIdx()) //챗메시지에 멤버가 저장되지 않아서 일단 뺌
                     .message(cm.getMessage())
                     .timeStamp(cm.getTimeStamp())
                     .build();

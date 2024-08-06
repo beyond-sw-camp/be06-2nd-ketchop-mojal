@@ -37,6 +37,7 @@ public class ChatMessageController {
                 chatMessage.getMessage(),
                 chatMessage.getTimeStamp()); //로그 확인용
 
+        //현재 클라이언트에서 전송된 챗메시지 DTO를 매개변수에서 바로 객체로 바꿔서 save에 전달하고 있음
         chatMessageService.save(currentRoomIdx, chatMessage);
 
         return chatMessage; //클라이언트에게 반환된 메시지는 실시간으로 구독자들에게 전송
