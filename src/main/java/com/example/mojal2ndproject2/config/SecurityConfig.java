@@ -83,6 +83,8 @@ public class SecurityConfig {
 
         config.addAllowedOrigin("http://127.0.0.1:5500"); //채팅 허용
         config.addAllowedOrigin("http://127.0.0.1:5501"); //채팅 허용
+        config.addAllowedOrigin("http://localhost:8081"); //채팅 허용
+        config.addAllowedOrigin("http://localhost:8082"); //채팅 허용
         config.addAllowedOriginPattern("http://127.0.0.1:*"); //config.setAllowCredentials(true) 이게 트루면 그냥 addAllowedOrigin로는 먹히지 않는다
 
         config.addAllowedOrigin("http://localhost");

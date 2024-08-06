@@ -2,6 +2,8 @@ package com.example.mojal2ndproject2.exchangepost.model;
 
 import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
+import com.example.mojal2ndproject2.image.ExchangePostImages;
+import com.example.mojal2ndproject2.image.SharePostImages;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.persistence.*;
@@ -46,4 +48,6 @@ public class ExchangePost {
     private List<ChatRoom> chatRooms = new ArrayList<>();
     @OneToMany(mappedBy = "exchangePost", fetch = FetchType.LAZY)
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
+    @OneToMany(mappedBy = "exchangePost", fetch = FetchType.LAZY)
+    private List<ExchangePostImages> exchangePostImages = new ArrayList<>();
 }

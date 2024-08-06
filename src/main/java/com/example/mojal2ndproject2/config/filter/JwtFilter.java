@@ -41,7 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authorization.split(" ")[1];
+//        String token = authorization.split(" ")[1];
+        String token = authorization;
 
         if(jwtUtil.isExpired(token)) {
             System.out.println("토큰 만료됨");

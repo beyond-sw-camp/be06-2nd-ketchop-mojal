@@ -7,6 +7,8 @@ import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ExchangePostListRes;
+import com.example.mojal2ndproject2.image.ExchangePostImages;
+import com.example.mojal2ndproject2.image.ExchangePostImagesRepository;
 import com.example.mojal2ndproject2.matching.PostMatchingMemberRepository;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
@@ -37,6 +39,7 @@ public class ExchangePostService {
     private final PostMatchingMemberRepository postMatchingMemberRepository;
     private final CategoryRepository categoryRepository;
     private final UserHaveCategoryRepository userHaveCategoryRepository;
+    private final ExchangePostImagesRepository exchangePostImagesRepository;
 
     /********************내가 작성한 교환글 전체조회*********************/
     public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member) {
@@ -98,7 +101,7 @@ public class ExchangePostService {
     }
 
     /*****************************교환게시글 생성*********************************/
-    public CreateExchangePostRes create(CreateExchangePostReq req, Member member) throws BaseException {
+    public CreateExchangePostRes create(CreateExchangePostReq req, Member member, List<String> images) throws BaseException {
         //회원가입시 선택한 카테고리가 없을때 예외처리
         List<UserHaveCategory> userHaveCategories = userHaveCategoryRepository.findAllByMember(member);
         if(userHaveCategories.size()==0){
@@ -114,7 +117,7 @@ public class ExchangePostService {
             throw new BaseException(BaseResponseStatus.MEMBER_NOT_LOGIN);
         }
 
-        ExchangePost exchangePost = ExchangePost.builder()
+        ExchangePost exchangePost = exchangePostRepository.save(ExchangePost.builder()
                 .title(req.getTitle())
                 .contents(req.getContents())
                 .postType("exchange")
@@ -126,8 +129,13 @@ public class ExchangePostService {
                 .modifyTime(LocalDateTime.now())
                 .member(member)
                 .status(false)
-                .build();
-        exchangePostRepository.save(exchangePost);
+                .build());
+
+        for (String image : images) {
+            exchangePostImagesRepository.save(ExchangePostImages.builder()
+                    .url(image)
+                    .exchangePost(exchangePost).build());
+        }
 
 
         return CreateExchangePostRes.builder()

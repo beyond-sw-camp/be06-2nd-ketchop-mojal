@@ -2,6 +2,7 @@ package com.example.mojal2ndproject2.member;
 
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.file.CloudFileUploadService;
 import com.example.mojal2ndproject2.member.emailAuth.EmailAuthService;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
@@ -28,7 +29,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.MYINFO_EMPTY_LOGINUSER;
 
@@ -38,6 +41,7 @@ import static com.example.mojal2ndproject2.common.BaseResponseStatus.MYINFO_EMPT
 public class MemberController {
     private final MemberService memberService;
     private final EmailAuthService emailAuthService;
+    private final CloudFileUploadService cloudFileUploadService;
 
     @Operation(summary = "로그인",
             description = "가입한 이메일과 비밀번호로 로그인하여 회원 인증 후, 인가된 토큰을 얻을 수 있습니다.",
@@ -99,9 +103,9 @@ public class MemberController {
             ))
     @Tag(name = "signup")
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public BaseResponse<MemberSignupRes> signup(@Valid @RequestBody MemberSignupReq request) throws BaseException {
-
-        BaseResponse<MemberSignupRes> result = memberService.signup(request);
+    public BaseResponse<MemberSignupRes> signup(@Valid @RequestPart MemberSignupReq request, @RequestPart MultipartFile file) throws BaseException {
+        String imageUrl = cloudFileUploadService.uploadImage("profile",file);
+        BaseResponse<MemberSignupRes> result = memberService.signup(request, imageUrl);
         emailAuthService.sendEmail(request.getEmail());
         return result;
     }
