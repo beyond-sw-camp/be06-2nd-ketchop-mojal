@@ -16,6 +16,7 @@ public class RoomGetRes {
     private String postWriterNickname;
     private String participantNickname;
 
+    private Long postIdx;
     private String title;
     private String giveBtmCategory;
     private String takeBtmCategory;

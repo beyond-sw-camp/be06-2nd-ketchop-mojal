@@ -31,8 +31,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws") //소켓연결 uri
 //                .setAllowedOrigins("http://127.0.0.1:5500") //소켓 CORS 설정
 //                .setAllowedOriginPatterns("http://127.0.0.1:*") //모든 출처 허용, setAllowedOrigins는 먹히지 않는다?
-                .setAllowedOrigins("http://localhost:5500") //0805추가
-                .setAllowedOrigins("http://localhost:5501") //0805추가
+                .setAllowedOrigins("http://localhost:5500", "http://localhost:5501") //0805추가, 여러 setAllowedOrigins 호출이 있는데, 이는 마지막 호출만 적용됩니다.
                 .setAllowedOriginPatterns("*") //0805추가
                 .addInterceptors(new CustomHandshakeInterceptor()) //0805추가
                 .withSockJS(); //소켓 지원하지 않으면 sockJS 사용하도록 하는 설정
