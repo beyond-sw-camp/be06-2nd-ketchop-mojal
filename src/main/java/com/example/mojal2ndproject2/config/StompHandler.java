@@ -15,11 +15,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
 @RequiredArgsConstructor
 @Component
 public class StompHandler implements ChannelInterceptor {
 
     private final JwtUtil jwtUtil;
+    private static final Logger logger = Logger.getLogger(StompHandler.class.getName());
 
     @Override
     //preSend 메서드는 ChannelInterceptor 인터페이스의 메서드로, 메시지가 실제로 전송되기 전에 호출됩니다.
@@ -32,6 +35,7 @@ public class StompHandler implements ChannelInterceptor {
 
             // HandshakeInterceptor에서 설정한 쿠키를 가져옴
             String cookies = (String) accessor.getSessionAttributes().get("cookies");
+//            logger.info("Cookies from session: " + cookies);
 
             // 쿠키에서 JWT 토큰 추출
             if (cookies != null) {
@@ -60,6 +64,7 @@ public class StompHandler implements ChannelInterceptor {
                     } catch (AccessDeniedException e) {
                         e.printStackTrace();
 
+//                        logger.severe("Access Denied: " + e.getMessage());
                         throw new AccessDeniedException("");
 
                     }

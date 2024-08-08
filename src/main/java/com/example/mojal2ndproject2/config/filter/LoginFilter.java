@@ -54,11 +54,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String email = userDetails.getUsername();
         Long idx = userDetails.getIdx();
         String role = userDetails.getRole();
+        String nickname = userDetails.getMember().getNickname();
 
         String token = jwtUtil.createToken(email, idx, role);
 
-//        PrintWriter out = response.getWriter(); //바디에 담기는 부분
-//        out.println("{\"isSuccess\": true, \"accessToken\":\""+token+"\"}");
+        PrintWriter out = response.getWriter();
+        out.println("{\"isSuccess\": true, " + "\"nickname\":\""+nickname+"\"" + ",\"idx\":"+idx+",\"email\":\""+email+"\"" +"}");
+
 //        response.addHeader("Authorization", "Bearer " + token);
         Cookie cookie = new Cookie("ATOKEN", token);
         cookie.setHttpOnly(true);

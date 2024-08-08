@@ -57,6 +57,7 @@ public class ChatRoomService {
         for(ChatRoom cr : chatRooms) {
             RoomGetRes roomGetRes = RoomGetRes.builder()
                     .roomIdx(cr.getIdx())
+                    .postIdx(cr.getExchangePost().getIdx())
                     .postWriterNickname(cr.getMember1().getNickname())
                     .participantNickname(cr.getMember2().getNickname())
                     .title(cr.getExchangePost().getTitle())
