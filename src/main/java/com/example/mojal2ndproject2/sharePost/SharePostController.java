@@ -4,6 +4,7 @@ import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.common.annotation.Timer;
+import com.example.mojal2ndproject2.file.CloudFileUploadService;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
@@ -24,15 +25,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/share")
 @RequiredArgsConstructor
 public class SharePostController {
     private final SharePostService sharePostService;
+    private final CloudFileUploadService cloudFileUploadService;
 
     @Operation(summary = "나눔글 작성",
             description = "회원은 나눔글을 작성할 수 있습니다. " +
@@ -63,9 +67,12 @@ public class SharePostController {
                     )
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public BaseResponse<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody SharePostCreateReq request) throws BaseException {
+    public BaseResponse<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                   @RequestPart SharePostCreateReq request,
+                                                   @RequestPart MultipartFile[] files) throws BaseException {
         Long requestIdx = customUserDetails.getMember().getIdx();
-        SharePostCreateRes result = sharePostService.create(requestIdx, request);
+        List<String> images = cloudFileUploadService.uploadImages("share-post",files);
+        SharePostCreateRes result = sharePostService.create(requestIdx, request, images);
         return new BaseResponse<>(result);
     }
 

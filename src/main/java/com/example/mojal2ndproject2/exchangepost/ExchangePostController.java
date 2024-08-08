@@ -8,6 +8,7 @@ import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.exchangepost.model.dto.request.CreateExchangePostReq;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.CreateExchangePostRes;
 import com.example.mojal2ndproject2.exchangepost.model.dto.response.ReadExchangePostRes;
+import com.example.mojal2ndproject2.file.CloudFileUploadService;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @ControllerAdvice
 @RestController
@@ -30,6 +32,7 @@ import java.util.List;
 @RequestMapping("/exchange")
 public class ExchangePostController {
     private final ExchangePostService exchangePostService;
+    private final CloudFileUploadService cloudFileUploadService;
 
     // 내가 작성한 교환글 전체 조회
     @Timer
@@ -85,9 +88,12 @@ public class ExchangePostController {
                     )
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @Valid @RequestBody CreateExchangePostReq req) throws BaseException {
+    public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                      @Valid @RequestBody CreateExchangePostReq req,
+                                                      @RequestPart MultipartFile[] files) throws BaseException {
         Member member = customUserDetails.getMember();
-        CreateExchangePostRes res = exchangePostService.create(req, member);
+        List<String> images = cloudFileUploadService.uploadImages("exchange-post", files);
+        CreateExchangePostRes res = exchangePostService.create(req, member, images);
         return new BaseResponse<>(res);
     }
 

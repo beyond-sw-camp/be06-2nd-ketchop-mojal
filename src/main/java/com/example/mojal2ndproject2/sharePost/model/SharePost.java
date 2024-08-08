@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.sharePost.model;
 
 import com.example.mojal2ndproject2.category.model.Category;
+import com.example.mojal2ndproject2.image.SharePostImages;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
 import jakarta.persistence.*;
@@ -39,4 +40,6 @@ public class SharePost {
     private Member member;
     @OneToMany(mappedBy = "sharePost", fetch = FetchType.LAZY)
     private List<PostMatchingMember> postMatchingMembers = new ArrayList<>();
+    @OneToMany(mappedBy = "sharePost", fetch = FetchType.LAZY)
+    private List<SharePostImages> sharePostImages = new ArrayList<>();
 }

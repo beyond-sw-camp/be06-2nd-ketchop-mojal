@@ -31,6 +31,7 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
         //메시지의 STOMP 명령이 CONNECT 인지 확인합니다. 클라이언트가 서버와의 연결을 설정하려고 할 때 사용되는 명령입니다.
+
         if (accessor.getCommand() == StompCommand.CONNECT) {
 
             // HandshakeInterceptor에서 설정한 쿠키를 가져옴
