@@ -103,22 +103,10 @@ public class MemberController {
             ))
     @Tag(name = "signup")
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public BaseResponse<MemberSignupRes> signup(@Valid @RequestPart MemberSignupReq request, @RequestPart MultipartFile file) throws BaseException {
-        String imageUrl = cloudFileUploadService.uploadImage("profile",file);
-        BaseResponse<MemberSignupRes> result = memberService.signup(request, imageUrl);
-        emailAuthService.sendEmail(request.getEmail());
-        return result;
-    }
-
-    @Operation( summary = "내 재능 카테고리 추가",
-            description = "회원가입 후 첫 로그인 시, 본인의 재능을 5개 이하로 추가해야 합니다. " +
-                    "재능으로 내세우고 싶은 카테고리를 바꾸고 싶다면 언제든지 수정도 가능합니다. ")
-    @RequestMapping(method = RequestMethod.POST, value = "/add/category")
-    public BaseResponse<List<Long>> addCategory(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                          @RequestBody MemberAddCategoryReq request){
-        Member user = customUserDetails.getMember();
-        List<Long> ret = memberService.addCategory(user, request);
-        BaseResponse<List<Long>> result = new BaseResponse<>(ret);
+    public BaseResponse<MemberSignupRes> signup(@Valid @RequestBody MemberSignupReq request) throws BaseException {
+//        String imageUrl = cloudFileUploadService.uploadImage("profile",file);
+        BaseResponse<MemberSignupRes> result = memberService.signup(request);
+//        emailAuthService.sendEmail(request.getEmail());
         return result;
     }
 
@@ -138,4 +126,5 @@ public class MemberController {
         BaseResponse<MyInfoReadRes> result = new BaseResponse<>(ret);
         return result;
     }
+
 }

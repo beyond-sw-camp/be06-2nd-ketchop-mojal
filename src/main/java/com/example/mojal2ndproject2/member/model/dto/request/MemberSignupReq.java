@@ -23,4 +23,8 @@ public class MemberSignupReq {
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @NotNull(message = "비밀번호를 입력해주세요.")
     private String password;
+
+    @NotBlank(message = "인증 코드 필요")
+    @NotNull(message = "인증 코드 필요")
+    private String uuid;
 }

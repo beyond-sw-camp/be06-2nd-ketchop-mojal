@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.sharePost.model.dto.request;
 
 import jakarta.validation.constraints.*;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -27,4 +28,6 @@ public class SharePostCreateReq {
     @NotNull(message = "하위카테고리를 입력해주세요")
     @Size(min = 1, max = 45, message = "하위 카테고리는 45자 이하로 작성해야합니다")
     private String btmCategory;
+
+    private List<String> images;
 }

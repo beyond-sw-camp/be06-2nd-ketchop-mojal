@@ -1,6 +1,7 @@
 package com.example.mojal2ndproject2.exchangepost.model.dto.request;
 
 import jakarta.validation.constraints.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,5 +28,7 @@ public class CreateExchangePostReq {
     @NotNull(message = "내용을 입력해주세요")
     @Size(min = 1, max = 900, message = "내용은 900자 이하로 작성해야합니다")
     private String contents;
+
+    private List<String> images;
 
 }

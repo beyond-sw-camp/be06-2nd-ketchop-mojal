@@ -23,6 +23,8 @@ public enum BaseResponseStatus {
      * 2100 : Login 에러
      */
     CHECK_CATEGORY_MORE_THAN_ONE(false,2101,"내 재능을 하나 이상 체크 해 주세요."),
+    DIFFERENT_CATEGORY(false,2102,"내 재능과 선택한 카테고리가 일치하지 않습니다."),
+
 
 
     /**

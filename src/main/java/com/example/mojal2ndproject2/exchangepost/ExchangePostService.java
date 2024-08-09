@@ -101,7 +101,7 @@ public class ExchangePostService {
     }
 
     /*****************************교환게시글 생성*********************************/
-    public CreateExchangePostRes create(CreateExchangePostReq req, Member member, List<String> images) throws BaseException {
+    public CreateExchangePostRes create(CreateExchangePostReq req, Member member) throws BaseException {
         //회원가입시 선택한 카테고리가 없을때 예외처리
         List<UserHaveCategory> userHaveCategories = userHaveCategoryRepository.findAllByMember(member);
         if(userHaveCategories.size()==0){
@@ -131,10 +131,12 @@ public class ExchangePostService {
                 .status(false)
                 .build());
 
-        for (String image : images) {
-            exchangePostImagesRepository.save(ExchangePostImages.builder()
-                    .url(image)
-                    .exchangePost(exchangePost).build());
+        if(req.getImages()!=null){
+            for (String image : req.getImages()) {
+                exchangePostImagesRepository.save(ExchangePostImages.builder()
+                        .url(image)
+                        .exchangePost(exchangePost).build());
+            }
         }
 
 

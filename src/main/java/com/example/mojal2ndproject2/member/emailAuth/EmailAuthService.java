@@ -3,6 +3,7 @@ package com.example.mojal2ndproject2.member.emailAuth;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.POST_USERS_UNAUTH_EMAIL;
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.SUCCESS;
 
+import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.member.emailAuth.model.EmailAuth;
@@ -29,16 +30,18 @@ public class EmailAuthService {
         message.setTo(email);
         message.setSubject("MOJAL - 이메일 인증");
 
-        String uuid = UUID.randomUUID().toString();
+//        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8);
 
 //        message.setText("http://43.203.218.195:8080/email/verify?email="+email+"&uuid="+uuid);
-        message.setText("http://localhost:8080/email/verify?email="+email+"&uuid="+uuid);
+        message.setText(uuid);
 
         emailSender.send(message);
 
         save(email, uuid);
 
-        return uuid;
+//        return uuid;
+        return "이메일 전송 성공";
     }
 
     public void save(String email, String uuid){ //@반환값?
@@ -50,24 +53,23 @@ public class EmailAuthService {
         emailAuthRepository.save(emailAuth);
     }
 
-    public BaseResponse<BaseResponseStatus> verify(String email, String uuid) {
-        Optional<EmailAuth> result = emailAuthRepository.findByEmailAndUuid(email, uuid);
-        if(result.isPresent()){
-            Member member = memberRepository.findByEmail(email).get();//Todo orElseThrow
-            Member newMember = Member.builder()
-                    .idx(member.getIdx())
-                    .nickname(member.getNickname())
-                    .password(member.getPassword())
-                    .email(member.getEmail())
-                    .role(member.getRole())
-                    .signupDate(member.getSignupDate())
-                    .emailAuth(true)
-                    .build();
+    public BaseResponse<BaseResponseStatus> verify(String email, String uuid) throws BaseException {
+        EmailAuth result = emailAuthRepository.findByEmailAndUuid(email, uuid)
+                .orElseThrow(()->new BaseException(POST_USERS_UNAUTH_EMAIL));
 
-            memberRepository.save(newMember);
-        }else{
-            return new BaseResponse<>(POST_USERS_UNAUTH_EMAIL);
-        }
+//        Member member = memberRepository.findByEmail(email).get();
+//        Member newMember = Member.builder()
+//                .idx(member.getIdx())
+//                .nickname(member.getNickname())
+//                .password(member.getPassword())
+//                .email(member.getEmail())
+//                .role(member.getRole())
+//                .signupDate(member.getSignupDate())
+//                .emailAuth(true)
+//                .build();
+//
+//        memberRepository.save(newMember);
+
         return new BaseResponse<>(SUCCESS);
     }
 }

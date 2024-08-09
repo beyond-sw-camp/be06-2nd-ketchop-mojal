@@ -89,11 +89,9 @@ public class ExchangePostController {
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public BaseResponse<CreateExchangePostRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                      @Valid @RequestBody CreateExchangePostReq req,
-                                                      @RequestPart MultipartFile[] files) throws BaseException {
+                                                      @Valid @RequestBody CreateExchangePostReq req) throws BaseException {
         Member member = customUserDetails.getMember();
-        List<String> images = cloudFileUploadService.uploadImages("exchange-post", files);
-        CreateExchangePostRes res = exchangePostService.create(req, member, images);
+        CreateExchangePostRes res = exchangePostService.create(req, member);
         return new BaseResponse<>(res);
     }
 

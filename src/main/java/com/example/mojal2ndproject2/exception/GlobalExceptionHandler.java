@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<BaseResponse<BaseResponseStatus>> BaseResponseHandler(BaseException e){
         BaseResponse<BaseResponseStatus> response = new BaseResponse<>(e.getStatus());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<BaseResponse<String>> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity
-                .badRequest()
+                .ok()
                 .body(new BaseResponse<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage()));
     }
 

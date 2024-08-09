@@ -50,13 +50,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String token = jwtUtil.createToken(nickName, idx, "ROLE_USER"); //Todo email 넣는 자리에 nickname 넣음..?
 
-        Cookie aToken = new Cookie("aToken", token);
+        Cookie aToken = new Cookie("ATOKEN", token);
         aToken.setHttpOnly(true);
         aToken.setSecure(true);
         aToken.setPath("/");
         aToken.setMaxAge(60 * 60 * 1);
 
         response.addCookie(aToken);
-        getRedirectStrategy().sendRedirect(request, response, "http://localhost/test.html"); //Todo redirectURL을 카테고리 선택 화면으로?
+        response.setStatus(200);
+        response.setHeader("nickname", nickName);
+        getRedirectStrategy().sendRedirect(request, response, "http://localhost:8082/redirect"); //Todo redirectURL을 카테고리 선택 화면으로?
     }
 }

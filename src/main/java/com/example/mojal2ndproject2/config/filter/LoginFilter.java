@@ -56,10 +56,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = userDetails.getRole();
         String nickname = userDetails.getMember().getNickname();
 
+
         String token = jwtUtil.createToken(email, idx, role);
 
         PrintWriter out = response.getWriter();
-        out.println("{\"isSuccess\": true, " + "\"nickname\":\""+nickname+"\"" + ",\"idx\":"+idx+",\"email\":\""+email+"\"" +"}");
+        out.println(
+                "{\"isSuccess\": true, " +
+                        "\"nickname\":\""+nickname+"\"" +
+                        ",\"idx\":"+idx+
+                        ",\"email\":\""+email+"\"" +
+                        "}");
 //        response.addHeader("Authorization", "Bearer " + token);
         Cookie cookie = new Cookie("ATOKEN", token);
         cookie.setHttpOnly(true);
