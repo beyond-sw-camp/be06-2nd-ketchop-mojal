@@ -21,7 +21,8 @@ public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-    private Long senderIdx; //Todo byul : 은주 컨펌 후 멤버와 연관 관계맺기 ej-어떡하쥥!어떡하쥥?~
+
+    private Long senderIdx; //메시지 보내는 사람. 일단 사용하지 않고 냄둠
     private String message;
     private String timeStamp;
 
@@ -33,7 +34,8 @@ public class ChatMessage {
     @JoinColumn(name = "chat_room_idx")
     @JsonBackReference //순환 참조를 방지하기 위해 Jackson 애노테이션을 사용
     private ChatRoom chatRoom;
+
     @ManyToOne
     @JoinColumn(name = "member_idx")
-    private Member member;
+    private Member member; //메시지 보내는 사람
 }
