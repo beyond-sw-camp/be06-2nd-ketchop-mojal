@@ -5,6 +5,7 @@ import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
 import com.example.mojal2ndproject2.common.annotation.Timer;
 import com.example.mojal2ndproject2.file.CloudFileUploadService;
+import com.example.mojal2ndproject2.member.emailAuth.model.dto.request.EmailAuthReq;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.sharePost.model.SharePost;
@@ -22,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.Time;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,11 +71,10 @@ public class SharePostController {
             ))
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public BaseResponse<SharePostCreateRes> create(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                   @RequestPart SharePostCreateReq request,
-                                                   @RequestPart MultipartFile[] files) throws BaseException {
-        Long requestIdx = customUserDetails.getMember().getIdx();
-        List<String> images = cloudFileUploadService.uploadImages("share-post",files);
-        SharePostCreateRes result = sharePostService.create(requestIdx, request, images);
+                                                   @RequestBody SharePostCreateReq request
+                                                   ) throws BaseException {
+        Member member = customUserDetails.getMember();
+        SharePostCreateRes result = sharePostService.create(member, request);
         return new BaseResponse<>(result);
     }
 
@@ -81,7 +83,7 @@ public class SharePostController {
                     "나눔글의 모집인원이 다 차지 않았을 때 참여한다면, 선착순으로 나눔 참여에 성공합니다. " +
                     "모집인원이 다 찼다면 선착순 나눔 참여에 실패합니다. " +
                     "글 작성자는 본인 글에는 나눔 참여 할 수 없습니다. " )
-    @RequestMapping(method = RequestMethod.POST, value = "/join")
+    @RequestMapping(method = RequestMethod.GET, value = "/join")
     public BaseResponse<String> enrollment(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                            Long idx) throws BaseException {
         Member member = customUserDetails.getMember();
@@ -137,5 +139,11 @@ public class SharePostController {
 
         List<SharePostListRes> response= sharePostService.enrolledList(member);
         return new BaseResponse<>(response);
+    }
+
+
+    @PostMapping("/test")
+    public void test(@RequestBody EmailAuthReq emailAuthReq){
+        System.out.println(emailAuthReq.getEmail());
     }
 }

@@ -2,6 +2,8 @@ package com.example.mojal2ndproject2.category;
 
 import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.category.model.dto.response.GetCategoriesRes;
+import com.example.mojal2ndproject2.common.BaseException;
+import com.example.mojal2ndproject2.member.model.Member;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

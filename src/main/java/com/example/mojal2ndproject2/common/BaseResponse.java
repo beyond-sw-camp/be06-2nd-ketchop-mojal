@@ -34,7 +34,7 @@ public class BaseResponse<T> {
         this.code = status.getCode();
     }
 
-    public BaseResponse(String message){
+    public BaseResponse(String message){ //Todo byul : 수정하기
         this.isSuccess = false;
         this.code = 10000;
         this.message=message;

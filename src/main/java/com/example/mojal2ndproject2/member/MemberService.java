@@ -6,6 +6,8 @@ import com.example.mojal2ndproject2.category.CategoryRepository;
 import com.example.mojal2ndproject2.common.BaseException;
 import com.example.mojal2ndproject2.common.BaseResponse;
 import com.example.mojal2ndproject2.common.BaseResponseStatus;
+import com.example.mojal2ndproject2.member.emailAuth.EmailAuthRepository;
+import com.example.mojal2ndproject2.member.emailAuth.model.EmailAuth;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
@@ -30,23 +32,26 @@ public class MemberService {
     private final CategoryRepository categoryRepository;
     private final UserHaveCategoryRepository userHaveCategoryRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailAuthRepository emailAuthRepository;
 
-    public BaseResponse<MemberSignupRes> signup(MemberSignupReq request, String imageUrl) throws BaseException{
+    public BaseResponse<MemberSignupRes> signup(MemberSignupReq request) throws BaseException{
         if(memberRepository.existsByEmail(request.getEmail())){
 //            return new BaseResponse<>(POST_USERS_EXISTS_EMAIL);
             throw new BaseException(BaseResponseStatus.POST_USERS_EXISTS_EMAIL);
         }
 
+        EmailAuth result = emailAuthRepository.findByEmailAndUuid(request.getEmail(), request.getUuid())
+                .orElseThrow(()->new BaseException(POST_USERS_UNAUTH_EMAIL));
 
 
         Member member = Member.builder()
                 .nickname(request.getNickname())
                 .email(request.getEmail())
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
-                .emailAuth(false)
+                .emailAuth(true)
                 .role("ROLE_USER")
                 .signupDate(LocalDateTime.now())
-                .profileImageUrl(imageUrl)
+//                .profileImageUrl(imageUrl)
                 .build();
 
         Member savedMember = memberRepository.save(member);
@@ -59,21 +64,6 @@ public class MemberService {
                 .build();
 
         return new BaseResponse<>(memberSignupRes);
-    }
-
-    public List<Long> addCategory(Member user, MemberAddCategoryReq request) {//Todo byul: 테스트 해보기
-        List<UserHaveCategory> categories = new ArrayList<>();
-
-        for (Long categoryIdx : request.getCategories()) {
-            Category category = Category.builder().idx(categoryIdx).build();
-            UserHaveCategory userHaveCategory = UserHaveCategory.builder()
-                    .member(user)
-                    .category(category)
-                    .build();
-
-            userHaveCategoryRepository.save(userHaveCategory); //Todo byul : 세이브가 잘 안된 경우도 예외처리?
-        }
-        return request.getCategories();
     }
 
     public MyInfoReadRes myInfoRead(Member user) throws BaseException{

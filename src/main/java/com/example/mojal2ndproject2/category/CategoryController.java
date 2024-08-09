@@ -1,11 +1,15 @@
 package com.example.mojal2ndproject2.category;
 
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.category.model.dto.response.GetCategoriesRes;
 import com.example.mojal2ndproject2.common.BaseResponse;
+import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import com.example.mojal2ndproject2.member.model.Member;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

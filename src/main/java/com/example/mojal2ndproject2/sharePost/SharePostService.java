@@ -29,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.CHECK_CATEGORY_MORE_THAN_ONE;
+import static com.example.mojal2ndproject2.common.BaseResponseStatus.DIFFERENT_CATEGORY;
 
 @Service
 @RequiredArgsConstructor
@@ -40,15 +41,16 @@ public class SharePostService {
     private final SharePostImagesRepository sharePostImagesRepository;
 
     /*******나눔글 생성***********/
-  public SharePostCreateRes create(Long requestIdx, SharePostCreateReq request, List<String> images) throws BaseException{
+  public SharePostCreateRes create(Member member, SharePostCreateReq request) throws BaseException{
 
-      //회원가입시 선택한 카테고리가 없을때 예외처리
-      UserHaveCategory userHaveCategory = userHaveCategoryRepository.findByMemberAndCategory(Member.builder().idx(requestIdx).build(), Category.builder().idx(request.getCategoryIdx()).build()).orElseThrow(
-              () -> new BaseException(CHECK_CATEGORY_MORE_THAN_ONE)
+      //선택한 카테고리가 없을때
+      if(userHaveCategoryRepository.findAllByMember(member).size() <= 0){
+          throw new BaseException(CHECK_CATEGORY_MORE_THAN_ONE);
+      }
+      //회원가입시 선택한 카테고리와 일치하지 않을 때 예외처리
+      UserHaveCategory userHaveCategory = userHaveCategoryRepository.findByMemberAndCategory(member, Category.builder().idx(request.getCategoryIdx()).build()).orElseThrow(
+              () -> new BaseException(DIFFERENT_CATEGORY)
       );
-
-
-        Member member = Member.builder().idx(requestIdx).build();
 
         Category category = Category.builder().idx(request.getCategoryIdx()).build();
 
@@ -69,10 +71,12 @@ public class SharePostService {
 
         SharePost result = sharePostRepository.save(sharePost);
 
-      for (String image : images) {
-          sharePostImagesRepository.save(SharePostImages.builder()
-                  .url(image)
-                  .sharePost(result).build());
+      if(request.getImages()!=null){
+          for (String image : request.getImages()) {
+              sharePostImagesRepository.save(SharePostImages.builder()
+                      .url(image)
+                      .sharePost(result).build());
+          }
       }
 
         SharePostCreateRes sharePostCreateRes = SharePostCreateRes.builder()

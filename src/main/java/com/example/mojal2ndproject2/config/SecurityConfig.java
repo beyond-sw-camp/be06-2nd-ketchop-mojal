@@ -53,14 +53,14 @@ public class SecurityConfig {
                 auth
                         .requestMatchers(
                                 "/share/create",
+                                "/share/upload-image",
                                 "/share/join",
                                 "/share/my/list",
                                 "/share/joined/list",
                                 "/exchange/create",
                                 "/exchange/my/list",
                                 "/exchange/joined/list",
-                                "/matching/check/exchange",
-                                "/member/add/category").authenticated()
+                                "/matching/check/exchange").authenticated()
                         .requestMatchers("/api/ws","/api/topic").permitAll()
 //                        .requestMatchers("/ws/**").permitAll() //0807추가
                         .requestMatchers(

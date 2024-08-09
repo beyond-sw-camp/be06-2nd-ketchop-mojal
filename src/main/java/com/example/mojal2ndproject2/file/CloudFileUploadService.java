@@ -52,7 +52,7 @@ public class CloudFileUploadService {
 
             try {
                 amazonS3.putObject(bucketName, fileName, multipartFile.getInputStream(), metadata);
-                images.add("https://mojal.s3.ap-northeast-2.amazonaws.com/"+bucketName+"/"+fileName);
+                images.add("https://mojal.s3.ap-northeast-2.amazonaws.com/"+fileName);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
