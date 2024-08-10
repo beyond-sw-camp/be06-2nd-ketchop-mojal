@@ -66,17 +66,21 @@ public class ChatRoomController {
                     "그 후, 글 작성자가 교환글에서 설정한 받을 카테고리(takeCategoryIdx)가 참여자의 재능 카테고리에 있는지 확인합니다. " +
                     "있다면 채팅방을 생성하고 db에 저장합니다. ")
     @PostMapping("/rooms/{postIdx}/messages")
-    public void createRoom(@PathVariable String postIdx, @RequestBody RoomCreateReq roomCreateReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws BaseException { //포스트id, 룸id,
+    public Long createRoom(@PathVariable String postIdx, @RequestBody RoomCreateReq roomCreateReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws BaseException { //포스트id, 룸id,
         //@PathVariable String postIdx, 뺌?
 
         //포스트id를 받아서 작성자랑, 참여자 사이에 채팅방이 있는지 확인 -> chatRoom 테이블에서 확인
-        if(!chatRoomService.findChatRoom(roomCreateReq)) {
-            //채팅방 있으면 true 반환되는데, 없으면 저장해줘야하니까 ! 붙이기
+        Long roomIdx = chatRoomService.findChatRoom(roomCreateReq);
+        if(roomIdx == 0L) {
+            //채팅방 있으면 true 반환되는데, 없으면 저장해줘야하니까 ! 붙이기 -> 수정
+            //방있으면 방 idx 반환, 0L이면 생성된 방이 없으므로 만들어주기
 
             //없으면 새로 생성하고 디비에 저장
             ChatRoom newChatRoom = chatRoomService.create(roomCreateReq);
+            return newChatRoom.getIdx();
 
         }
-        //있으면 넘어가기
+        //있으면 넘어가기 -> 수정. 있으면 방 idx 반환
+        return roomIdx;
     }
 }

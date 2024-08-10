@@ -75,7 +75,7 @@ public class ChatRoomService {
 
 
     //채팅방 유무 검사
-    public boolean findChatRoom(RoomCreateReq roomCreateReq) {
+    public Long findChatRoom(RoomCreateReq roomCreateReq) {
 //        Long loginUserIdx = customUserDetails.getMember().getIdx();
         Member member2 = Member.builder()
                 .idx(roomCreateReq.getParticipants())
@@ -89,12 +89,15 @@ public class ChatRoomService {
             Optional<ChatRoom> chatRoom = chatRoomRepository.findByMember1AndMember2AndExchangePost(member1, member2, post.get());
 
             if (chatRoom.isPresent()) {
-                return true; //채팅방이 있다
+                return chatRoom.get().getIdx();
+//                return true; //채팅방이 있다
             }
 
-            return false;
+            return 0L;
+//            return false;
         }
-            return false;
+        return 0L;
+//        return false;
     }
 
 
