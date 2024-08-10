@@ -22,5 +22,6 @@ public class RoomGetRes {
     private String takeBtmCategory;
     private Boolean status;
 
+    private String lastMessage;
     private String lastMessageTimeStamp;
 }

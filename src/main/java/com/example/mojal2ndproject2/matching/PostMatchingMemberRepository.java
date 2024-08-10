@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.matching;
 
+import com.example.mojal2ndproject2.chat.model.ChatMessage;
 import com.example.mojal2ndproject2.exchangepost.model.ExchangePost;
 import com.example.mojal2ndproject2.matching.model.PostMatchingMember;
 import com.example.mojal2ndproject2.member.model.Member;
@@ -25,4 +26,6 @@ public interface PostMatchingMemberRepository extends JpaRepository<PostMatching
     List<PostMatchingMember> findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(Member member);//내가 참여한 교환글 전체 조회
     @Query("SELECT pmm FROM PostMatchingMember pmm JOIN FETCH pmm.exchangePost JOIN FETCH pmm.exchangePost.giveCategory JOIN FETCH pmm.exchangePost.takeCategory WHERE pmm.member = :member")
     Slice<PostMatchingMember> findAllByMemberWithExchangePostAndGiveCategoryAndTakeCategory(Member member, Pageable pageable);//내가 참여한 교환글 전체 조회 - 페이징 처리
+
+    Optional<PostMatchingMember> findByExchangePost(ExchangePost exchangePost);
 }

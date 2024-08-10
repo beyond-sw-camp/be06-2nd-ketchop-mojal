@@ -45,6 +45,7 @@ public class MatchingController {
                 result.getMember1Idx(),
                 result.getMember2Idx(),
                 result.getExchangePostIdx());
+
         return new BaseResponse<>(result);
     }
 
