@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.matching;
 
+import com.example.mojal2ndproject2.category.model.Category;
 import com.example.mojal2ndproject2.chat.ChatRoomController;
 import com.example.mojal2ndproject2.chat.ChatRoomRepository;
 import com.example.mojal2ndproject2.chat.model.ChatRoom;
@@ -21,6 +22,7 @@ import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +54,11 @@ public class MatchingService {
                 throw new BaseException(BaseResponseStatus.CHAT_NOT_WRITER);
             }
 
+            //이미 교환된 글인지 확인
+            if((matchingRepository.findByExchangePost(chatRoom.get().getExchangePost())).isPresent()) {
+                throw new BaseException(BaseResponseStatus.CLOSED_POST);
+            };
+
             //매칭정보 저장
             ExchangePost post = chatRoom.get().getExchangePost();
 
@@ -66,6 +73,26 @@ public class MatchingService {
                     .member1Idx(pm.getExchangePost().getMember().getIdx()) //작성자idx
                     .member2Idx(pm.getMember().getIdx()) //참여자idx
                     .build();
+
+            //교환글 업데이트
+            Optional<ExchangePost> oldPost = exchangePostRepository.findById(matchingMemberRes.getExchangePostIdx());
+            if(oldPost.isPresent()) {
+
+                exchangePostRepository.save(ExchangePost.builder()
+                        .idx(oldPost.get().getIdx()) //원래 idx
+                        .title(oldPost.get().getTitle())
+                        .contents(oldPost.get().getContents())
+                        .postType("exchange")
+                        .giveCategory(oldPost.get().getGiveCategory())
+                        .takeCategory(oldPost.get().getTakeCategory())
+                        .giveBtmCategory(oldPost.get().getGiveBtmCategory())
+                        .takeBtmCategory(oldPost.get().getTakeBtmCategory())
+                        .timeStamp(oldPost.get().getTimeStamp())
+                        .modifyTime(LocalDateTime.now()) //현재시간으로 수정
+                        .member(oldPost.get().getMember())
+                        .status(true) //교환완료로 바꿈
+                        .build());
+            }
 
             return matchingMemberRes;
 

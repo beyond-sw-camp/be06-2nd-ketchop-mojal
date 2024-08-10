@@ -55,6 +55,17 @@ public class ChatRoomService {
         List<RoomGetRes> myChatRoomsList = new ArrayList<>();
 
         for(ChatRoom cr : chatRooms) {
+
+            // 각 채팅방의 최근 메시지 가져오기
+            Optional<ChatMessage> lastMessageOpt = chatMessageRepository.findFirstByChatRoomOrderByTimeStampDesc(cr);
+            String lastMessage = "";
+            String lastMessageTimeStamp = "";
+
+            if (lastMessageOpt.isPresent()) {
+                lastMessage = lastMessageOpt.get().getMessage();
+                lastMessageTimeStamp = lastMessageOpt.get().getTimeStamp();
+            }
+
             RoomGetRes roomGetRes = RoomGetRes.builder()
                     .roomIdx(cr.getIdx())
                     .postIdx(cr.getExchangePost().getIdx())
@@ -64,7 +75,8 @@ public class ChatRoomService {
                     .giveBtmCategory(cr.getExchangePost().getGiveBtmCategory())
                     .takeBtmCategory(cr.getExchangePost().getTakeBtmCategory())
                     .status(cr.getExchangePost().getStatus())
-                    .lastMessageTimeStamp("최근 메시지 시간")
+                    .lastMessage(lastMessage) // 최근 메시지 추가
+                    .lastMessageTimeStamp(lastMessageTimeStamp) // 최근 메시지 시간 추가
                     .build();
 
             myChatRoomsList.add(roomGetRes);
