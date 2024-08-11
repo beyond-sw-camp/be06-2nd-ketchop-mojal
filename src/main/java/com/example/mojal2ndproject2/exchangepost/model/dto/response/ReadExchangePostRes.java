@@ -1,5 +1,6 @@
 package com.example.mojal2ndproject2.exchangepost.model.dto.response;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,4 +24,5 @@ public class ReadExchangePostRes {
     private LocalDateTime modifyTime;
     private Boolean status;
     private String postType;
+    private List<String> imageUrlList;
 }

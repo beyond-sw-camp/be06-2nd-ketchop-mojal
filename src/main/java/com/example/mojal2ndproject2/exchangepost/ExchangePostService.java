@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -148,16 +149,21 @@ public class ExchangePostService {
     }
 
     //교환게시글 전체조회
-    public List<ReadExchangePostRes> list() throws BaseException{
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+    public List<ReadExchangePostRes> list(Integer page, Integer size) throws BaseException{
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "idx"));
         Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
 
 //        List<ExchangePost> result = exchangePostRepository.findAll();
 //        List<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
 
         List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
+        List<String> imageUrlList = new ArrayList<>();
 
         for (ExchangePost post: posts) {
+            for (ExchangePostImages exchangePostImage : post.getExchangePostImages()) {
+                imageUrlList.add(exchangePostImage.getUrl());
+            }
+
             ReadExchangePostRes getReadRes = ReadExchangePostRes.builder()
                     .postIdx(post.getIdx())
                     .title(post.getTitle())
@@ -171,6 +177,7 @@ public class ExchangePostService {
                     .modifyTime(post.getModifyTime())
                     .memberIdx(post.getMember().getIdx())
                     .status(post.getStatus())
+                    .imageUrlList(imageUrlList)
                     .build();
             getExchangePostReadList.add(getReadRes);
         }
