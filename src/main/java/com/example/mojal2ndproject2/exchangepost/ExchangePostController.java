@@ -100,8 +100,8 @@ public class ExchangePostController {
     @Operation( summary = "교환글 전체 조회",
             description = "등록된 교환글 전체를 리스트로 조회합니다.")
     @RequestMapping(method = RequestMethod.GET,value = "/list")
-    public BaseResponse<List<ReadExchangePostRes>> list() throws BaseException{
-        List<ReadExchangePostRes> res = exchangePostService.list();
+    public BaseResponse<List<ReadExchangePostRes>> list(Integer page, Integer size) throws BaseException{
+        List<ReadExchangePostRes> res = exchangePostService.list(page, size);
         return new BaseResponse<>(res);
     }
 
