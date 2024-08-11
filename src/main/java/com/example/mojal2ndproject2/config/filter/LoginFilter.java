@@ -1,8 +1,11 @@
 package com.example.mojal2ndproject2.config.filter;
 
 import com.example.mojal2ndproject2.config.jwt.JwtUtil;
+import com.example.mojal2ndproject2.member.MemberRepository;
 import com.example.mojal2ndproject2.member.model.CustomUserDetails;
+import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberLoginReq;
+import com.example.mojal2ndproject2.userhavecategory.model.UserHaveCategory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.text.StyledEditorKit.BoldAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,7 +63,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Long idx = userDetails.getIdx();
         String role = userDetails.getRole();
         String nickname = userDetails.getMember().getNickname();
-
+        Boolean firstLogin = userDetails.getMember().getFirstLogin();
 
         String token = jwtUtil.createToken(email, idx, role);
 
@@ -65,6 +73,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
                         "\"nickname\":\""+nickname+"\"" +
                         ",\"idx\":"+idx+
                         ",\"email\":\""+email+"\"" +
+                        ",\"firstLogin\" : "+firstLogin+
                         "}");
 //        response.addHeader("Authorization", "Bearer " + token);
         Cookie cookie = new Cookie("ATOKEN", token);
