@@ -39,9 +39,11 @@ public class ExchangePostController {
     @Operation( summary = "내가 작성한 교환글 전체 조회",
             description = "로그인 한 회원이 작성한 교환글 전체를 리스트로 조회합니다.")
     @RequestMapping(method = RequestMethod.GET, value = "/my/list")
-    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList (
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            Integer page, Integer size) {
         Member member = customUserDetails.getMember();
-        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.authorExchangeList(member);
+        BaseResponse<List<ReadExchangePostRes>> response = exchangePostService.authorExchangeList(member, page, size);
         return response;
     }
 
