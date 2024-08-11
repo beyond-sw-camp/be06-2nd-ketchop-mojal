@@ -48,8 +48,11 @@ public class ExchangePostService {
 //        List<ExchangePost> posts = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
 
+//        Slice<ExchangePost> posts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member, pageable);
+      
         Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "idx"));
         Slice<ExchangePost> posts = exchangePostRepository.findAllByMemberWithGiveCategoryAndTakeCategory(member, pageable);
+
 
         for (ExchangePost e : posts) {
             ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()

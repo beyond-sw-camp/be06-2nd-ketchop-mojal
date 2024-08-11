@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ExchangePostRepository extends JpaRepository<ExchangePost, Long> {
-    List<ExchangePost> findAllByMember(Member member);
+    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member WHERE ep.member= :member")
+    Slice<ExchangePost> findAllByMember(Member member, Pageable pageable);
+
     @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory WHERE ep.member= :member")
     List<ExchangePost> findAllByMemberWithMemberAndCategory(Member member);
     @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory WHERE ep.member= :member")
