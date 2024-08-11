@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import static com.example.mojal2ndproject2.common.BaseResponseStatus.CHECK_CATEGORY_MORE_THAN_ONE;
@@ -190,8 +191,8 @@ public class SharePostService {
     }
 
     /**************나눔글 전체조회***************/
-    public List<SharePostListRes> list(){
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+    public List<SharePostListRes> list(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "idx"));
         Slice<SharePost> posts = sharePostRepository.findAllPostWithMemberAndCategory(pageable);
 
 //        List<SharePost> posts = sharePostRepository.findAll();
