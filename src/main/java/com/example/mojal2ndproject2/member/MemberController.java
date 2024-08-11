@@ -8,6 +8,7 @@ import com.example.mojal2ndproject2.member.model.CustomUserDetails;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberLoginReq;
+import com.example.mojal2ndproject2.member.model.dto.request.MemberModifyReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberAddCategoryRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
@@ -109,6 +110,17 @@ public class MemberController {
 //        emailAuthService.sendEmail(request.getEmail());
         return result;
     }
+
+    @Operation( summary = "내 정보 수정",
+            description = "닉네임 및 최초 로그인 정보를 수정할 수 있습니다.")
+    @RequestMapping(method = RequestMethod.POST, value = "/modify")
+    public BaseResponse<String> modify(@RequestBody MemberModifyReq memberModifyReq) throws BaseException {
+        String result = memberService.modify(memberModifyReq);
+
+        return new BaseResponse<>(result);
+    }
+
+
 
     @Operation( summary = "내 정보 조회",
             description = "가입된 내 회원 정보를 조회합니다. 로그인 되어 있으면 바로 조회 할 수 있습니다.")

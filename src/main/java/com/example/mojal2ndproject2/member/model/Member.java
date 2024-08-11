@@ -43,6 +43,7 @@ public class Member {
     private Long kakaoIdx;
     private String role;
     private String profileImageUrl;
+    private Boolean firstLogin;
     @OneToMany(mappedBy = "member" ,fetch = FetchType.LAZY)
 //    @OneToMany(mappedBy = "member")
     private List<SharePost> sharePosts = new ArrayList<>();

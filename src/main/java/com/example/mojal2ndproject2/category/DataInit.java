@@ -27,7 +27,7 @@ public class DataInit {
     private final UserHaveCategoryRepository userHaveCategoryRepository;
     private final PostMatchingMemberRepository postMatchingMemberRepository;
 
-//    @PostConstruct
+    @PostConstruct
     public void dataInsert() {
 
         Set<String> categories = Set.of(
@@ -52,6 +52,7 @@ public class DataInit {
                         .password("$2a$10$Rsya1PvPOGeDGcLThcgji.oP9RTgf8zzvHF5TwnHXIGX1hqvDC/QC")
                         .role("ROLE_USER")
                         .emailAuth(true)
+                        .firstLogin(true)
                         .signupDate(LocalDateTime.now())
                         .build();
                 Member saved = memberRepository.save(member);
@@ -70,6 +71,7 @@ public class DataInit {
                         .password("$2a$10$Rsya1PvPOGeDGcLThcgji.oP9RTgf8zzvHF5TwnHXIGX1hqvDC/QC")
                         .role("ROLE_USER")
                         .emailAuth(true)
+                        .firstLogin(true)
                         .signupDate(LocalDateTime.now())
                         .build();
                 Member saved = memberRepository.save(member);

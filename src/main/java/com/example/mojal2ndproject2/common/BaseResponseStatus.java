@@ -32,6 +32,7 @@ public enum BaseResponseStatus {
      */
     MYINFO_NOT_FOUND(false, 2801,"내 정보가 없어 조회 할 수 없습니다."),
     MYINFO_EMPTY_LOGINUSER(false,2802,"로그인 정보가 없습니다."),
+    NOT_MEMBER(false,2803,"회원이 아닙니다."),
 
 
     /**

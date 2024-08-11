@@ -10,6 +10,7 @@ import com.example.mojal2ndproject2.member.emailAuth.EmailAuthRepository;
 import com.example.mojal2ndproject2.member.emailAuth.model.EmailAuth;
 import com.example.mojal2ndproject2.member.model.Member;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberAddCategoryReq;
+import com.example.mojal2ndproject2.member.model.dto.request.MemberModifyReq;
 import com.example.mojal2ndproject2.member.model.dto.request.MemberSignupReq;
 import com.example.mojal2ndproject2.member.model.dto.response.MemberSignupRes;
 import com.example.mojal2ndproject2.member.model.dto.response.MyInfoReadRes;
@@ -50,6 +51,7 @@ public class MemberService {
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .emailAuth(true)
                 .role("ROLE_USER")
+                .firstLogin(true)
                 .signupDate(LocalDateTime.now())
 //                .profileImageUrl(imageUrl)
                 .build();
@@ -81,5 +83,28 @@ public class MemberService {
         }
         //내 정보 조회에 실패할 때 (디비에 없다던지 말이 안되긴 하는데)
         throw new BaseException(MYINFO_NOT_FOUND);
+    }
+
+    public String modify(MemberModifyReq request) throws BaseException {
+        Member member = memberRepository.findById(request.getIdx()).orElseThrow(
+                ()-> new BaseException(NOT_MEMBER)
+        );
+
+        Member saved = memberRepository.save( Member.builder()
+                .idx(request.getIdx())
+                .nickname(request.getNickname())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .signupDate(member.getSignupDate())
+                .emailAuth(member.getEmailAuth())
+                .kakaoIdx(member.getKakaoIdx())
+                .role(member.getRole())
+                .profileImageUrl(member.getProfileImageUrl())
+                .firstLogin(request.getFirstLogin()).build());
+
+        if(saved==null || request.getIdx() != member.getIdx()){
+            return "회원 정보 저장 실패";
+        }
+        return "회원 정보 저장 성공";
     }
 }

@@ -25,7 +25,7 @@ public class UserHaveCategoryService {
         List<GetUserCategoryRes> response = new ArrayList<>();
         for (UserHaveCategory userHaveCategory : result){
             response.add(GetUserCategoryRes.builder()
-                    .idx(userHaveCategory.getIdx()).name(userHaveCategory.getCategory().getName()).build());
+                    .idx(userHaveCategory.getCategory().getIdx()).name(userHaveCategory.getCategory().getName()).build());
         }
         return response;
     }

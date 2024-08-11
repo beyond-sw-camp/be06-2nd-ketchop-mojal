@@ -24,7 +24,8 @@ public class UserHaveCategoryController {
 
     @Operation(summary = "내 재능 카테고리 조회", description = "내가 선택한 재능 카테고리를 조회")
     @RequestMapping(method = RequestMethod.GET, value = "/my/category")
-    public BaseResponse<List<GetUserCategoryRes>> getMyCategory(@AuthenticationPrincipal CustomUserDetails customUserDetails)
+    public BaseResponse<List<GetUserCategoryRes>> getMyCategory(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails)
             throws BaseException {
         Member member = customUserDetails.getMember();
         List<GetUserCategoryRes> result = userHaveCategoryService.getMyCategories(member);
