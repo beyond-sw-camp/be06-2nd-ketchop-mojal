@@ -111,8 +111,8 @@ public class SharePostController {
             description = "등록된 나눔글 전체를 리스트로 조회합니다. ")
     @Timer
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public BaseResponse<List<SharePostListRes>> list() {
-        List<SharePostListRes> result = sharePostService.list();
+    public BaseResponse<List<SharePostListRes>> list(Integer page, Integer size) {
+        List<SharePostListRes> result = sharePostService.list(page, size);
         return new BaseResponse<>(result);
     }
 
