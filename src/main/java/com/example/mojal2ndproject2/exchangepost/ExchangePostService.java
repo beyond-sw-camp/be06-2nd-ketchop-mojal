@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,14 +43,16 @@ public class ExchangePostService {
     private final ExchangePostImagesRepository exchangePostImagesRepository;
 
     /********************내가 작성한 교환글 전체조회*********************/
-    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member) {
+    public BaseResponse<List<ReadExchangePostRes>> authorExchangeList(Member member, Integer page, Integer size) {
 //                List<ExchangePost> result = exchangePostRepository.findAllByMember(member);
 //        List<ExchangePost> posts = exchangePostRepository.findAllByMemberWithMemberAndCategory(member);
         List<ReadExchangePostRes> exchangePostReadResList = new ArrayList<>();
 
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
 //        Slice<ExchangePost> posts = exchangePostRepository.findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(member, pageable);
-        Slice<ExchangePost> posts = exchangePostRepository.findAllByMember(member, pageable);
+      
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "idx"));
+        Slice<ExchangePost> posts = exchangePostRepository.findAllByMemberWithGiveCategoryAndTakeCategory(member, pageable);
+
 
         for (ExchangePost e : posts) {
             ReadExchangePostRes exchangePostReadRes = ReadExchangePostRes.builder()
@@ -149,16 +152,21 @@ public class ExchangePostService {
     }
 
     //교환게시글 전체조회
-    public List<ReadExchangePostRes> list() throws BaseException{
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "idx"));
+    public List<ReadExchangePostRes> list(Integer page, Integer size) throws BaseException{
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "idx"));
         Slice<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory(pageable);
 
 //        List<ExchangePost> result = exchangePostRepository.findAll();
 //        List<ExchangePost> posts = exchangePostRepository.findAllPostWithMemberAndGiveCategoryAndTakeCategory();
 
         List<ReadExchangePostRes> getExchangePostReadList = new ArrayList<>();
+        List<String> imageUrlList = new ArrayList<>();
 
         for (ExchangePost post: posts) {
+            for (ExchangePostImages exchangePostImage : post.getExchangePostImages()) {
+                imageUrlList.add(exchangePostImage.getUrl());
+            }
+
             ReadExchangePostRes getReadRes = ReadExchangePostRes.builder()
                     .postIdx(post.getIdx())
                     .title(post.getTitle())
@@ -172,6 +180,7 @@ public class ExchangePostService {
                     .modifyTime(post.getModifyTime())
                     .memberIdx(post.getMember().getIdx())
                     .status(post.getStatus())
+                    .imageUrlList(imageUrlList)
                     .build();
             getExchangePostReadList.add(getReadRes);
         }

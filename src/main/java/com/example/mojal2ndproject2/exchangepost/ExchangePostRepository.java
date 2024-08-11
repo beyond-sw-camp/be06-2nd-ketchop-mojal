@@ -23,8 +23,9 @@ public interface ExchangePostRepository extends JpaRepository<ExchangePost, Long
     Slice<ExchangePost> findAllByMemberWithMemberAndCategory(Pageable pageable);
     @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.postMatchingMembers JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory")
     List<ExchangePost> findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(Member member);
-    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.postMatchingMembers JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory WHERE ep.member = :member")
-    Slice<ExchangePost> findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(Member member, Pageable pageable);//내가 작성한 교환글 전체 조회
+    @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory WHERE ep.member = :member")
+//    Slice<ExchangePost> findAllByMemberWithMatchingMemberAndGiveCategoryAndTakeCategory(Member member, Pageable pageable);//내가 작성한 교환글 전체 조회
+    Slice<ExchangePost> findAllByMemberWithGiveCategoryAndTakeCategory(Member member, Pageable pageable);//내가 작성한 교환글 전체 조회
     @Query("SELECT ep FROM ExchangePost ep JOIN FETCH ep.member JOIN FETCH ep.giveCategory JOIN FETCH ep.takeCategory") //교환글 전체 조회
 //    List<ExchangePost> findAllPostWithMemberAndGiveCategoryAndTakeCategory();
     Slice<ExchangePost> findAllPostWithMemberAndGiveCategoryAndTakeCategory(Pageable pageable);
